@@ -285,7 +285,7 @@ const VerticalMenu: FC<MenuProps> = ({
               <MenuItem
                 id="sign-out"
                 group={"common"}
-                name={"Sign Out"}
+                name={"退出"}
                 icon={<LogoutIcon />}
                 onClick={signOutAction}
                 visibleTooltip={!isOpen}
