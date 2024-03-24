@@ -258,9 +258,8 @@ const VerticalMenu: FC<MenuProps> = ({
 
               return (
                 <Fragment
-                  key={`menu-section-${option.group || "common"}-${
-                    option.id || option.name
-                  }`}
+                  key={`menu-section-${option.group || "common"}-${option.id || option.name
+                    }`}
                 >
                   {extraItem}
                   <MenuItem
@@ -285,7 +284,7 @@ const VerticalMenu: FC<MenuProps> = ({
               <MenuItem
                 id="sign-out"
                 group={"common"}
-                name={"Sign Out"}
+                name={"退出"}
                 icon={<LogoutIcon />}
                 onClick={signOutAction}
                 visibleTooltip={!isOpen}
