@@ -258,9 +258,8 @@ const VerticalMenu: FC<MenuProps> = ({
 
               return (
                 <Fragment
-                  key={`menu-section-${option.group || "common"}-${
-                    option.id || option.name
-                  }`}
+                  key={`menu-section-${option.group || "common"}-${option.id || option.name
+                    }`}
                 >
                   {extraItem}
                   <MenuItem
