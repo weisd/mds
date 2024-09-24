@@ -15,11 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
-import { ReadBoxBaseProps, ReadBoxProps } from "./ReadBox.types";
-import InputLabel from "../InputLabel/InputLabel";
+import styled from "styled-components";
+
+import { overridePropsParse } from "../../global/utils";
 import Box from "../Box/Box";
+import InputLabel from "../InputLabel/InputLabel";
+import { ReadBoxBaseProps, ReadBoxProps } from "./ReadBox.types";
 
 const ReadBoxBase = styled.div<ReadBoxBaseProps>(
   ({ theme, sx, label, multiLine }) => ({
@@ -31,8 +33,8 @@ const ReadBoxBase = styled.div<ReadBoxBaseProps>(
       border: `${get(theme, "readBox.borderColor", "#e5e5e5")} 1px solid`,
       padding: "12px 10px",
       color: get(theme, "readBox.textColor", "#696969"),
-      fontSize: 12,
-      fontWeight: 600,
+      fontSize: 14,
+      fontWeight: 400,
       minHeight: 41,
       borderRadius: 4,
       width: "100%",
@@ -66,7 +68,7 @@ const ReadBoxBase = styled.div<ReadBoxBaseProps>(
       top: "50%",
       transform: "translate(0, -50%)",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 

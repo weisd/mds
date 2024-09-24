@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 // This file is part of MinIO Design System
 // Copyright (c) 2022 MinIO, Inc.
 //
@@ -14,110 +16,83 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from "react";
-import { createGlobalStyle } from "styled-components";
 import get from "lodash/get";
-import { darkColors, lightColors } from "../../global/themes";
+import { createGlobalStyle } from "styled-components";
 
-const InterBlackWoff = require("../assets/fonts/Inter/Inter-Black.woff");
-const InterBlackItalicWoff = require("../assets/fonts/Inter/Inter-BlackItalic.woff");
-const InterBoldWoff = require("../assets/fonts/Inter/Inter-Bold.woff");
-const InterBoldItalicWoff = require("../assets/fonts/Inter/Inter-BoldItalic.woff");
-const InterItalicWoff = require("../assets/fonts/Inter/Inter-Italic.woff");
-const InterLightWoff = require("../assets/fonts/Inter/Inter-Light.woff");
-const InterLightItalicWoff = require("../assets/fonts/Inter/Inter-LightItalic.woff");
-const InterRegularWoff = require("../assets/fonts/Inter/Inter-Regular.woff");
-const InterThinWoff = require("../assets/fonts/Inter/Inter-Thin.woff");
-const InterBlackWoff2 = require("../assets/fonts/Inter/Inter-Black.woff2");
-const InterBlackItalicWoff2 = require("../assets/fonts/Inter/Inter-BlackItalic.woff2");
-const InterBoldWoff2 = require("../assets/fonts/Inter/Inter-Bold.woff2");
-const InterBoldItalicWoff2 = require("../assets/fonts/Inter/Inter-BoldItalic.woff2");
-const InterItalicWoff2 = require("../assets/fonts/Inter/Inter-Italic.woff2");
-const InterLightWoff2 = require("../assets/fonts/Inter/Inter-Light.woff2");
-const InterLightItalicWoff2 = require("../assets/fonts/Inter/Inter-LightItalic.woff2");
-const InterRegularWoff2 = require("../assets/fonts/Inter/Inter-Regular.woff2");
-const InterThinWoff2 = require("../assets/fonts/Inter/Inter-Thin.woff2");
+import { lightColors, lightV2 } from "../../global/themes";
+
+const GeistBlackWoff2 = require("../assets/fonts/Geist/Geist-Black.woff2");
+const GeistBoldWoff2 = require("../assets/fonts/Geist/Geist-Bold.woff2");
+const GeistLightWoff2 = require("../assets/fonts/Geist/Geist-Light.woff2");
+const GeistRegularWoff2 = require("../assets/fonts/Geist/Geist-Regular.woff2");
+const GeistThinWoff2 = require("../assets/fonts/Geist/Geist-Thin.woff2");
+const GeistSemiBoldWoff2 = require("../assets/fonts/Geist/Geist-SemiBold.woff2");
+const GeistMediumWoff2 = require("../assets/fonts/Geist/Geist-Medium.woff2");
+const GeistUltraLightWoff2 = require("../assets/fonts/Geist/Geist-UltraLight.woff2");
 
 const GlobalStyles = createGlobalStyle`
     ${({ theme }) => {
       return `
     /* Fonts */
     @font-face {
-      font-family: "Inter";
-      src: url(${InterBlackItalicWoff2}) format("woff2"),
-        url(${InterBlackItalicWoff}) format("woff");
-      font-weight: 900;
-      font-style: italic;
-      font-display: swap;
-    }
-    
-    @font-face {
-      font-family: "Inter";
-      src: url(${InterBoldWoff2}) format("woff2"),
-        url(${InterBoldWoff}) format("woff");
+      font-family: "Geist";
+      src: url(${GeistBoldWoff2}) format("woff2");
       font-weight: bold;
       font-style: normal;
       font-display: swap;
     }
     
     @font-face {
-      font-family: "Inter";
-      src: url(${InterBoldItalicWoff2}) format("woff2"),
-        url(${InterBoldItalicWoff}) format("woff");
-      font-weight: bold;
-      font-style: italic;
+      font-family: "Geist";
+      src: url(${GeistMediumWoff2}) format("woff2");
+      font-weight: 500;
+      font-style: normal;
       font-display: swap;
     }
     
     @font-face {
-      font-family: "Inter";
-      src: url(${InterLightWoff2}) format("woff2"),
-        url(${InterLightWoff}) format("woff");
+      font-family: "Geist";
+      src: url(${GeistSemiBoldWoff2}) format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: "Geist";
+      src: url(${GeistLightWoff2}) format("woff2");
       font-weight: 300;
       font-style: normal;
       font-display: swap;
     }
     
     @font-face {
-      font-family: "Inter";
-      src: url(${InterBlackWoff2}) format("woff2"),
-        url(${InterBlackWoff}) format("woff");
+      font-family: "Geist";
+      src: url(${GeistUltraLightWoff2}) format("woff2");
+      font-weight: 200;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: "Geist";
+      src: url(${GeistBlackWoff2}) format("woff2");
       font-weight: 900;
       font-style: normal;
       font-display: swap;
     }
     
     @font-face {
-      font-family: "Inter";
-      src: url(${InterItalicWoff2}) format("woff2"),
-        url(${InterItalicWoff}) format("woff");
-      font-weight: normal;
-      font-style: italic;
-      font-display: swap;
-    }
-    
-    @font-face {
-      font-family: "Inter";
-      src: url(${InterRegularWoff2}) format("woff2"),
-        url(${InterRegularWoff}) format("woff");
+      font-family: "Geist";
+      src: url(${GeistRegularWoff2}) format("woff2");
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
     
     @font-face {
-      font-family: "Inter";
-      src: url(${InterLightItalicWoff2}) format("woff2"),
-        url(${InterLightItalicWoff}) format("woff");
-      font-weight: 300;
-      font-style: italic;
-      font-display: swap;
-    }
-    
-    @font-face {
-      font-family: "Inter";
-      src: url(${InterThinWoff2}) format("woff2"),
-        url(${InterThinWoff}) format("woff");
+      font-family: "Geist";
+      src: url(${GeistThinWoff2}) format("woff2");
       font-weight: 100;
       font-style: normal;
       font-display: swap;
@@ -138,11 +113,10 @@ const GlobalStyles = createGlobalStyle`
     }
     
     body {
-        background-color: ${get(theme, "bgColor", lightColors.white)};
-        color: ${get(theme, "fontColor", lightColors.defaultFontColor)};
-        height: 100vh;
-        width: 100vw;
-        font-family: 'Inter', sans-serif;
+        background-color: ${get(theme, "bgColor", lightV2.mainBackgroundColor)};
+        color: ${get(theme, "fontColor", lightV2.fontColor)};
+        minHeight: 100vh;
+        font-family: 'Geist', sans-serif;
         margin: 0;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -153,25 +127,25 @@ const GlobalStyles = createGlobalStyle`
     }
     
     fieldset, section {
-        border: 1px solid ${get(theme, "borderColor", lightColors.borderColor)};
+        border: 1px solid ${get(theme, "borderColor", lightV2.borderColor)};
         border-radius: 3px;
         background-color: transparent;
         padding: 25px;
     }
     
     a {
-        color: ${get(theme, "linkColor", lightColors.linkColor)};
+        color: ${get(theme, "linkColor", lightV2.linkColor)};
     }
     
     a:hover {
-        color: ${get(theme, "linkColor", lightColors.linkColor)};
+        color: ${get(theme, "linkColor", lightV2.linkColor)};
     }
     
     hr {
         border-top: 0;
         border-left: 0;
-        borderR-right: 0;
-        border-color: ${get(theme, "borderColor", lightColors.borderColor)};
+        border-right: 0;
+        border-bottom: 1px solid ${get(theme, "borderColor", lightV2.borderColor)};
         background-color: transparent;
     }
     
@@ -231,7 +205,72 @@ const GlobalStyles = createGlobalStyle`
     }
     
     .muted {
-        color: ${get(theme, "mutedText", lightColors.mutedText)};
+        color: ${get(theme, "mutedText", lightV2.mutedText)};
+        font-size: 14px;
+    }
+    
+    .error {
+        color: ${get(theme, "signalColors.danger", lightV2.danger)};
+    }
+    
+    /* Text Vars */
+    .SM_Normal {
+        font-family: 'Geist', sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+    .SM_Strong {
+        font-family: 'Geist', sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 16px;
+    }
+    .Base_Normal {
+        font-family: 'Geist', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+    }
+    .Base_Strong {
+        font-family: 'Geist', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 20px; 
+        letter-spacing: 0.16px;
+    }
+    .LG_Normal {
+        font-family: 'Geist', sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+    }
+    .LG_Strong {
+        font-family: 'Geist', sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        letter-spacing: 0.16px;
+    }
+    .XL_Normal {
+        font-family: 'Geist', sans-serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+    }
+    .XL_Strong {
+        font-family: 'Geist', sans-serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 28px;
     }
     `;
     }}

@@ -15,10 +15,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled, { CSSObject } from "styled-components";
 import get from "lodash/get";
+import styled, { CSSObject } from "styled-components";
+
+import {
+  breakPoints,
+  fractionToPerc,
+  overridePropsParse,
+} from "../../global/utils";
 import { GridProps } from "./Grid.types";
-import { breakPoints, fractionToPerc } from "../../global/utils";
 
 const CustomDiv = styled.div<GridProps>((props) => {
   let constructProps: CSSObject = {
@@ -30,8 +35,8 @@ const CustomDiv = styled.div<GridProps>((props) => {
       display: "flex",
       flexWrap: props.wrap || "wrap",
       flexDirection: props.direction || "row",
-      columnGap: `${props.columnSpacing}px` || 0,
-      rowGap: `${props.rowSpacing}px` || 0,
+      columnGap: `${props.columnSpacing || 0}px`,
+      rowGap: `${props.rowSpacing || 0}px`,
       boxSizing: "content-box",
     };
   } else if (props.item) {
@@ -83,7 +88,7 @@ const CustomDiv = styled.div<GridProps>((props) => {
     });
   }
 
-  return { ...constructProps, ...props.sx };
+  return { ...constructProps, ...overridePropsParse(props.sx, props.theme) };
 });
 
 const Grid: FC<GridProps> = (props) => {

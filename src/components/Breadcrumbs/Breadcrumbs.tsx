@@ -14,16 +14,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC } from "react";
+import React, { FC, Fragment } from "react";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { themeColors } from "../../global/themeColors";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import Button from "../Button/Button";
+import ExpandMenu from "../ExpandMenu/ExpandMenu";
+import ExpandMenuOption from "../ExpandMenu/ExpandMenuOption";
+import ChevronLeftIcon from "../Icons/NewDesignIcons/ChevronLeftIcon";
+import EllipsisIcon from "../Icons/NewDesignIcons/EllipsisIcon";
+import BreadcrumbButton from "./BreadcrumbButton";
 import {
   BreadcrumbsContainerProps,
+  BreadcrumbsOption,
   BreadcrumbsProps,
 } from "./Breadcrumbs.types";
-import IconButton from "../IconButton/IconButton";
-import styled from "styled-components";
-import BackCaretIcon from "../Icons/BackCaretIcon";
-import Box from "../Box/Box";
 
 const BoxParent = styled.div<BreadcrumbsContainerProps>(({ theme, sx }) => {
   return {
@@ -31,78 +39,203 @@ const BoxParent = styled.div<BreadcrumbsContainerProps>(({ theme, sx }) => {
     flexBasis: "100%",
     width: "100%",
     fontSize: 12,
-    color: get(theme, "breadcrumbs.textColor", "#969FA8"),
     fontWeight: "bold",
-    border: `${get(theme, "breadcrumbs.border", "#eaeaea")} 1px solid`,
     height: 38,
     display: "flex",
     alignItems: "center",
-    backgroundColor: get(theme, "breadcrumbs.backgroundColor", "#FCFCFD"),
     marginRight: 10,
-    "& a": {
-      textDecoration: "none",
-      color: get(theme, "breadcrumbs.linksColor", "#969FA8"),
-      "&:hover": {
-        textDecoration: "underline",
-      },
-    },
-    "& .min-icon": {
-      width: 16,
-      minWidth: 16,
-    },
-    "& .backButton": {
-      border: `${get(
-        theme,
-        "breadcrumbs.backButton.border",
-        "#EAEDEE",
-      )} 1px solid`,
-      backgroundColor: get(
-        theme,
-        "breadcrumbs.backButton.backgroundColor",
-        "#FFF",
-      ),
-      borderLeft: 0,
-      borderRadius: 0,
-      width: 38,
-      height: 38,
-      marginRight: "10px",
-      "& > svg": {
-        fill: get(theme, "breadcrumbs.textColor", "#969FA8"),
-      },
-    },
     "& .breadcrumbsList": {
-      textOverflow: "ellipsis" as const,
-      overflow: "hidden" as const,
-      whiteSpace: "nowrap" as const,
-      display: "inline-block" as const,
+      display: "flex",
+      flexWrap: "nowrap",
       flexGrow: 1,
       textAlign: "left" as const,
       marginLeft: 15,
       marginRight: 10,
-      width: 0, // WA to avoid overflow if child elements in flexbox list.**
+      overflow: "hidden",
+      userSelect: "none",
+      "& .divider": {
+        boxSizing: "content-box",
+        display: "inline-flex",
+        justifyContent: "center",
+        width: 12,
+        minWidth: 12,
+        color: get(
+          theme,
+          "elementsColor",
+          themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+        ),
+        fontSize: 12,
+        fontStyle: "normal",
+        fontWeight: 400,
+        lineHeight: "16px",
+        letterSpacing: "0.5px",
+        padding: "2px 4px",
+      },
+      "& svg": {
+        color: get(
+          theme,
+          "elementsColor",
+          themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+        ),
+        "&:hover": {
+          color: get(
+            theme,
+            "hoverColor",
+            themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+          ),
+        },
+      },
+      "& .last": {
+        pointerEvents: "none",
+      },
     },
     "& .slashSpacingStyle": {
       margin: "0 5px",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   };
 });
 
 const Breadcrumbs: FC<BreadcrumbsProps> = ({
   sx,
-  children,
-  additionalOptions,
   goBackFunction,
+  options,
+  displayLastItems = false,
+  onClickOption,
+  markCurrentItem = false,
+  children,
 }) => {
+  const hasCollapsedOpts =
+    typeof displayLastItems === "number" &&
+    options.length - 1 > displayLastItems &&
+    options.length > 0;
+
+  let collapsedOptions = null;
+
+  const clickFunction = (option: BreadcrumbsOption) => {
+    if (onClickOption) {
+      onClickOption(option.to);
+    }
+
+    if (option.onClick) {
+      option.onClick(option.to);
+    }
+  };
+
+  const Divider = () => {
+    return <Box className={"divider"}>/</Box>;
+  };
+
+  // Collapsed options
+  if (hasCollapsedOpts && options.length > displayLastItems - 1) {
+    const colOpts = options.slice(1, displayLastItems * -1);
+
+    collapsedOptions = (
+      <ExpandMenu
+        id={"breadcrumbs-expand"}
+        className={"breadcrumbElement"}
+        icon={<EllipsisIcon />}
+        variant={"secondary-ghost"}
+        sx={{
+          height: 20,
+          padding: "2px 4px",
+          borderRadius: 2,
+        }}
+        dropArrow={false}
+        compact
+      >
+        {colOpts.map((option, index) => (
+          <ExpandMenuOption
+            key={`expandOption-${option.label}-${index}`}
+            id={`expandOption-${option.label}`}
+            onClick={() => clickFunction(option)}
+          >
+            {option.label}
+          </ExpandMenuOption>
+        ))}
+      </ExpandMenu>
+    );
+  }
+
+  const itSlide = hasCollapsedOpts
+    ? options.slice(displayLastItems * -1)
+    : options;
+
   return (
     <BoxParent className={"breadcrumbs-bar"} sx={sx}>
-      <IconButton onClick={goBackFunction} className={"backButton"}>
-        <BackCaretIcon />
-      </IconButton>
-      <Box className={"breadcrumbsList"} dir="rtl">
-        {children}
+      {goBackFunction && (
+        <Button
+          id={"back-button"}
+          icon={<ChevronLeftIcon />}
+          onClick={goBackFunction}
+          iconLocation={"start"}
+          compact
+          sx={{
+            width: 28,
+            height: 28,
+          }}
+        />
+      )}
+      <Box className={"breadcrumbsList"}>
+        {hasCollapsedOpts ? (
+          <Fragment>
+            <BreadcrumbButton
+              id={`breadcrumb-option-${options[0].label}`}
+              onClick={() => clickFunction(options[0])}
+              onClickOption={onClickOption}
+              icon={options[0].icon!}
+            >
+              {options[0].label}
+            </BreadcrumbButton>
+            <Divider />
+            {collapsedOptions}
+            <Divider />
+            {itSlide.map((itm, index) => {
+              const lastItem = index === itSlide.length - 1;
+
+              return (
+                <Fragment key={`expandOption-${itm.label}-${index}`}>
+                  {index !== 0 && <Divider />}
+                  <BreadcrumbButton
+                    id={`breadcrumb-option-${itm.label}`}
+                    onClick={() => clickFunction(itm)}
+                    onClickOption={onClickOption}
+                    className={`${lastItem && !itm.subOptions ? "last" : ""}`}
+                    icon={itm.icon!}
+                    current={lastItem && markCurrentItem}
+                    label={itm.label}
+                  />
+                </Fragment>
+              );
+            })}
+          </Fragment>
+        ) : (
+          <Fragment>
+            {itSlide.map((itm, index) => {
+              const lastItem = index === options.length - 1;
+
+              return (
+                <Fragment key={`expandOption-${itm.label}-${index}`}>
+                  {index !== 0 && <Divider />}
+                  <BreadcrumbButton
+                    id={`breadcrumb-option-${itm.label}`}
+                    onClick={() => {
+                      clickFunction(itm);
+                    }}
+                    onClickOption={onClickOption}
+                    className={`${lastItem && !itm.subOptions ? "last" : ""}`}
+                    icon={itm.icon!}
+                    current={lastItem && markCurrentItem}
+                    subOptions={itm.subOptions}
+                    label={itm.label}
+                  />
+                </Fragment>
+              );
+            })}
+            {children!}
+          </Fragment>
+        )}
       </Box>
-      {additionalOptions}
     </BoxParent>
   );
 };

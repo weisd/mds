@@ -14,20 +14,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, useEffect, useState } from "react";
-import styled, { CSSObject } from "styled-components";
-import get from "lodash/get";
-import debounce from "lodash/debounce";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import debounce from "lodash/debounce";
+import get from "lodash/get";
+import styled, { CSSObject } from "styled-components";
+
+import SelectorContainer from "../../global/SelectorContainer";
+import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import Checkbox from "../Checkbox/Checkbox";
 import {
   ColumnSelectorConstructProps,
   ColumnSelectorProps,
   IColumns,
 } from "./DataTable.types";
-import { lightColors } from "../../global/themes";
-import Checkbox from "../Checkbox/Checkbox";
-import Box from "../Box/Box";
-import SelectorContainer from "../../global/SelectorContainer";
 
 const SelectorBox = styled.div<ColumnSelectorConstructProps>(
   ({ theme, sx }) => ({
@@ -64,7 +66,7 @@ const SelectorBox = styled.div<ColumnSelectorConstructProps>(
       maxHeight: 250,
       overflowY: "auto",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -85,14 +87,14 @@ const calcElementPosition = (anchorEl: (EventTarget & HTMLElement) | null) => {
   };
 };
 
-const ColumnsSelector: FC<ColumnSelectorProps> = ({
+const ColumnsSelector = <T,>({
   columns,
   selectedOptionIDs,
   onSelect,
   closeTriggerAction,
   open,
   anchorEl = null,
-}) => {
+}: ColumnSelectorProps<T>): JSX.Element | null => {
   const [coords, setCoords] = useState<CSSObject | null>(null);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const ColumnsSelector: FC<ColumnSelectorProps> = ({
       return;
     }
     setCoords(null);
-  }, [open]);
+  }, [anchorEl, open]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,7 +121,14 @@ const ColumnsSelector: FC<ColumnSelectorProps> = ({
     window.addEventListener("scroll", () => {
       scrollResize(anchorEl);
     });
-  });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", () => {
+        scrollResize(anchorEl);
+      });
+    };
+  }, [anchorEl, closeTriggerAction]);
 
   if (!open || !coords) {
     return null;
@@ -142,7 +151,7 @@ const ColumnsSelector: FC<ColumnSelectorProps> = ({
       >
         <Box className={"columnsSelectorTitle"}>Shown Columns</Box>
         <Box className={"columnsSelectorContainer"}>
-          {columns.map((column: IColumns) => {
+          {columns.map((column: IColumns<T>) => {
             return (
               <Checkbox
                 key={`tableColumns-${column.label}`}
@@ -153,7 +162,7 @@ const ColumnsSelector: FC<ColumnSelectorProps> = ({
                   ) >= 0
                 }
                 onChange={() => {
-                  onSelect(column.elementKey || "");
+                  onSelect((column.elementKey as keyof T) || ("" as keyof T));
                 }}
                 id={`chbox-${column.label}`}
                 name={`chbox-${column.label}`}

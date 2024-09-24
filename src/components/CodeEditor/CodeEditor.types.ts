@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
 import { CommonHelpTipPlacement } from "../HelpTip/HelpTip.types";
 
 export interface CodeEditorProps {
@@ -27,13 +28,15 @@ export interface CodeEditorProps {
   onChange: (value: string) => any;
   className?: string;
   helpTools?: React.ReactNode;
-  sx?: CSSObject;
+  sx?: OverrideTheme;
   helpTip?: React.ReactNode;
   helpTipPlacement?: CommonHelpTipPlacement;
+  horizontal?: boolean;
 }
 
 export interface CodeEditorBaseProps {
   editorHeight: string | number;
-  sx?: CSSObject;
+  sx?: OverrideTheme;
   className?: string;
+  horizontal?: boolean;
 }

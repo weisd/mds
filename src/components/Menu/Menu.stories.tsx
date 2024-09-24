@@ -17,15 +17,15 @@
 import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
 
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
+import Box from "../Box/Box";
+import Button from "../Button/Button";
+import CirclePlayIcon from "../Icons/NewDesignIcons/CirclePlayIcon";
+import MessageSquareHeartIcon from "../Icons/NewDesignIcons/MessageSquareHeartIcon";
+import { GlobalStyles } from "../index";
 import Menu from "./Menu";
 import { MenuProps } from "./Menu.types";
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import { GlobalStyles } from "../index";
-import TestIcon from "../../utils/TestIcon";
-import ChatIcon from "../Icons/ChatIcon";
-import LambdaNotificationsIcon from "../Icons/LambdaNotificationsIcon";
-import Button from "../Button/Button";
-import Box from "../Box/Box";
 
 export default {
   title: "MDS/Layout/Menu",
@@ -167,7 +167,7 @@ Horizontal.args = {
   horizontal: true,
   options: [
     {
-      icon: <ChatIcon />,
+      icon: <CirclePlayIcon />,
       path: "/testPath1",
       name: "Test 1",
       group: "Group 1",
@@ -177,7 +177,7 @@ Horizontal.args = {
       },
     },
     {
-      icon: <LambdaNotificationsIcon />,
+      icon: <MessageSquareHeartIcon />,
       name: "Test 5",
       group: "Group 2",
       id: "test5",

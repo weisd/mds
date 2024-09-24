@@ -16,8 +16,10 @@
 
 import React, { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
-import { PageLayoutProps } from "./PageLayout.types";
+
+import { overridePropsParse } from "../../global/utils";
 import Grid from "../Grid/Grid";
+import { PageLayoutProps } from "./PageLayout.types";
 
 const PageLayoutContainer = styled.div<
   HTMLAttributes<HTMLDivElement> & PageLayoutProps
@@ -25,10 +27,10 @@ const PageLayoutContainer = styled.div<
   boxSizing: "content-box",
   maxWidth: variant === "constrained" ? 1220 : "initial",
   padding: 32,
-  ...sx,
+  ...overridePropsParse(sx, theme),
 }));
 
-const PageLayout: FC<HTMLAttributes<HTMLDivElement> & PageLayoutProps> = ({
+const PageLayout: FC<PageLayoutProps & HTMLAttributes<HTMLDivElement>> = ({
   sx,
   children,
   variant,
@@ -36,7 +38,12 @@ const PageLayout: FC<HTMLAttributes<HTMLDivElement> & PageLayoutProps> = ({
   ...props
 }) => {
   return (
-    <PageLayoutContainer sx={sx} variant={variant} {...props}>
+    <PageLayoutContainer
+      className={"page-layout"}
+      sx={sx}
+      variant={variant}
+      {...props}
+    >
       <Grid container>
         <Grid item xs={12} className={className}>
           {children}

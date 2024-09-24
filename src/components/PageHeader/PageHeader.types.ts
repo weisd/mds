@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
 
 export interface PageHeaderMainProps {
   label: React.ReactNode;
@@ -24,7 +25,7 @@ export interface PageHeaderMainProps {
 }
 
 export interface PageHeaderConstruct {
-  sx?: CSSObject;
+  sx?: OverrideTheme;
 }
 
 export type PageHeaderProps = PageHeaderMainProps & PageHeaderConstruct;

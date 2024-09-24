@@ -1,5 +1,5 @@
 // This file is part of MinIO Design System
-// Copyright (c) 2023 MinIO, Inc.
+// Copyright (c) 2024 MinIO, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -14,22 +14,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { CSSObject } from "styled-components";
+import { ReactNode } from "react";
 
-export interface BadgeMain {
-  invisible?: boolean;
-  max?: number;
-  showZero?: boolean;
-  badgeContent?: number;
+import { OverrideTheme } from "../../global/global.types";
+
+export type BadgeColors =
+  | "none"
+  | "info"
+  | "success"
+  | "warning"
+  | "danger"
+  | "purple"
+  | "rose"
+  | "scooter"
+  | "disabled";
+
+export type BadgeStyles = "minimal" | "subtle" | "bold";
+
+export type BadgeIcons = boolean | "dot" | ReactNode;
+
+export interface BadgeMainProps {
+  label: string;
+  id: string;
 }
 
-export interface BadgeConstruct {
-  horizontalPosition?: "left" | "right";
-  verticalPosition?: "bottom" | "top";
-  sx?: CSSObject;
-  color?: "default" | "secondary" | "warn" | "alert" | "ok" | "grey";
-  shape?: "circular" | "rectangular";
-  dotOnly?: boolean;
+export interface BadgeConstructProps {
+  color?: BadgeColors;
+  badgeStyle?: BadgeStyles;
+  icon?: BadgeIcons;
+  size?: "normal" | "small";
+  isNumber?: boolean;
+  sx?: OverrideTheme;
 }
 
-export type BadgeProps = BadgeMain & BadgeConstruct;
+export type BadgeProps = BadgeMainProps & BadgeConstructProps;

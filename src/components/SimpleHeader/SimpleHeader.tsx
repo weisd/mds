@@ -15,12 +15,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, HTMLAttributes } from "react";
+import get from "lodash/get";
 import styled from "styled-components";
+
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
 import {
   SimpleHeaderContainerProps,
   SimpleHeaderProps,
 } from "./SimpleHeader.types";
-import get from "lodash/get";
 
 const ParentContainer = styled.div<
   HTMLAttributes<HTMLDivElement> & SimpleHeaderContainerProps
@@ -29,17 +32,24 @@ const ParentContainer = styled.div<
   justifyContent: "space-between",
   alignItems: "center",
   paddingBottom: 15,
-  borderBottom: `1px solid ${get(theme, `borderColor`, "#E5E5E5")}`,
-  fontWeight: "bold",
-  fontSize: 18,
-  color: get(theme, `fontColor`, "#000"),
+  color: get(theme, `fontColor`, lightV2.fontColor),
   margin: "20px 22px",
-  ...sx,
+  fontSize: 14,
+  fontStyle: "normal",
+  fontWeight: 600,
+  lineHeight: "18px",
+  letterSpacing: "0.16px",
+  ...overridePropsParse(sx, theme),
 }));
 
-const SimpleHeader: FC<SimpleHeaderProps> = ({ label, icon, sx }) => {
+const SimpleHeader: FC<SimpleHeaderProps & HTMLAttributes<HTMLDivElement>> = ({
+  label,
+  icon,
+  sx,
+  ...restProps
+}) => {
   return (
-    <ParentContainer className={"simpleHeader-container"} sx={sx}>
+    <ParentContainer className={"simple-header"} sx={sx} {...restProps}>
       <span>{label}</span>
       {icon}
     </ParentContainer>

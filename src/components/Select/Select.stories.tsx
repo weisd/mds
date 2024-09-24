@@ -14,20 +14,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
 
+import { SelectOption } from "../../global/global.types";
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
+import FormLayout from "../FormLayout/FormLayout";
+import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import DownloadIcon from "../Icons/NewDesignIcons/DownloadIcon";
+import UploadIcon from "../Icons/NewDesignIcons/UploadIcon";
+import UsersIcon from "../Icons/NewDesignIcons/UsersIcon";
 import Select from "./Select";
 import { SelectProps } from "./Select.types";
-
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import FormLayout from "../FormLayout/FormLayout";
-import DownloadIcon from "../Icons/DownloadIcon";
-import UploadIcon from "../Icons/UploadIcon";
-import UsersIcon from "../Icons/UsersIcon";
-import { SelectorType } from "../../global/global.types";
-import TestIcon from "../../utils/TestIcon";
 
 export default {
   title: "MDS/Forms/Select",
@@ -49,7 +48,7 @@ const Template: Story<SelectProps> = ({
     placeholder ? "" : "value1",
   );
 
-  let useOpts: SelectorType[] = [
+  let useOpts: SelectOption[] = [
     { label: "Option 1", value: "value1" },
     { label: "Option 2", value: "value2" },
     {

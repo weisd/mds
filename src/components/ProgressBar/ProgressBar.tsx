@@ -15,11 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled, { keyframes } from "styled-components";
 import get from "lodash/get";
-import { CommonProgressBar, ProgressBarProps } from "./ProgressBar.types";
+import styled, { keyframes } from "styled-components";
+
 import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
 import Box from "../Box/Box";
+import { CommonProgressBar, ProgressBarProps } from "./ProgressBar.types";
 
 const colorItems = {
   blue: "main",
@@ -65,7 +67,7 @@ const ProgressBase = styled.div<CommonProgressBar>(
       transitionDuration: "0.1s",
       borderRadius: barHeight,
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 

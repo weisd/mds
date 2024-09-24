@@ -14,42 +14,45 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, useState } from "react";
-import styled from "styled-components";
+import React, { FC } from "react";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
+import InputLabel from "../InputLabel/InputLabel";
+import Tooltip from "../Tooltip/Tooltip";
 import {
-  ExtraCommentProps,
   CommentBoxProps,
   CommentContainerProps,
+  ExtraCommentProps,
 } from "./CommentBox.types";
-import HelpIcon from "../Icons/HelpIcon";
-import Tooltip from "../Tooltip/Tooltip";
-import InputLabel from "../InputLabel/InputLabel";
-import Box from "../Box/Box";
 
 const TextAreaBase = styled.textarea<CommentBoxProps & ExtraCommentProps>(
-  ({ theme, error, originType }) => {
+  ({ theme, error }) => {
     let borderColor = get(theme, "inputBox.border", "#E2E2E2");
     let borderHover = get(theme, "inputBox.hoverBorder", "#000110");
 
     if (error && error !== "") {
-      borderColor = get(theme, "inputBox.error", "#C51B3F");
-      borderHover = get(theme, "inputBox.error", "#C51B3F");
+      borderColor = get(theme, "inputBox.error", lightV2.danger);
+      borderHover = get(theme, "inputBox.error", lightV2.danger);
     }
 
     return {
-      fontFamily: "'Inter',sans-serif",
+      fontFamily: "'Geist',sans-serif",
       width: "100%",
-      resize: "none",
+      resize: "none" as const,
       padding: "16px 14px",
-      color: get(theme, "inputBox.color", "#07193E"),
-      fontSize: 13,
-      fontWeight: 600,
+      color: get(theme, "inputBox.color", lightV2.fontColor),
+      fontSize: 14,
+      fontWeight: 400,
       border: `${borderColor} 1px solid`,
       borderRadius: 3,
       outline: "none",
       transitionDuration: "0.1s",
-      backgroundColor: get(theme, "inputBox.backgroundColor", "#fff"),
+      backgroundColor: get(theme, "inputBox.backgroundColor", "transparent"),
       "&:placeholder": {
         color: get(theme, "inputBox.placeholderColor", "#858585"),
         opacity: 1,
@@ -101,7 +104,7 @@ const BoxContainer = styled.div<CommentContainerProps>(
     "& .inputLabel": {
       marginBottom: error ? 18 : 0,
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -139,7 +142,7 @@ const InputBox: FC<CommentBoxProps> = ({
             <Box className={"tooltipContainer"}>
               <Tooltip tooltip={tooltip} placement="top">
                 <Box className={tooltip}>
-                  <HelpIcon />
+                  <CircleHelpIcon />
                 </Box>
               </Tooltip>
             </Box>

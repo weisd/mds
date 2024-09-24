@@ -15,10 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
 
 export interface TabProps {
-  label: string;
+  label: React.ReactNode;
   icon?: React.ReactNode;
   disabled?: boolean;
   to?: string;
@@ -40,19 +41,19 @@ export interface TabsProps {
   optionsInitialComponent?: React.ReactNode;
   optionsEndComponent?: React.ReactNode;
   horizontalBarBackground?: boolean;
-  sx?: CSSObject;
+  sx?: OverrideTheme;
 }
 
 export interface TabsContainerProps {
   horizontal: boolean;
   horizontalBarBackground: boolean;
-  sx?: CSSObject;
+  sx?: OverrideTheme;
 }
 
 export interface TabButtonProps {
   id: string;
   horizontal?: boolean;
-  label: string;
+  label: React.ReactNode;
   onClick: () => void;
   disabled: boolean;
   icon?: React.ReactNode;

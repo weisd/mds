@@ -1,5 +1,5 @@
 // This file is part of MinIO Design System
-// Copyright (c) 2023 MinIO, Inc.
+// Copyright (c) 2024 MinIO, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -14,101 +14,183 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, Fragment, HTMLAttributes } from "react";
-import styled from "styled-components";
-import { BadgeConstruct, BadgeProps } from "./Badge.types";
-import { lightColors } from "../../global/themes";
+import React, { FC, Fragment, useCallback } from "react";
 import get from "lodash/get";
+import styled from "styled-components";
 
-const BadgeParent = styled.span<
-  HTMLAttributes<HTMLDivElement> & BadgeConstruct
->(
-  ({
-    theme,
-    sx,
-    verticalPosition,
-    horizontalPosition,
-    color,
-    shape,
-    dotOnly,
-  }) => {
-    let circularRadius = dotOnly ? "100%" : 10;
+import { themeColors } from "../../global/themeColors";
+import { paddingSizeVariants } from "../../global/utils";
+import CircleAlertIcon from "../Icons/NewDesignIcons/CircleAlertIcon";
+import CircleCheckIcon from "../Icons/NewDesignIcons/CircleCheckIcon";
+import CircleSlashIcon from "../Icons/NewDesignIcons/CircleSlashIcon";
+import CircleXIcon from "../Icons/NewDesignIcons/CircleXIcon";
+import InfoIcon from "../Icons/NewDesignIcons/InfoIcon";
+import { BadgeConstructProps, BadgeProps } from "./Badge.types";
+
+const BadgeBase = styled.span<BadgeConstructProps>(
+  ({ theme, color, size, badgeStyle, icon, isNumber, sx }) => {
+    let textColor =
+      badgeStyle === "bold"
+        ? get(
+            theme,
+            `badge.${color}.subtleLabel`,
+            themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+          )
+        : get(
+            theme,
+            `badge.${color}.boldLabel`,
+            themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+          );
+    let bgColor =
+      badgeStyle === "bold"
+        ? get(
+            theme,
+            `badge.${color}.subtleBG`,
+            themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+          )
+        : get(
+            theme,
+            `badge.${color}.boldBG`,
+            themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+          );
+    let borderColor =
+      badgeStyle === "bold"
+        ? get(
+            theme,
+            `badge.${color}.subtleBG`,
+            themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+          )
+        : get(
+            theme,
+            `badge.${color}.boldBG`,
+            themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+          );
+
+    if (icon === "dot" || badgeStyle === "minimal") {
+      bgColor = "transparent";
+      textColor = get(theme, `badge.${color}.minimalColor`);
+      borderColor =
+        icon === "dot"
+          ? "transparent"
+          : get(theme, `badge.${color}.minimalColor`);
+    }
+
+    let padding =
+      size === "small"
+        ? `0 6px`
+        : `${paddingSizeVariants.sizeXXS}px ${paddingSizeVariants.sizeXS}px`;
+
+    if (size === "small" && isNumber) {
+      padding = "0";
+    }
 
     return {
       position: "relative",
+      margin: 0,
+      userSelect: "none",
+      appearance: "none",
+      maxWidth: "100%",
+      fontFamily: "'Inter', sans-serif",
+      fontSize: 12,
+      fontWeight: 600,
+      lineHeight: 16,
       display: "inline-flex",
-      "& .badgeContent": {
-        fontSize: 10,
-        userSelect: "none",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        padding: dotOnly ? 0 : "0 6px",
-        borderRadius: shape === "circular" ? circularRadius : 3,
-        right: horizontalPosition === "right" ? 0 : "initial",
-        top: verticalPosition === "top" ? 0 : "initial",
-        left: horizontalPosition === "left" ? 0 : "initial",
-        bottom: verticalPosition === "bottom" ? 0 : "initial",
-        minWidth: !dotOnly ? 20 : 10,
-        width: dotOnly ? 10 : "initial",
-        height: !dotOnly ? 20 : 10,
-        backgroundColor: get(
-          theme,
-          `badge.${color}.backgroundColor`,
-          lightColors.mainBlue,
-        ),
-        color: get(theme, `badge.${color}.textColor`, lightColors.white),
-        fontWeight: "bold",
-        textAlign: "center",
-        zIndex: 1,
-        transform: `scale(1) translate(${
-          horizontalPosition === "right" ? "" : "-"
-        }50%, ${verticalPosition === "bottom" ? "" : "-"}50%)`,
+      alignItems: "center",
+      justifyContent: "center",
+      height: size === "small" ? 16 : 24,
+      color: textColor,
+      backgroundColor: bgColor,
+      borderRadius: 16,
+      whiteSpace: "nowrap",
+      cursor: "default",
+      outline: 0,
+      textDecoration: "none",
+      border: `${borderColor} 1px solid`,
+      padding,
+      verticalAlign: "middle",
+      gap: paddingSizeVariants.sizeXXS,
+      minWidth: size === "small" ? 16 : 28,
+      "& svg": {
+        width: icon === "dot" ? 8 : 15,
+        height: icon === "dot" ? 8 : 15,
+        color: textColor,
+        fill: textColor,
+      },
+      "& span.dot": {
+        display: "inline-block",
+        width: 8,
+        height: 8,
+        backgroundColor: textColor,
+        borderRadius: "100%",
       },
       ...sx,
     };
   },
 );
 
-const Badge: FC<HTMLAttributes<HTMLSpanElement> & BadgeProps> = ({
-  sx,
+const Badge: FC<BadgeProps & React.HTMLAttributes<HTMLSpanElement>> = ({
   children,
-  horizontalPosition = "right" as "right" | "left",
-  verticalPosition = "bottom" as "top" | "bottom",
-  color = "default",
-  shape = "circular",
-  dotOnly = false,
-  invisible = false,
-  max = 99,
-  showZero = false,
-  badgeContent = 0,
+  color = "none",
+  sx,
+  id,
+  label,
+  size = "normal",
+  badgeStyle = "subtle",
+  icon,
+  isNumber,
   ...props
 }) => {
+  const iconPhase = useCallback((): React.ReactNode => {
+    let icnUse: React.ReactNode = null;
+
+    if (icon) {
+      if (typeof icon === "boolean") {
+        // We use default icons for each category
+        switch (color) {
+          case "none":
+            icnUse = <CircleSlashIcon />;
+            break;
+          case "info":
+            icnUse = <InfoIcon />;
+            break;
+          case "success":
+            icnUse = <CircleCheckIcon />;
+            break;
+          case "warning":
+            icnUse = <CircleAlertIcon />;
+            break;
+          case "danger":
+            icnUse = <CircleXIcon />;
+            break;
+          default:
+            icnUse = null;
+        }
+      } else {
+        // In case we want to use a custom icon, and it is not a predefined icon
+        icnUse = icon === "dot" ? <span className={"dot"} /> : icon;
+      }
+    }
+
+    return icnUse;
+  }, [icon, color]);
+
   return (
-    <BadgeParent
-      horizontalPosition={horizontalPosition}
-      verticalPosition={verticalPosition}
+    <BadgeBase
+      id={id}
       color={color}
-      shape={shape}
-      dotOnly={dotOnly}
+      icon={icon}
+      size={size}
+      badgeStyle={badgeStyle}
+      isNumber={isNumber}
       sx={sx}
       {...props}
     >
-      {children}
-      {!invisible &&
-        (badgeContent >= 0 || (showZero && badgeContent === 0)) && (
-          <div className={"badgeContent"}>
-            {!dotOnly ? (
-              <Fragment>
-                {badgeContent > max ? `${max}+` : badgeContent}
-              </Fragment>
-            ) : (
-              ""
-            )}
-          </div>
-        )}
-    </BadgeParent>
+      {icon && <Fragment>{iconPhase()}</Fragment>}
+      <span>
+        {label}
+        {children}
+      </span>
+    </BadgeBase>
   );
 };
 export default Badge;

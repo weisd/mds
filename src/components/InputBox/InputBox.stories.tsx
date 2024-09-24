@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from "react";
+import React, { Fragment } from "react";
 import { Meta, Story } from "@storybook/react";
 
-import InputBox from "./InputBox";
-import { InputBoxProps } from "./InputBox.types";
-
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import FormLayout from "../FormLayout/FormLayout";
 import TestIcon from "../../utils/TestIcon";
 import Box from "../Box/Box";
-import UsersIcon from "../Icons/UsersIcon";
-import PasswordKeyIcon from "../Icons/PasswordKeyIcon";
+import ExpandMenu from "../ExpandMenu/ExpandMenu";
+import ExpandMenuOption from "../ExpandMenu/ExpandMenuOption";
+import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import KeyRoundIcon from "../Icons/NewDesignIcons/KeyRoundIcon";
+import PencilLineIcon from "../Icons/NewDesignIcons/PencilLineIcon";
+import UsersIcon from "../Icons/NewDesignIcons/UsersIcon";
+import InputBox from "./InputBox";
+import { InputBoxProps } from "./InputBox.types";
 
 export default {
   title: "MDS/Forms/InputBox",
@@ -37,22 +38,26 @@ export default {
 const Template: Story<InputBoxProps> = (args) => (
   <StoryThemeProvider>
     <GlobalStyles />
-    <FormLayout>
-      <InputBox {...args} />
-      <InputBox {...args} />
-    </FormLayout>
+    <Box sx={{ display: "flex", gap: 24, flexBasis: "50%" }}>
+      <InputBox {...args} sizeMode={"small"} />
+      <InputBox {...args} sizeMode={"large"} />
+    </Box>
   </StoryThemeProvider>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  label: "An input box",
+  label: "Label",
+  placeholder: "Placeholder",
+  helper: "Helper Text",
   required: true,
 };
 
 export const DisabledInput = Template.bind({});
 DisabledInput.args = {
-  label: "An input box",
+  label: "Label",
+  placeholder: "Placeholder",
+  helper: "Helper Text",
   required: true,
   disabled: true,
   value: "Demo Text",
@@ -135,7 +140,45 @@ StartIcon.args = {
 
 export const StartIconWithAction = Template.bind({});
 StartIconWithAction.args = {
-  startIcon: <PasswordKeyIcon />,
+  startIcon: <KeyRoundIcon />,
   placeholder: "Password",
   type: "password",
+};
+
+export const TypeNumberInput = Template.bind({});
+TypeNumberInput.args = {
+  type: "number",
+  placeholder: "Numeric Field",
+};
+
+export const DropSelectorOption = Template.bind({});
+DropSelectorOption.args = {
+  type: "text",
+  placeholder: "Select Option",
+  overlayObject: (
+    <ExpandMenu
+      id={"Expand"}
+      label={"Days"}
+      dropMenuPosition={"end"}
+      forInputOptions={true}
+      dropArrow={false}
+    >
+      <ExpandMenuOption
+        id={"days-selector"}
+        onClick={() => {
+          console.log("setDays");
+        }}
+      >
+        Days
+      </ExpandMenuOption>
+      <ExpandMenuOption
+        id={"years-selector"}
+        onClick={() => {
+          console.log("setYears");
+        }}
+      >
+        Years
+      </ExpandMenuOption>
+    </ExpandMenu>
+  ),
 };

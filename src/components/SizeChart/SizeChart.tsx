@@ -15,11 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, SVGProps, useEffect, useRef } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
-import { SizeChartConstructProps, SizeChartProps } from "./SizeChart.types";
+import styled from "styled-components";
+
 import { lightColors } from "../../global/themes";
-import { calculateBytes } from "../../global/utils";
+import { calculateBytes, overridePropsParse } from "../../global/utils";
+import { SizeChartConstructProps, SizeChartProps } from "./SizeChart.types";
 
 const SizeChartBase = styled.svg<SVGProps<any> & SizeChartConstructProps>(
   ({ theme, usedBytes, totalBytes, chartLabel, sx }) => {
@@ -61,7 +62,7 @@ const SizeChartBase = styled.svg<SVGProps<any> & SizeChartConstructProps>(
         fontWeight: "bold",
         fill: get(theme, "mutedText", lightColors.mutedText),
       },
-      ...sx,
+      ...overridePropsParse(sx, theme),
     };
   },
 );

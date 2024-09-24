@@ -15,76 +15,181 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, Fragment } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
-import { OptionsContainerProps, RadioGroupProps } from "./RadioGroup.types";
+import styled from "styled-components";
+
+import FieldContainer from "../../global/FieldContainer";
+import { themeColors } from "../../global/themeColors";
+import { overridePropsParse } from "../../global/utils";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
 import InputLabel from "../InputLabel/InputLabel";
 import { InputLabelProps } from "../InputLabel/InputLabel.types";
-import FieldContainer from "../../global/FieldContainer";
 import Tooltip from "../Tooltip/Tooltip";
-import HelpIcon from "../Icons/HelpIcon";
+import { OptionsContainerProps, RadioGroupProps } from "./RadioGroup.types";
 
 const RadioButton = styled.label<InputLabelProps>(({ sx, theme }) => ({
   "& input": {
+    appearance: "none" as const,
+    backgroundColor: "transparent",
+    margin: 0,
     display: "none",
-  },
-  "& .radio": {
-    position: "relative",
-    display: "block",
-    width: 16,
-    height: 16,
-    borderRadius: "100%",
-    border: `1px solid ${get(theme, "checkbox.checkBoxBorder", "#c3c3c3")}`,
-    boxShadow: "inset 0px 1px 3px rgba(0,0,0,0.1)",
-  },
-  "input:checked": {
     "& ~ .radio": {
-      "&:before": {
-        content: "' '",
-        position: "absolute",
-        display: "block",
-        width: 12,
-        height: 12,
-        backgroundColor: get(theme, "checkbox.checkBoxColor", "#4CCB92"),
-        borderRadius: "100%",
-        top: "50%",
-        left: "50%",
-        transform: "translateX(-50%) translateY(-50%)",
+      position: "relative",
+      display: "block",
+      boxSizing: "border-box" as const,
+      width: 16,
+      height: 16,
+      borderRadius: "100%",
+      border: `2px solid ${get(theme, "radioGroup.radioBorder", themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode)}`,
+      backgroundColor: get(
+        theme,
+        "radioGroup.radioBackground",
+        themeColors["Color/Neutral/Bg/colorBgShell"].lightMode,
+      ),
+      "&:hover": {
+        borderColor: get(
+          theme,
+          "radioGroup.radioHoverBorder",
+          themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+        ),
+        cursor: "pointer",
+      },
+      "&.checked": {
+        borderColor: get(
+          theme,
+          "radioGroup.radioActiveBorder",
+          themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+        ),
+        backgroundColor: get(
+          theme,
+          "radioGroup.radioActiveBackground",
+          themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+        ),
+        "&::before": {
+          content: "' '",
+          position: "absolute",
+          display: "block",
+          width: 8,
+          height: 8,
+          backgroundColor: get(
+            theme,
+            "radioGroup.radioHoverActiveCheck",
+            themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+          ),
+          borderRadius: "100%",
+          top: "50%",
+          left: "50%",
+          transform: "translateX(-50%) translateY(-50%)",
+        },
+        "&:hover": {
+          backgroundColor: get(
+            theme,
+            "radioGroup.radioHoverActiveBackground",
+            themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+          ),
+          borderColor: get(
+            theme,
+            "radioGroup.radioHoverActiveBorder",
+            themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+          ),
+        },
+      },
+    },
+    "&:disabled": {
+      "& ~ .radio": {
+        border: `2px solid ${get(theme, "radioGroup.radioDisabledBorder", themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode)}`,
+        cursor: "not-allowed",
+        boxShadow: "inset 0px 1px 3px rgba(240,240,240,0.1)" as const,
+        backgroundColor: get(
+          theme,
+          "radioGroup.radioDisabledBackground",
+          themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        ),
+        "&:hover": {
+          borderColor: get(
+            theme,
+            "radioGroup.radioDisabledBorder",
+            themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+          ),
+          backgroundColor: get(
+            theme,
+            "radioGroup.radioDisabledBackground",
+            themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+          ),
+          cursor: "not-allowed",
+        },
+        "&.checked": {
+          backgroundColor: get(
+            theme,
+            "radioGroup.radioDisabledBorder",
+            themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+          ),
+        },
+      },
+      "&:checked ~ .radio": {
+        "&:before": {
+          backgroundColor: get(
+            theme,
+            "radioGroup.radioDisabledCheck",
+            themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+          ),
+        },
       },
     },
   },
-  "input:disabled": {
-    "&  ~ .radio": {
-      border: `1px solid ${get(theme, "checkbox.disabledBorder", "#B4B4B4")}`,
-    },
-    "&:checked ~ .radio": {
-      "&:before": {
-        backgroundColor: get(theme, "checkbox.disabledColor", "#D5D7D7"),
+  ...overridePropsParse(sx, theme),
+}));
+
+const OptionsContainer = styled.div<OptionsContainerProps>(
+  ({ inColumn, theme }) => ({
+    flexGrow: 1,
+    width: "100%",
+    display: "flex",
+    flexDirection: inColumn ? "column" : "row",
+    justifyContent: "flex-end",
+    gap: 15,
+    "& .optionLabel": {
+      userSelect: "none",
+      lineHeight: "20px",
+      color: get(
+        theme,
+        "radioGroup.labelColor",
+        themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+      ),
+      "& .subLabel": {
+        color: get(
+          theme,
+          "radioGroup.subLabelColor",
+          themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+        ),
+      },
+      "&:hover": {
+        cursor: "pointer",
+      },
+      "&.disabled": {
+        color: get(
+          theme,
+          "radioGroup.labelColor",
+          themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+        ),
+        cursor: "not-allowed",
       },
     },
-  },
-  ...sx,
-}));
+  }),
+);
 
-const OptionsContainer = styled.div<OptionsContainerProps>(({ inColumn }) => ({
-  flexGrow: 1,
-  width: "100%",
-  display: "flex",
-  flexDirection: inColumn ? "column" : "row",
-  justifyContent: "flex-end",
-  gap: 15,
-  "& .optionLabel": {
-    userSelect: "none",
-    "&.checked": {
-      fontWeight: "bold",
-    },
-  },
-}));
-
-const RadioContainer = styled.div(({}) => ({
+const RadioContainer = styled.div(() => ({
   display: "flex",
   alignItems: "center",
   gap: 5,
+}));
+
+const RadioMain = styled.div(() => ({
+  "& .descriptionLabel": {
+    display: "block",
+    marginLeft: 21,
+    marginTop: 4,
+  },
 }));
 
 const RadioGroup: FC<RadioGroupProps> = ({
@@ -108,7 +213,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
       sx={{
         display: "flex",
         justifyContent: "flex-start",
-        alignItems: "center",
+        alignItems: displayInColumn ? "flex-start" : "center",
         flexBasis: "initial",
         flexWrap: "nowrap",
       }}
@@ -116,7 +221,6 @@ const RadioGroup: FC<RadioGroupProps> = ({
       {label !== "" && (
         <InputLabel
           htmlFor={id}
-          noMinWidth
           helpTip={helpTip}
           helpTipPlacement={helpTipPlacement}
         >
@@ -124,7 +228,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
           {tooltip && tooltip !== "" && (
             <div className={"tooltipContainer"}>
               <Tooltip tooltip={tooltip} placement="top">
-                <HelpIcon />
+                <CircleHelpIcon />
               </Tooltip>
             </div>
           )}
@@ -134,28 +238,45 @@ const RadioGroup: FC<RadioGroupProps> = ({
         {selectorOptions && (
           <Fragment>
             {selectorOptions.map((selector) => (
-              <RadioContainer key={`option-${id}-${selector.value}`}>
-                <RadioButton sx={sx}>
-                  <input
-                    type={"radio"}
-                    name={name}
-                    id={`option-${id}-${selector.value}`}
-                    value={selector.value}
-                    defaultChecked={currentValue === selector.value}
-                    onChange={(event) => onChange(event, selector.extraValue)}
-                    disabled={disableOptions || !!selector.disabled}
-                  />
-                  <span className={"radio"} />
-                </RadioButton>
-                <label
-                  htmlFor={`option-${id}-${selector.value}`}
-                  className={`optionLabel ${
-                    currentValue === selector.value ? "checked" : ""
-                  }`}
-                >
-                  {selector.label}
-                </label>
-              </RadioContainer>
+              <RadioMain>
+                <RadioContainer key={`option-${id}-${selector.value}`}>
+                  <RadioButton
+                    htmlFor={`option-${id}-${selector.value}`}
+                    sx={sx}
+                  >
+                    <input
+                      type={"radio"}
+                      name={name}
+                      id={`option-${id}-${selector.value}`}
+                      value={selector.value}
+                      checked={currentValue === selector.value}
+                      onChange={(event) => onChange(event, selector.extraValue)}
+                      disabled={disableOptions || !!selector.disabled}
+                    />
+                    <span
+                      className={`radio ${
+                        currentValue === selector.value ? "checked" : ""
+                      }`}
+                    />
+                  </RadioButton>
+                  <label
+                    htmlFor={`option-${id}-${selector.value}`}
+                    className={`optionLabel ${
+                      currentValue === selector.value ? "checked" : ""
+                    } ${disableOptions || !!selector.disabled ? "disabled" : ""}`}
+                  >
+                    {selector.label}{" "}
+                    {selector.subLabel && (
+                      <span className={"subLabel"}>{selector.subLabel}</span>
+                    )}
+                  </label>
+                </RadioContainer>
+                {selector.description && displayInColumn && (
+                  <span className={"descriptionLabel"}>
+                    {selector.description}
+                  </span>
+                )}
+              </RadioMain>
             ))}
           </Fragment>
         )}

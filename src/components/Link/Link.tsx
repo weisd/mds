@@ -17,7 +17,9 @@
 import React, { FC } from "react";
 import get from "lodash/get";
 import styled from "styled-components";
-import { lightColors } from "../../global/themes";
+
+import { lightColors, lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
 import { LinkProps } from "./Link.types";
 
 const LinkBase = styled.a<LinkProps>(({ theme, sx }) => ({
@@ -27,8 +29,9 @@ const LinkBase = styled.a<LinkProps>(({ theme, sx }) => ({
   border: 0,
   padding: 0,
   color: get(theme, "linkColor", lightColors.linkColor),
-  textDecoration: "none",
+  textDecoration: "underline",
   fontSize: "inherit",
+  fontWeight: 700,
   "&:visited": {
     color: get(theme, "linkColor", lightColors.linkColor),
   },
@@ -36,7 +39,16 @@ const LinkBase = styled.a<LinkProps>(({ theme, sx }) => ({
     textDecoration: "underline",
     color: get(theme, "linkColor", lightColors.linkColor),
   },
-  ...sx,
+  "&.dark": {
+    color: get(theme, "secondaryLinkColor", lightV2.modalCloseColor),
+    "&:visited": {
+      color: get(theme, "secondaryLinkColor", lightV2.modalCloseColor),
+    },
+    "&:hover": {
+      color: get(theme, "secondaryLinkColor", lightV2.modalCloseColor),
+    },
+  },
+  ...overridePropsParse(sx, theme),
 }));
 
 const Link: FC<LinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({

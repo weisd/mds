@@ -15,10 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
+import { createPortal } from "react-dom";
 import get from "lodash/get";
 import styled from "styled-components";
-import Button from "../Button/Button";
+
 import Box from "../Box/Box";
+import Button from "../Button/Button";
 import Loader from "../Loader/Loader";
 import { WizardButton, WizardConstruct, WizardPageProps } from "./Wizard.types";
 
@@ -69,6 +71,7 @@ const WizardPage = ({
   pageChange,
   loadingStep,
   forModal,
+  actionButtonsPortalID,
 }: WizardPageProps) => {
   const buttonAction = (btn: WizardButton) => {
     switch (btn.type) {
@@ -90,6 +93,29 @@ const WizardPage = ({
     }
   };
 
+  const buttonsBar = (
+    <Box className={`buttonsContainer ${forModal ? "forModal" : ""}`}>
+      <Box className={"buttonInnerContainer"}>
+        {page.buttons.map((btn) => {
+          if (btn.componentRender) {
+            return btn.componentRender;
+          }
+          return (
+            <Button
+              id={"wizard-button-" + btn.label}
+              onClick={() => {
+                buttonAction(btn);
+              }}
+              disabled={!btn.enabled}
+              key={`button-${page.label}-${btn.label}`}
+              label={btn.label}
+            />
+          );
+        })}
+      </Box>
+    </Box>
+  );
+
   return (
     <WizardPageMain>
       <Box className={forModal ? "wizardModal" : "wizardComponent"}>
@@ -100,27 +126,9 @@ const WizardPage = ({
           <Loader />
         </Box>
       )}
-      <Box className={`buttonsContainer ${forModal ? "forModal" : ""}`}>
-        <Box className={"buttonInnerContainer"}>
-          {page.buttons.map((btn) => {
-            if (btn.componentRender) {
-              return btn.componentRender;
-            }
-            return (
-              <Button
-                id={"wizard-button-" + btn.label}
-                variant="regular"
-                onClick={() => {
-                  buttonAction(btn);
-                }}
-                disabled={!btn.enabled}
-                key={`button-${page.label}-${btn.label}`}
-                label={btn.label}
-              />
-            );
-          })}
-        </Box>
-      </Box>
+      {actionButtonsPortalID
+        ? createPortal(buttonsBar, actionButtonsPortalID)
+        : buttonsBar}
     </WizardPageMain>
   );
 };

@@ -1,4 +1,3 @@
 #!/bin/bash
 
-yarn install
-yarn prettier --check ./src
+yarn dlx prettier --check ./src

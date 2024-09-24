@@ -16,6 +16,8 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+
+import { overridePropsParse } from "../../global/utils";
 import { TableComponentsExtraProps } from "./Table.types";
 
 const TableBodyMain = styled.tbody<TableComponentsExtraProps>(
@@ -24,7 +26,7 @@ const TableBodyMain = styled.tbody<TableComponentsExtraProps>(
     width: "100%",
     borderCollapse: "collapse",
     borderSpacing: 0,
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 

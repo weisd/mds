@@ -14,20 +14,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, HTMLAttributes } from "react";
-import styled from "styled-components";
+import React, { RefObject } from "react";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
 import { BoxProps } from "./Box.types";
 
-const BoxParent = styled.div<HTMLAttributes<HTMLDivElement> & BoxProps>(
-  ({ theme, sx, withBorders, customBorderPadding, useBackground }) => {
+const BoxParent = styled.div<BoxProps & React.HTMLAttributes<HTMLDivElement>>(
+  ({
+    theme,
+    sx,
+    withBorders,
+    customBorderPadding,
+    customBorderRadius,
+    useBackground,
+  }) => {
     let extraBorders = {};
 
     if (withBorders) {
       extraBorders = {
-        border: `${get(theme, "borderColor", "#eaeaea")} 1px solid`,
-        borderRadius: 2,
-        padding: customBorderPadding || 15,
+        border: `${get(theme, "box.border", lightV2.disabledGrey)} 1px solid`,
+        borderRadius: customBorderRadius || 16,
+        padding: customBorderPadding || 24,
+        boxShadow: get(theme, "box.shadow", "none"),
+        backgroundColor: get(theme, "box.backgroundColor", lightV2.white),
       };
     }
 
@@ -36,22 +48,38 @@ const BoxParent = styled.div<HTMLAttributes<HTMLDivElement> & BoxProps>(
         ? get(theme, "boxBackground", "#FBFAFA")
         : "transparent",
       ...extraBorders,
-      ...sx,
+      ...overridePropsParse(sx, theme),
     };
   },
 );
 
-const Box: FC<HTMLAttributes<HTMLDivElement> & BoxProps> = ({
-  sx,
-  children,
-  customBorderPadding,
-  ...props
-}) => {
-  return (
-    <BoxParent {...props} sx={sx} customBorderPadding={customBorderPadding}>
-      {children}
-    </BoxParent>
-  );
-};
+const Box = React.forwardRef<React.HTMLAttributes<HTMLDivElement>, BoxProps>(
+  (
+    {
+      sx,
+      children,
+      customBorderPadding,
+      customBorderRadius = 16,
+      className,
+      withBorders,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <BoxParent
+        {...props}
+        sx={sx}
+        customBorderPadding={customBorderPadding}
+        customBorderRadius={customBorderRadius}
+        ref={ref as RefObject<HTMLDivElement> | null | undefined}
+        withBorders={withBorders}
+        className={`box ${withBorders ? "with-borders" : ""} ${className || ""}`}
+      >
+        {children}
+      </BoxParent>
+    );
+  },
+);
 
 export default Box;

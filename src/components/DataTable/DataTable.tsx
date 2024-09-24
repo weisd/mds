@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   AutoSizer,
   Column,
@@ -22,12 +22,18 @@ import {
   SortDirectionType,
   Table,
 } from "react-virtualized";
-import styled from "styled-components";
 import get from "lodash/get";
-import isString from "lodash/isString";
+import styled from "styled-components";
+
+import { themeColors } from "../../global/themeColors";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import Button from "../Button/Button";
 import Checkbox from "../Checkbox/Checkbox";
-import Loader from "../Loader/Loader";
 import Grid from "../Grid/Grid";
+import Columns3Icon from "../Icons/NewDesignIcons/Columns3Icon";
+import Loader from "../Loader/Loader";
+import ColumnsSelector from "./ColumnsSelector";
 import {
   DataTableProps,
   DataTableWrapperProps,
@@ -41,24 +47,15 @@ import {
   selectWidth,
   sortRecords,
 } from "./DataTable.utils";
-import ViewColumnIcon from "../Icons/ViewColumnIcon";
-import Box from "../Box/Box";
-import Button from "../Button/Button";
-import ColumnsSelector from "./ColumnsSelector";
 
 const DataTableWrapper = styled.div<DataTableWrapperProps>(
-  ({ theme, customPaperHeight, disabled, noBackground, sx, rowHeight }) => ({
+  ({ theme, customPaperHeight, disabled, sx, rowHeight }) => ({
     display: "flex",
     overflow: "auto",
-    flexDirection: "column",
-    padding: "0 16px 8px",
+    boxSizing: "border-box" as const,
+    flexDirection: "column" as const,
     boxShadow: "none",
-    border: `${
-      disabled
-        ? get(theme, "dataTable.disabledBorder", "#E2E2E2")
-        : get(theme, "dataTable.border", "#E2E2E2")
-    } 1px solid`,
-    borderRadius: 3,
+    border: 0,
     minHeight: 200,
     overflowY: "scroll",
     position: "relative",
@@ -66,10 +63,6 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
     backgroundColor: disabled
       ? get(theme, "dataTable.disabledBG", "transparent")
       : "transparent",
-    "&.noBackground": {
-      backgroundColor: "transparent",
-      border: 0,
-    },
     "& .loadingBox": {
       padding: "100px 0",
     },
@@ -82,7 +75,11 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
         overflowY: "auto",
         padding: "0 10px 10px",
         "& .shownColumnsLabel": {
-          color: get(theme, "mainGrey", "#000"),
+          color: get(
+            theme,
+            "dataTable.titleColor",
+            themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+          ),
           fontSize: 12,
           padding: 10,
           borderBottom: `${get(
@@ -99,7 +96,7 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
       height: 3,
     },
     "& .rowLine": {
-      borderBottom: `${get(theme, "dataTable.border", "#E2E2E2")} 1px solid`,
+      borderBottom: `${get(theme, "dataTable.border", themeColors["Color/Neutral/Border/colorBorderBold"].lightMode)} 1px solid`,
       height: rowHeight,
       fontSize: 14,
       transitionDuration: "0.3s",
@@ -108,8 +105,11 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
       },
       "&:hover:not(.ReactVirtualized__Table__headerRow)": {
         userSelect: "none",
-        backgroundColor: get(theme, "dataTable.hoverColor", "#ececec"),
-        fontWeight: 600,
+        backgroundColor: get(
+          theme,
+          "dataTable.hoverColor",
+          themeColors["Color/Brand/Control/colorBgActive"].lightMode,
+        ),
         "&.canClick": {
           cursor: "pointer",
         },
@@ -121,17 +121,27 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
         fontWeight: 600,
       },
       "&:not(.deleted) .selected": {
-        color: get(theme, "dataTable.selected", "#081C42"),
+        color: get(
+          theme,
+          "dataTable.selected",
+          themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+        ),
       },
       "&.deleted .selected": {
-        color: get(theme, "dataTable.selectedDisabled", "#C51B3F"),
+        color: get(
+          theme,
+          "dataTable.itemDisabled",
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        ),
       },
     },
     "& .headerItem": {
       userSelect: "none",
-      fontWeight: 700,
-      fontSize: 14,
-      fontStyle: "initial",
+      fontSize: 12,
+      fontStyle: "normal",
+      fontWeight: 600,
+      lineHeight: "16px",
+      letterSpacing: "0.5px",
       display: "flex",
       alignItems: "center",
       outline: "none",
@@ -139,16 +149,19 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
     "& .ReactVirtualized__Table__row": {
       width: "100% !important",
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "row" as const,
       alignItems: "center",
     },
     "& .ReactVirtualized__Table__headerRow": {
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "row" as const,
       alignItems: "center",
-      fontWeight: 700,
-      fontSize: 14,
-      borderColor: get(theme, "dataTable.border", "#39393980"),
+      fontSize: 12,
+      fontStyle: "normal",
+      fontWeight: 600,
+      lineHeight: "16px",
+      letterSpacing: "0.5px",
+      borderColor: "transparent",
       textTransform: "initial",
       transitionDuration: "0s",
     },
@@ -169,7 +182,7 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
         width: 12,
         height: 12,
         marginRight: 5,
-        alignSelf: "flex-end",
+        alignSelf: "center" as const,
       },
     },
     "& .ReactVirtualized__Table__rowColumn": {
@@ -216,7 +229,7 @@ const DataTableWrapper = styled.div<DataTableWrapperProps>(
       width: 30,
       height: 30,
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -231,11 +244,11 @@ const TableRowPredefStyles: any = {
 };
 
 // Main function to render the Table Wrapper
-const DataTable: FC<DataTableProps> = ({
+const DataTable = <T,>({
   itemActions,
   columns,
   onSelect,
-  records,
+  records = [] as T[],
   isLoading,
   loadingMessage = <h3>Loading...</h3>,
   entityName,
@@ -243,31 +256,29 @@ const DataTable: FC<DataTableProps> = ({
   idField,
   customEmptyMessage = "",
   customPaperHeight = "",
-  noBackground = false,
   columnsSelector = false,
   textSelectable = false,
   columnsShown = [],
-  onColumnChange = (column: string) => {},
+  onColumnChange = () => {},
   infiniteScrollConfig,
   autoScrollToBottom = false,
-  disabled = false,
   onSelectAll,
   rowStyle,
   parentClassName = "",
   sx,
-  rowHeight = 40,
+  rowHeight = 36,
   sortEnabled = false,
   sortCallBack,
-}) => {
+}: DataTableProps<T>) => {
   const [columnSelectorOpen, setColumnSelectorOpen] = useState<boolean>(false);
   const [currentSortColumn, setCurrentSortColumn] = useState<
-    string | undefined
+    keyof T | undefined
   >(undefined);
   const [currentSortDirection, setCurrentSortDirection] =
     useState<SortDirectionType>("ASC");
-
   const [anchorEl, setAnchorEl] = useState<any>(null);
-  const rowIDField = idField || "";
+
+  const rowIDField = idField || ("" as keyof T);
 
   const findView = itemActions
     ? itemActions.find((el) => el.type === "view")
@@ -278,14 +289,13 @@ const DataTable: FC<DataTableProps> = ({
     typeof sortEnabled === "object" &&
     !Array.isArray(sortEnabled);
 
-  const clickAction = (rowItem: any) => {
+  const clickAction = (rowItem: T, index: number) => {
     if (findView) {
-      const valueClick =
-        findView.sendOnlyId && idField ? rowItem[rowIDField] : rowItem;
+      const valueClick = rowItem;
 
       let disabled = false;
 
-      if (!!findView.isDisabled) {
+      if (findView.isDisabled) {
         if (typeof findView.isDisabled === "boolean") {
           disabled = findView.isDisabled;
         } else {
@@ -294,7 +304,7 @@ const DataTable: FC<DataTableProps> = ({
       }
 
       if (findView.onClick && !disabled) {
-        findView.onClick(valueClick);
+        findView.onClick(valueClick, index);
       }
     }
   };
@@ -309,15 +319,14 @@ const DataTable: FC<DataTableProps> = ({
     setAnchorEl(null);
   };
 
-  const columnsSelection = (columns: IColumns[]) => {
+  const columnsSelection = (columns: IColumns<T>[]) => {
     return (
       <Box
         sx={{ margin: "10px 0 0", display: "flex", justifyContent: "flex-end" }}
       >
         <Button
           id={"columns-selector"}
-          variant={"regular"}
-          icon={<ViewColumnIcon />}
+          icon={<Columns3Icon />}
           iconLocation={"end"}
           onClick={openColumnsSelector}
         >
@@ -337,13 +346,13 @@ const DataTable: FC<DataTableProps> = ({
     );
   };
 
-  let tableSort: ((val: ITableSortInfo) => any) | undefined = undefined;
-  let tableSortBy: string | undefined = undefined;
-  let tableSortDirection: SortDirectionType | undefined = undefined;
-
   const onSortClick = (sort: ITableSortInfo) => {
-    const newSortDirection = get(sort, "sortDirection", "DESC");
-    setCurrentSortColumn(sort.sortBy);
+    const newSortDirection = get(
+      sort,
+      "sortDirection",
+      "DESC",
+    ) as SortDirectionType;
+    setCurrentSortColumn(sort.sortBy as keyof T);
     setCurrentSortDirection(newSortDirection);
 
     if (sortCallBack) {
@@ -351,10 +360,14 @@ const DataTable: FC<DataTableProps> = ({
     }
   };
 
+  let tableSort: ((val: ITableSortInfo) => any) | undefined = undefined;
+  let tableSortBy: keyof T | undefined = undefined;
+  let tableSortDirection: SortDirectionType | undefined = undefined;
+
   if (sortEnabled) {
     if (manualSortEnabled) {
       tableSort = sortEnabled.onSortClick;
-      tableSortBy = sortEnabled.currentSort;
+      tableSortBy = sortEnabled.currentSort as keyof T;
       tableSortDirection = sortEnabled.currentDirection;
     } else {
       tableSort = onSortClick;
@@ -368,15 +381,14 @@ const DataTable: FC<DataTableProps> = ({
   if (sortEnabled && currentSortColumn && !manualSortEnabled) {
     sortedRecords = sortRecords(
       records,
-      currentSortColumn,
+      currentSortColumn as string,
       currentSortDirection,
     );
   }
 
   return (
-    <Grid item xs={12} className={parentClassName}>
+    <Grid item xs={12} className={`data-table ${parentClassName}`}>
       <DataTableWrapper
-        className={`${noBackground ? "noBackground" : ""}`}
         customPaperHeight={customPaperHeight}
         sx={sx}
         rowHeight={rowHeight}
@@ -402,7 +414,6 @@ const DataTable: FC<DataTableProps> = ({
           <Fragment>{columnsSelection(columns)}</Fragment>
         )}
         {sortedRecords && !isLoading && sortedRecords.length > 0 ? (
-          // @ts-ignore
           <InfiniteLoader
             isRowLoaded={({ index }) => !!sortedRecords[index]}
             loadMoreRows={
@@ -417,7 +428,6 @@ const DataTable: FC<DataTableProps> = ({
             }
           >
             {({ onRowsRendered, registerChild }) => (
-              // @ts-ignore
               <AutoSizer>
                 {({ width, height }: any) => {
                   const optionsWidth = calculateOptionsSize(
@@ -434,12 +444,11 @@ const DataTable: FC<DataTableProps> = ({
                       itemActions[0].type !== "view")
                   );
                   return (
-                    // @ts-ignore
                     <Table
                       ref={registerChild}
                       disableHeader={false}
                       headerClassName={"headerItem"}
-                      headerHeight={40}
+                      headerHeight={36}
                       height={height}
                       noRowsRenderer={() => (
                         <Fragment>
@@ -453,9 +462,9 @@ const DataTable: FC<DataTableProps> = ({
                       width={width}
                       rowCount={sortedRecords.length}
                       rowGetter={({ index }) => sortedRecords[index]}
-                      onRowClick={({ rowData }) => {
-                        clickAction(rowData);
-                      }}
+                      onRowClick={({ rowData, index }) =>
+                        clickAction(rowData, index)
+                      }
                       rowClassName={(r) =>
                         `rowLine ${findView ? "canClick" : ""} ${
                           !findView && textSelectable ? "canSelectText" : ""
@@ -463,7 +472,7 @@ const DataTable: FC<DataTableProps> = ({
                       }
                       onRowsRendered={onRowsRendered}
                       sort={tableSort}
-                      sortBy={tableSortBy}
+                      sortBy={tableSortBy ? String(tableSortBy) : undefined}
                       sortDirection={tableSortDirection}
                       scrollToIndex={
                         autoScrollToBottom ? sortedRecords.length - 1 : -1
@@ -483,7 +492,6 @@ const DataTable: FC<DataTableProps> = ({
                       }}
                     >
                       {hasSelect && (
-                        // @ts-ignore
                         <Column
                           headerRenderer={() => (
                             <Fragment>
@@ -506,25 +514,17 @@ const DataTable: FC<DataTableProps> = ({
                               )}
                             </Fragment>
                           )}
-                          dataKey={`select-${rowIDField}`}
+                          dataKey={`select-${String(rowIDField)}`}
                           width={selectWidth}
                           disableSort
                           cellRenderer={({ rowData }) => {
                             const isSelected = selectedItems
-                              ? selectedItems.includes(
-                                  isString(rowData)
-                                    ? rowData
-                                    : `${rowData[rowIDField]}`,
-                                )
+                              ? selectedItems.includes(rowData[rowIDField])
                               : false;
 
                             return (
                               <Checkbox
-                                value={
-                                  isString(rowData)
-                                    ? rowData
-                                    : `${rowData[rowIDField]}`
-                                }
+                                value={rowData[rowIDField]}
                                 color="primary"
                                 className="TableCheckbox"
                                 checked={isSelected}
@@ -548,11 +548,10 @@ const DataTable: FC<DataTableProps> = ({
                         columnsSelector,
                         columnsShown,
                         sortEnabled,
-                        tableSortBy || "",
+                        tableSortBy,
                         tableSortDirection,
                       )}
                       {hasOptions && (
-                        // @ts-ignore
                         <Column
                           dataKey={"column-options"}
                           width={optionsWidth}
@@ -560,17 +559,12 @@ const DataTable: FC<DataTableProps> = ({
                           className="optionsAlignment"
                           cellRenderer={({ rowData }) => {
                             const isSelected = selectedItems
-                              ? selectedItems.includes(
-                                  isString(rowData)
-                                    ? rowData
-                                    : `${rowData[rowIDField]}`,
-                                )
+                              ? selectedItems.includes(rowData[rowIDField])
                               : false;
                             return elementActions(
                               itemActions || [],
                               rowData,
                               isSelected,
-                              rowIDField,
                             );
                           }}
                         />

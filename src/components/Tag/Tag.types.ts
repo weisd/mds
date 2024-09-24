@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ReactNode } from "react";
-import { CSSObject } from "styled-components";
+import React from "react";
+
+import { OverrideTheme } from "../../global/global.types";
 
 export interface TagMainProps {
   label: string;
   onDelete?: (item: string) => void;
   id: string;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
 }
 
 export interface TagConstructProps {
-  color?: "default" | "secondary" | "warn" | "alert" | "ok" | "grey";
-  sx?: CSSObject;
-  variant?: "regular" | "outlined";
-  square?: boolean;
+  color?: "primary" | "secondary" | "destructive";
+  size?: "large" | "small";
+  sx?: OverrideTheme;
 }
 
 export type TagProps = TagMainProps & TagConstructProps;

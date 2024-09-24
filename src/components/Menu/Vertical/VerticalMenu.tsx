@@ -15,18 +15,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, Fragment } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
-import { MenuConstructProps, MenuProps } from "../Menu.types";
+import styled from "styled-components";
+
 import { lightColors } from "../../../global/themes";
-import Box from "../../Box/Box";
+import { overridePropsParse } from "../../../global/utils";
 import ApplicationLogo from "../../ApplicationLogo/ApplicationLogo";
-import CollapseMenuIcon from "../../Icons/CollapseMenuIcon";
+import Box from "../../Box/Box";
+import ArrowLeftToLineIcon from "../../Icons/NewDesignIcons/ArrowLeftToLineIcon";
+import LogOutIcon from "../../Icons/NewDesignIcons/LogOutIcon";
+import MinIOIcon from "../../Icons/NewDesignIcons/MinIOIcon";
+import Tooltip from "../../Tooltip/Tooltip";
+import { MenuConstructProps, MenuProps } from "../Menu.types";
 import MenuItem from "./MenuItem";
 import MenuSectionHeader from "./MenuSectionHeader";
-import LogoutIcon from "../../Icons/LogoutIcon";
-import Tooltip from "../../Tooltip/Tooltip";
-import MinIOTierIconXs from "../../Icons/MinIOTierIconXs";
 
 const VerticalMenuDrawer = styled.div<MenuConstructProps>(({ theme, sx }) => {
   return {
@@ -195,7 +197,7 @@ const VerticalMenuDrawer = styled.div<MenuConstructProps>(({ theme, sx }) => {
         transform: "translateX(50%) translateY(20%)",
       },
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   };
 });
 
@@ -221,7 +223,7 @@ const VerticalMenu: FC<MenuProps> = ({
       <Box className={"menuContainer"}>
         <Box className={"menuHeaderContainer"} onClick={collapseAction}>
           <Box className={"collapseButton"}>
-            <CollapseMenuIcon />
+            <ArrowLeftToLineIcon />
           </Box>
           <Box className={"menuLogoContainer"}>
             <ApplicationLogo inverse {...applicationLogo} />
@@ -229,7 +231,7 @@ const VerticalMenu: FC<MenuProps> = ({
           <Box className={"collapsedMenuHeader"}>
             <Tooltip tooltip={"Expand Menu"} placement={"right"}>
               <span className={"collapsedIcon"}>
-                <MinIOTierIconXs />
+                <MinIOIcon />
               </span>
             </Tooltip>
           </Box>
@@ -285,7 +287,7 @@ const VerticalMenu: FC<MenuProps> = ({
                 id="sign-out"
                 group={"common"}
                 name={"退出"}
-                icon={<LogoutIcon />}
+                icon={<LogOutIcon />}
                 onClick={signOutAction}
                 visibleTooltip={!isOpen}
               />

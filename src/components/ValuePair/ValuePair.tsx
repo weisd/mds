@@ -15,11 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled from "styled-components";
-import { ValuePairCommon, ValuePairProps } from "./ValuePair.types";
-import Box from "../Box/Box";
 import get from "lodash/get";
-import { breakPoints } from "../../global/utils";
+import styled from "styled-components";
+
+import { lightV2 } from "../../global/themes";
+import { breakPoints, overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import { ValuePairCommon, ValuePairProps } from "./ValuePair.types";
 
 const ValuePairBase = styled.div<ValuePairCommon>(
   ({ theme, sx, direction }) => ({
@@ -27,15 +29,22 @@ const ValuePairBase = styled.div<ValuePairCommon>(
     flexDirection: direction,
     gap: direction === "row" ? 5 : 2,
     "& .label": {
-      fontWeight: "bold",
+      fontWeight: 600,
+      fontSize: 14,
+      color: get(theme, "valuePair.labelColor", lightV2.modalTitleColor),
     },
     "& .value": {
       fontWeight: "normal",
+      color: get(theme, "valuePair.textColor", lightV2.modalTitleColor),
+      fontSize: 14,
+      "& a": {
+        color: get(theme, "valuePair.linkColor", lightV2.modalCloseColor),
+      },
     },
     [`@media (max-width: ${get(breakPoints, "md", 0)}px)`]: {
       flexDirection: "column",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 

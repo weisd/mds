@@ -14,15 +14,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { Fragment } from "react";
+import React, { Fragment, HTMLAttributes } from "react";
 import { Meta, Story } from "@storybook/react";
 
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
+import GlobalStyles from "../GlobalStyles/GlobalStyles";
 import HelpBox from "./HelpBox";
 import { HelpBoxProps } from "./HelpBox.types";
-
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import TestIcon from "../../utils/TestIcon";
 
 export default {
   title: "MDS/Information/HelpBox",
@@ -30,7 +29,9 @@ export default {
   argTypes: {},
 } as Meta<typeof HelpBox>;
 
-const Template: Story<HelpBoxProps> = (args) => (
+const Template: Story<HelpBoxProps> = (
+  args: HelpBoxProps & HTMLAttributes<HTMLDivElement>,
+) => (
   <StoryThemeProvider>
     <GlobalStyles />
     <HelpBox {...args} />
@@ -39,14 +40,14 @@ const Template: Story<HelpBoxProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  iconComponent: <TestIcon />,
+  icon: <TestIcon />,
   help: "This is the text that will be rendered for help",
   title: "Help Available for this page.",
 };
 
 export const NoHelpText = Template.bind({});
 NoHelpText.args = {
-  iconComponent: <TestIcon />,
+  icon: <TestIcon />,
   title: "Help Available for this page.",
 };
 

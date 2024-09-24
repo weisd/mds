@@ -15,14 +15,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled, { CSSObject } from "styled-components";
 import get from "lodash/get";
-import HelpIcon from "../Icons/HelpIcon";
-import Tooltip from "../Tooltip/Tooltip";
-import InputLabel from "../InputLabel/InputLabel";
-import Box from "../Box/Box";
-import { SliderContainerProps, SliderProps } from "./Slider.types";
+import styled, { CSSObject } from "styled-components";
+
 import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
+import InputLabel from "../InputLabel/InputLabel";
+import Tooltip from "../Tooltip/Tooltip";
+import { SliderContainerProps, SliderProps } from "./Slider.types";
 
 const InputBase = styled.input(({ theme }) => {
   const thumb: CSSObject = {
@@ -107,7 +109,7 @@ const SliderContainer = styled.div<SliderContainerProps>(
       fontSize: 12,
       fontWeight: "bold",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -144,7 +146,6 @@ const Slider: FC<SliderProps & React.InputHTMLAttributes<HTMLInputElement>> = ({
   helpTipPlacement,
   min = 0,
   max = 100,
-  type,
   value,
   displayValue,
   displayValueFunction,
@@ -172,7 +173,7 @@ const Slider: FC<SliderProps & React.InputHTMLAttributes<HTMLInputElement>> = ({
             <Box className={"tooltipContainer"}>
               <Tooltip tooltip={tooltip} placement="top">
                 <Box className={tooltip}>
-                  <HelpIcon />
+                  <CircleHelpIcon />
                 </Box>
               </Tooltip>
             </Box>
@@ -205,11 +206,12 @@ const Slider: FC<SliderProps & React.InputHTMLAttributes<HTMLInputElement>> = ({
               max={max}
               step={step}
               disabled={disabled}
+              value={value}
               {...props}
             />
             <BackBar className={`${disabled ? "disabled" : ""}`} />
           </Box>
-          {!!displayValue ? (
+          {displayValue ? (
             <span className={"displayValue"}>
               {displayValueFunction ? displayValueFunction(value || 0) : value}
             </span>

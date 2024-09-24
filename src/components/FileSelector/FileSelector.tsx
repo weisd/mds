@@ -17,18 +17,20 @@
 import React, { FC, useRef } from "react";
 import get from "lodash/get";
 import styled from "styled-components";
-import HelpIcon from "../Icons/HelpIcon";
+
+import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import IconButton from "../IconButton/IconButton";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
+import PaperclipIcon from "../Icons/NewDesignIcons/PaperclipIcon";
 import InputLabel from "../InputLabel/InputLabel";
 import Tooltip from "../Tooltip/Tooltip";
-import IconButton from "../IconButton/IconButton";
-import AttachFileIcon from "../Icons/AttachFileIcon";
-import Box from "../Box/Box";
 import {
   FileSelectorConstructorProps,
   FileSelectorProps,
 } from "./FileSelector.types";
 import { fileProcess } from "./FileSelector.utils";
-import { lightColors } from "../../global/themes";
 
 const FileSelectorContainer = styled.div<FileSelectorConstructorProps>(
   ({ theme, error, sx }) => ({
@@ -81,7 +83,7 @@ const FileSelectorContainer = styled.div<FileSelectorConstructorProps>(
       alignItems: "center",
       gap: 12,
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -118,6 +120,7 @@ const FileSelector: FC<FileSelectorProps> = ({
           className={"inputLabel"}
           helpTip={helpTip}
           helpTipPlacement={helpTipPlacement}
+          inputSizeMode={"small"}
         >
           {label}
           {required ? "*" : ""}
@@ -125,7 +128,7 @@ const FileSelector: FC<FileSelectorProps> = ({
             <Box className={"tooltipContainer"}>
               <Tooltip tooltip={tooltip} placement="top">
                 <Box className={tooltip}>
-                  <HelpIcon />
+                  <CircleHelpIcon />
                 </Box>
               </Tooltip>
             </Box>
@@ -156,6 +159,7 @@ const FileSelector: FC<FileSelectorProps> = ({
         <Box className={"fileReselect"}>
           {value !== "" && <div className={"valueString"}>{value || ""}</div>}
           <IconButton
+            id={`file-selector-ac-${id}`}
             type={"button"}
             color="primary"
             aria-label="upload picture"
@@ -167,7 +171,7 @@ const FileSelector: FC<FileSelectorProps> = ({
             size="small"
             disabled={disabled}
           >
-            <AttachFileIcon />
+            <PaperclipIcon />
           </IconButton>
         </Box>
         {error !== "" && <Box className={"errorText"}>{error}</Box>}

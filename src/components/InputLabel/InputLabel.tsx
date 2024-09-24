@@ -14,32 +14,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, Fragment } from "react";
-import styled from "styled-components";
+import React, { CSSProperties, FC } from "react";
 import get from "lodash/get";
-import { InputLabelProps } from "./InputLabel.types";
-import HelpTip from "../HelpTip/HelpTip";
+import styled from "styled-components";
 
-const CustomLabel = styled.label<InputLabelProps>(({ theme, sx }) => ({
-  fontWeight: 600,
-  marginRight: 10,
-  fontSize: 14,
-  color: get(theme, "commonInput.labelColor", "#07193E"),
-  textAlign: "left" as const,
-  alignItems: "center",
-  display: "flex",
-  userSelect: "none",
-  whiteSpace: "nowrap",
-  "& > span": {
-    display: "flex",
-    alignItems: "center",
-    minWidth: 160,
-    "&.noMinWidthLabel": {
-      minWidth: "initial",
-    },
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import HelpTip from "../HelpTip/HelpTip";
+import { InputLabelProps } from "./InputLabel.types";
+
+const CustomLabel = styled.label<InputLabelProps>(
+  ({ theme, inputSizeMode, orientation, sx }) => {
+    let lineHeightVariant: CSSProperties["height"] = "initial";
+
+    if (orientation === "horizontal" && inputSizeMode) {
+      switch (inputSizeMode) {
+        case "small":
+          lineHeightVariant = "28px";
+          break;
+        case "large":
+          lineHeightVariant = "38px";
+          break;
+      }
+    }
+
+    return {
+      color: get(theme, "commonInput.labelColor", lightV2.fontColor),
+      textAlign: "left" as const,
+      alignItems: "flex-start" as const,
+      display: "flex",
+      userSelect: "none",
+      whiteSpace: "nowrap",
+      "& > span": {
+        display: "flex",
+        alignItems: "center",
+        lineHeight: lineHeightVariant,
+        minWidth: 180,
+        "&.noMinWidthLabel": {
+          minWidth: "initial",
+        },
+      },
+      ...overridePropsParse(sx, theme),
+    };
   },
-  ...sx,
-}));
+);
 
 const InputLabel: FC<InputLabelProps> = ({
   children,
@@ -48,11 +66,19 @@ const InputLabel: FC<InputLabelProps> = ({
   htmlFor,
   helpTip,
   helpTipPlacement,
+  orientation = "horizontal",
+  inputSizeMode,
   ...props
 }) => {
   return (
-    <CustomLabel sx={sx} htmlFor={htmlFor} {...props}>
-      <span className={`${noMinWidth ? "noMinWidthLabel" : ""}`}>
+    <CustomLabel
+      sx={sx}
+      htmlFor={htmlFor}
+      inputSizeMode={inputSizeMode}
+      orientation={orientation}
+      {...props}
+    >
+      <span className={`Base_Normal ${noMinWidth ? "noMinWidthLabel" : ""}`}>
         {helpTip ? (
           <HelpTip placement={helpTipPlacement} content={helpTip}>
             {children}

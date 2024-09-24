@@ -15,17 +15,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import get from "lodash/get";
 import styled from "styled-components";
+
+import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import XIcon from "../Icons/NewDesignIcons/XIcon";
 import {
   SnackbarButtonProps,
   SnackbarConstructProps,
   SnackbarProps,
 } from "./Snackbar.types";
-import { createPortal } from "react-dom";
-import { lightColors } from "../../global/themes";
-import AlertCloseIcon from "../Icons/AlertCloseIcon";
-import Box from "../Box/Box";
 
 const SnackBarContainer = styled.div<SnackbarConstructProps>(
   ({ theme, sx, open, variant, condensed }) => ({
@@ -40,18 +42,19 @@ const SnackBarContainer = styled.div<SnackbarConstructProps>(
     fontSize: condensed ? 12 : 14,
     top: 0,
     left: condensed ? "50%" : 0,
-    gap: condensed ? 5 : 0,
+    gap: condensed ? 8 : 0,
     transform: condensed ? "translateX(-50%)" : "initial",
     padding: condensed ? "0 15px" : "0 60px 0 25px",
     borderBottomLeftRadius: condensed ? 8 : 0,
     borderBottomRightRadius: condensed ? 8 : 0,
+    letterSpacing: "0.16px",
     backgroundColor: get(
       theme,
       `snackbar.${variant}.backgroundColor`,
       lightColors.mainBlue,
     ),
     color: get(theme, `snackbar.${variant}.labelColor`, lightColors.white),
-    fontWeight: condensed ? "normal" : "bold",
+    fontWeight: 400,
     marginTop: open ? 0 : "-100%",
     transition: "all 0.5s",
     "& .messageTruncation": {
@@ -61,13 +64,12 @@ const SnackBarContainer = styled.div<SnackbarConstructProps>(
       textOverflow: "ellipsis",
       textAlign: "center",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
 const CloseButton = styled.button<SnackbarButtonProps>(
   ({ theme, variant, condensed }) => ({
-    backgroundColor: condensed ? "transparent" : "#00000030",
     color: get(theme, `snackbar.${variant}.labelColor`, lightColors.white),
     display: "flex",
     position: condensed ? "initial" : "absolute",
@@ -76,12 +78,13 @@ const CloseButton = styled.button<SnackbarButtonProps>(
     cursor: "pointer",
     width: condensed ? 15 : 25,
     height: condensed ? 15 : 25,
-    borderRadius: condensed ? 0 : "100%",
     border: "none",
     top: "50%",
     right: 25,
     transform: condensed ? "initial" : "translateY(-50%)",
+    borderRadius: "100%",
     padding: 0,
+    backgroundColor: "transparent",
     "&:hover": {
       backgroundColor: condensed ? "transparent" : "#00000040",
     },
@@ -118,7 +121,7 @@ const Snackbar: FC<SnackbarProps> = ({
     return () => {
       clearTimeout(timerRef.current);
     };
-  }, [open, autoHideDuration, hoverBar]);
+  }, [open, autoHideDuration, hoverBar, onClose]);
 
   useEffect(() => {
     if (hoverBar) {
@@ -151,7 +154,7 @@ const Snackbar: FC<SnackbarProps> = ({
           condensed={condensed}
           onClick={closeWithButton}
         >
-          <AlertCloseIcon />
+          <XIcon />
         </CloseButton>
       )}
     </SnackBarContainer>

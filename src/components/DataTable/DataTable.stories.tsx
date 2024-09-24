@@ -14,35 +14,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
+
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import DataTable from "./DataTable";
-import { DataTableProps } from "./DataTable.types";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
 import Grid from "../Grid/Grid";
-import SuccessIcon from "../Icons/SuccessIcon";
+import CheckIcon from "../Icons/NewDesignIcons/CheckIcon";
+import DataTable from "./DataTable";
+import { DataTableProps } from "./DataTable.types";
+
+// Define the structure of the records
+type RecordType = {
+  id?: number;
+  field1: string;
+  field2?: string;
+  field3?: string;
+};
 
 export default {
   title: "MDS/Information/DataTable",
-  component: DataTable,
+  component: DataTable as unknown as React.ComponentType<
+    DataTableProps<RecordType>
+  >,
   argTypes: {},
-} as Meta<typeof DataTable>;
+} as Meta;
 
-const Template: Story<DataTableProps> = (args) => {
-  const [selected, setSelected] = useState<string[]>([]);
-  const [selectedColumns, setSelectedColumns] = useState<string[]>(["field1"]);
+const Template: Story<DataTableProps<RecordType>> = (args) => {
+  const [selected, setSelected] = useState<Array<keyof RecordType | string[]>>(
+    [],
+  );
+  const [selectedColumns, setSelectedColumns] = useState<
+    Array<keyof RecordType>
+  >(["field1"]);
 
   const onSelectFunction = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetD = e.target;
     const value = targetD.value;
     const checked = targetD.checked;
 
-    let elements: string[] = [...selected]; // We clone the selected array
+    let elements: Array<keyof RecordType | string[]> = [...selected]; // Clone the selected array
 
     if (checked) {
       // If the user has checked this field we need to push this to elements selection list
-      elements.push(value);
+      elements.push(value as keyof RecordType | string[]);
     } else {
       // User has unchecked this field, we need to remove it from the list
       elements = elements.filter((element) => element !== value);
@@ -58,7 +73,7 @@ const Template: Story<DataTableProps> = (args) => {
     }
 
     const allItems = args.records.map(
-      (element) => `${element[`${args.idField}`]}`,
+      (element) => `${element[`${args.field1Field}`]}`,
     );
     setSelected(allItems);
   };
@@ -77,7 +92,7 @@ const Template: Story<DataTableProps> = (args) => {
     extraFunc = {
       ...extraFunc,
       columnsShown: selectedColumns,
-      onColumnChange: (columnKey) => {
+      onColumnChange: (columnKey: keyof RecordType) => {
         const itemFound = selectedColumns.findIndex(
           (item) => item === columnKey,
         );
@@ -99,7 +114,7 @@ const Template: Story<DataTableProps> = (args) => {
       <GlobalStyles />
       <Grid container>
         <Grid item xs={12}>
-          <DataTable {...args} {...extraFunc} />
+          <DataTable<RecordType> {...args} {...extraFunc} />
         </Grid>
       </Grid>
     </StoryThemeProvider>
@@ -110,9 +125,12 @@ export const Default = Template.bind({});
 Default.args = {
   disabled: false,
   entityName: "Elements",
-  records: ["Element1", "Element2", "Element3"],
-  columns: [{ label: "Elements List" }],
-  onSelect: undefined,
+  records: [
+    { field1: "Element1" },
+    { field1: "Element2" },
+    { field1: "Element3" },
+  ],
+  columns: [{ label: "Elements List", elementKey: "field1" }],
 };
 
 export const MultiColumn = Template.bind({});
@@ -122,25 +140,14 @@ MultiColumn.args = {
   idField: "field1",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { field1: "Value1-2", field2: "Value2-2", field3: "Value3-2" },
-    {
-      field1: "Value1-3",
-      field2: "Value2-3",
-      field3: "Value3-3",
-    },
+    { field1: "Value1-3", field2: "Value2-3", field3: "Value3-3" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1" },
     { label: "Column2", elementKey: "field2" },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -151,19 +158,12 @@ CustomColumnsWidth.args = {
   idField: "field1",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -174,44 +174,30 @@ CustomRowStyle.args = {
   idField: "field1",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   rowStyle: ({ index }) => (index === 1 ? "deleted" : ""),
 };
 
-export const NoBackground = Template.bind({});
-NoBackground.args = {
+export const BackgroundEnabled = Template.bind({});
+BackgroundEnabled.args = {
   disabled: false,
   entityName: "Elements",
   idField: "field1",
-  noBackground: true,
+  noBackground: false,
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -223,19 +209,12 @@ CustomPaperHeight.args = {
   customPaperHeight: "250px",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -247,19 +226,12 @@ CustomStyles.args = {
   customPaperHeight: "250px",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sx: {
     backgroundColor: "#f09",
@@ -275,17 +247,9 @@ WithSorting.args = {
   customPaperHeight: "250px",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { field1: "An Item", field2: "A Second Item", field3: "A ThirdItem" },
-    {
-      field1: "One Value",
-      field2: "Two Values",
-      field3: "Three Values",
-    },
+    { field1: "One Value", field2: "Two Values", field3: "Three Values" },
     {
       field1: "Some Other thing",
       field2: "Some Other thing",
@@ -304,10 +268,7 @@ WithSorting.args = {
       width: 200,
     },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortEnabled: true,
 };
@@ -318,12 +279,10 @@ SortingOnSingleValue.args = {
   entityName: "Elements",
   idField: "field1",
   customPaperHeight: "250px",
-  records: ["A Value", "B Value", "C Value", "Z Value"],
-  columns: [
-    {
-      label: "Only Column",
-    },
-  ],
+  records: ["A Value", "B Value", "C Value", "Z Value"].map((field1) => ({
+    field1,
+  })),
+  columns: [{ label: "Only Column", elementKey: "field1" }],
   sortEnabled: true,
 };
 
@@ -335,17 +294,9 @@ SortSomeColumnsOnly.args = {
   customPaperHeight: "250px",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { field1: "An Item", field2: "A Second Item", field3: "A ThirdItem" },
-    {
-      field1: "One Value",
-      field2: "Two Values",
-      field3: "Three Values",
-    },
+    { field1: "One Value", field2: "Two Values", field3: "Three Values" },
     {
       field1: "Some Other thing",
       field2: "Some Other thing",
@@ -364,10 +315,7 @@ SortSomeColumnsOnly.args = {
       width: 200,
     },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortEnabled: ["field1", "field3"],
 };
@@ -380,17 +328,9 @@ ManualControlledSort.args = {
   customPaperHeight: "250px",
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { field1: "An Item", field2: "A Second Item", field3: "A ThirdItem" },
-    {
-      field1: "One Value",
-      field2: "Two Values",
-      field3: "Three Values",
-    },
+    { field1: "One Value", field2: "Two Values", field3: "Three Values" },
     {
       field1: "Some Other thing",
       field2: "Some Other thing",
@@ -414,10 +354,7 @@ ManualControlledSort.args = {
       width: 100,
       enableSort: false,
     },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortEnabled: {
     currentSort: "field1",
@@ -438,52 +375,44 @@ WithItemActions.args = {
   itemActions: [
     {
       type: "edit",
-      onClick: (itemID: string) => {
-        alert(itemID);
+      onClick: (item: RecordType) => {
+        alert(item.field1);
       },
-      sendOnlyId: true,
       tooltip: "Edit",
-      isDisabled: true,
+      isDisabled: (value: RecordType) => value.field1 === "Value1",
     },
     {
       type: "delete",
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DELETE", deleteItem.field1);
       },
-      tooltip: "Delete, Disabled if Column 1 is Value1",
-      isDisabled: (value) => value.field1 === "Value1",
+      tooltip: "Delete",
     },
     {
       type: "preview",
-      onClick: (deleteItem) => {
-        console.log("PREVIEW", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("PREVIEW", deleteItem.field1);
       },
       tooltip: "Preview",
     },
     {
       type: "cloud",
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("CLOUD", deleteItem.field1);
       },
-      tooltip: "Delete, Disabled if Column 1 is Value1",
-      showLoader: (value) => value.field1 === "Value1",
+      tooltip: (tooltipItem: RecordType) => {
+        return `Custom - ${tooltipItem.field1}`;
+      },
     },
   ],
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortConfig: {
     currentSort: "field1",
@@ -503,105 +432,97 @@ FullItemsActions.args = {
   itemActions: [
     {
       type: "edit",
-      onClick: (itemID: string) => {
-        alert(itemID);
+      onClick: (item: RecordType) => {
+        alert(item.field1);
       },
-      sendOnlyId: true,
       tooltip: "Edit",
     },
     {
       type: "delete",
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DELETE", deleteItem.field1);
       },
       tooltip: "Delete",
     },
     {
       type: "console",
-      onClick: (deleteItem) => {
-        console.log("CONSOLE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("CONSOLE", deleteItem.field1);
       },
       tooltip: "Console",
     },
     {
       type: "description",
-      onClick: (deleteItem) => {
-        console.log("DESCRIPTION", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DESCRIPTION", deleteItem.field1);
       },
       tooltip: "Description",
     },
     {
       type: "cloud",
-      onClick: (deleteItem) => {
-        console.log("CLOUD", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("CLOUD", deleteItem.field1);
       },
       tooltip: "Cloud",
     },
     {
       type: "view",
-      onClick: (deleteItem) => {
-        console.log("VIEW", deleteItem);
+      onClick: (deleteItem: RecordType, index: number) => {
+        console.log("VIEW", deleteItem.field1, "INDEX", index);
       },
       tooltip: "View",
     },
     {
       type: "disable",
-      onClick: (deleteItem) => {
-        console.log("DISABLE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DISABLE", deleteItem.field1);
       },
       tooltip: "Disable",
     },
     {
       type: "download",
-      onClick: (deleteItem) => {
-        console.log("DOWNLOAD", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DOWNLOAD", deleteItem.field1);
       },
       tooltip: "Download",
     },
     {
       type: "format",
-      onClick: (deleteItem) => {
-        console.log("FORMAT", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("FORMAT", deleteItem.field1);
       },
       tooltip: "Format",
     },
     {
       type: "preview",
-      onClick: (deleteItem) => {
-        console.log("PREVIEW", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("PREVIEW", deleteItem.field1);
       },
       tooltip: "Preview",
     },
     {
       type: "share",
-      onClick: (deleteItem) => {
-        console.log("SHARE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("SHARE", deleteItem.field1);
       },
       tooltip: "Share",
     },
     {
-      type: <SuccessIcon />,
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      type: <CheckIcon />,
+      onClick: (deleteItem: RecordType) => {
+        console.log("DELETE", deleteItem.field1);
       },
       tooltip: "Custom Icon",
     },
   ],
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortConfig: {
     currentSort: "field1",
@@ -621,27 +542,20 @@ SingleItemsAction.args = {
   itemActions: [
     {
       type: "delete",
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DELETE", deleteItem.field1);
       },
       tooltip: "Delete",
     },
   ],
   records: [
     { field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
   ],
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
   sortConfig: {
     currentSort: "field1",
@@ -662,16 +576,15 @@ ColumnsSelector.args = {
   itemActions: [
     {
       type: "edit",
-      onClick: (itemID: string) => {
-        alert(itemID);
+      onClick: (item: RecordType) => {
+        alert(item.field1);
       },
-      sendOnlyId: true,
       label: "Edit",
     },
     {
       type: "delete",
-      onClick: (deleteItem) => {
-        console.log("DELETE", deleteItem);
+      onClick: (deleteItem: RecordType) => {
+        console.log("DELETE", deleteItem.field1);
       },
       label: "Delete",
     },
@@ -709,28 +622,16 @@ ColumnsSelector.args = {
   columns: [
     { label: "Column1", elementKey: "field1", width: 200 },
     { label: "Column2", elementKey: "field2", width: 100 },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
     { label: "Column4", elementKey: "field4", width: 200 },
     { label: "Column5", elementKey: "field5", width: 100 },
-    {
-      label: "Column6",
-      elementKey: "field6",
-    },
+    { label: "Column6", elementKey: "field6" },
     { label: "Column7", elementKey: "field7", width: 200 },
     { label: "Column8", elementKey: "field8", width: 100 },
-    {
-      label: "Column9",
-      elementKey: "field9",
-    },
+    { label: "Column9", elementKey: "field9" },
     { label: "Column10", elementKey: "field10", width: 200 },
     { label: "Column11", elementKey: "field11", width: 100 },
-    {
-      label: "Column12",
-      elementKey: "field12",
-    },
+    { label: "Column12", elementKey: "field12" },
   ],
 };
 
@@ -741,28 +642,15 @@ NumericIDs.args = {
   idField: "id",
   records: [
     { id: 1, field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      id: 2,
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { id: 2, field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { id: 3, field1: "Value1-2", field2: "Value2-2", field3: "Value3-2" },
-    {
-      id: 4,
-      field1: "Value1-3",
-      field2: "Value2-3",
-      field3: "Value3-3",
-    },
+    { id: 4, field1: "Value1-3", field2: "Value2-3", field3: "Value3-3" },
   ],
   columns: [
     { label: "ID", elementKey: "id" },
     { label: "Column1", elementKey: "field1" },
     { label: "Column2", elementKey: "field2" },
-    {
-      label: "Column3",
-      elementKey: "field3",
-    },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -773,19 +661,9 @@ LongTitles.args = {
   idField: "id",
   records: [
     { id: 1, field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      id: 2,
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { id: 2, field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { id: 3, field1: "Value1-2", field2: "Value2-2", field3: "Value3-2" },
-    {
-      id: 4,
-      field1: "Value1-3",
-      field2: "Value2-3",
-      field3: "Value3-3",
-    },
+    { id: 4, field1: "Value1-3", field2: "Value2-3", field3: "Value3-3" },
   ],
   columns: [
     { label: "ID", elementKey: "id" },
@@ -794,10 +672,29 @@ LongTitles.args = {
       elementKey: "field1",
     },
     { label: "Column2", elementKey: "field2" },
+    { label: "Column3", elementKey: "field3" },
+  ],
+};
+
+export const SelectOptions = Template.bind({});
+SelectOptions.args = {
+  disabled: false,
+  entityName: "Elements",
+  idField: "id",
+  records: [
+    { id: 1, field1: "Value1", field2: "Value2", field3: "Value3" },
+    { id: 2, field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
+    { id: 3, field1: "Value1-2", field2: "Value2-2", field3: "Value3-2" },
+    { id: 4, field1: "Value1-3", field2: "Value2-3", field3: "Value3-3" },
+  ],
+  columns: [
+    { label: "ID", elementKey: "id" },
     {
-      label: "Column3",
-      elementKey: "field3",
+      label: "Super long title name for a single column that needs to truncate",
+      elementKey: "field1",
     },
+    { label: "Column2", elementKey: "field2" },
+    { label: "Column3", elementKey: "field3" },
   ],
 };
 
@@ -809,19 +706,9 @@ CustomRowHeight.args = {
   rowHeight: 80,
   records: [
     { id: 1, field1: "Value1", field2: "Value2", field3: "Value3" },
-    {
-      id: 2,
-      field1: "Value1-1",
-      field2: "Value2-1",
-      field3: "Value3-1",
-    },
+    { id: 2, field1: "Value1-1", field2: "Value2-1", field3: "Value3-1" },
     { id: 3, field1: "Value1-2", field2: "Value2-2", field3: "Value3-2" },
-    {
-      id: 4,
-      field1: "Value1-3",
-      field2: "Value2-3",
-      field3: "Value3-3",
-    },
+    { id: 4, field1: "Value1-3", field2: "Value2-3", field3: "Value3-3" },
   ],
   columns: [
     { label: "ID", elementKey: "id" },
@@ -830,9 +717,25 @@ CustomRowHeight.args = {
       elementKey: "field1",
     },
     { label: "Column2", elementKey: "field2" },
+    { label: "Column3", elementKey: "field3" },
+  ],
+};
+
+export const CustomEmptyMessage = Template.bind({});
+CustomEmptyMessage.args = {
+  disabled: false,
+  entityName: "Elements",
+  idField: "id",
+  rowHeight: 80,
+  records: [],
+  customEmptyMessage: "This is a custom error message",
+  columns: [
+    { label: "ID", elementKey: "id" },
     {
-      label: "Column3",
-      elementKey: "field3",
+      label: "Super long title name for a single column that needs to truncate",
+      elementKey: "field1",
     },
+    { label: "Column2", elementKey: "field2" },
+    { label: "Column3", elementKey: "field3" },
   ],
 };

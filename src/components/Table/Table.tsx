@@ -16,6 +16,8 @@
 
 import React, { FC } from "react";
 import styled from "styled-components";
+
+import { overridePropsParse } from "../../global/utils";
 import { TableComponentsExtraProps } from "./Table.types";
 
 const TableMain = styled.table<TableComponentsExtraProps>(({ theme, sx }) => ({
@@ -23,7 +25,7 @@ const TableMain = styled.table<TableComponentsExtraProps>(({ theme, sx }) => ({
   width: "100%",
   borderCollapse: "collapse",
   borderSpacing: 0,
-  ...sx,
+  ...overridePropsParse(sx, theme),
 }));
 
 const Table: FC<

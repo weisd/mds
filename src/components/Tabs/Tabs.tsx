@@ -14,18 +14,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC } from "react";
-import styled from "styled-components";
+import React, { FC, HTMLAttributes } from "react";
 import get from "lodash/get";
-import { TabsContainerProps, TabsProps } from "./Tabs.types";
-import { lightColors } from "../../global/themes";
+import styled from "styled-components";
+
+import { lightColors, lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
 import Box from "../Box/Box";
-import TabPanel from "./TabPanel";
 import TabButton from "./TabButton";
+import TabPanel from "./TabPanel";
+import { TabsContainerProps, TabsProps } from "./Tabs.types";
 
 const TabsContainer = styled.div<TabsContainerProps>(
   ({ theme, horizontal, horizontalBarBackground, sx }) => {
-    let horizontalBG = horizontalBarBackground
+    const horizontalBG = horizontalBarBackground
       ? get(theme, "tabs.horizontal.backgroundColor", "transparent")
       : "transparent";
 
@@ -43,7 +45,11 @@ const TabsContainer = styled.div<TabsContainerProps>(
               lightColors.tabBorder,
             )} 1px solid`,
         borderBottom: horizontal
-          ? `${get(theme, "borderColor", lightColors.borderColor)} 1px solid`
+          ? `1px solid ${get(
+              theme,
+              "buttons.horizontal.bottomBorder",
+              lightV2.defaultButtonPressed,
+            )}`
           : `${get(
               theme,
               "tabs.vertical.borders",
@@ -64,6 +70,7 @@ const TabsContainer = styled.div<TabsContainerProps>(
           flexDirection: horizontal ? "row" : "column",
           flexGrow: 1,
           width: horizontal ? "100%" : "auto",
+          gap: horizontal ? 16 : 0,
         },
       },
       "& .tabsPanels": {
@@ -79,12 +86,12 @@ const TabsContainer = styled.div<TabsContainerProps>(
             )} 1px solid`,
         borderLeft: "none",
       },
-      ...sx,
+      ...overridePropsParse(sx, theme),
     };
   },
 );
 
-const Tabs: FC<TabsProps> = ({
+const Tabs: FC<TabsProps & HTMLAttributes<HTMLDivElement>> = ({
   horizontal,
   options,
   currentTabOrPath,
@@ -95,13 +102,15 @@ const Tabs: FC<TabsProps> = ({
   optionsEndComponent,
   horizontalBarBackground,
   sx,
+  ...restProps
 }) => {
   return (
     <TabsContainer
-      className={"tabs-container"}
+      className={"tabs"}
       horizontal={!!horizontal}
       horizontalBarBackground={!!horizontalBarBackground}
       sx={sx}
+      {...restProps}
     >
       <Box className={"optionsContainer"}>
         {optionsInitialComponent && <Box>{optionsInitialComponent}</Box>}

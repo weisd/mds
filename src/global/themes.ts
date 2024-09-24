@@ -15,6 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ThemeDefinitionProps } from "./global.types";
+import { themeColors, themeShadows } from "./themeColors";
+import { getThemeColors, paddingSizeVariants, radioVariants } from "./utils";
 
 export const lightColors = {
   white: "#fff",
@@ -184,173 +186,448 @@ export const darkColors = {
   disabledSliderBullet: "#939393",
 };
 
+export const lightV2 = {
+  white: "#FFF",
+  fontColor: "#1D2125",
+  mainBackgroundColor: "#F3F4F6",
+  menuSelectionColor: "#DCEAFD",
+  switchBG: "#2B64E5",
+  secondaryBlue: "#4082F1",
+  green: "#15CBCE",
+  lightGreen: "#CCFBF7",
+  orange: "#FDBC2E",
+  lightOrange: "#FEF1C7",
+  danger: "#FE5F57",
+  lightRed: "#FFE2E1",
+  borderColor: "#D1D5DB",
+  disabledGrey: "#E5E7EB",
+  disabledGreyText: "#9CA3AF",
+  disabledBlue: "#DCEAFD",
+  disabledBlueText: "#64A4F6",
+  disabledBlueRegular: "#C1DBFC",
+  disabledSecondary: "#D1D5DB",
+  disabledSecondaryText: "#9CA3AF",
+  blueBorderActionButton: "#2350D2",
+  redBorder: "#A5190F",
+  disabledRed: "#FFE2E1",
+  disabledRedText: "#F1756F",
+  mutedText: "#6B7280",
+  headerLabelText: "#3A3D41",
+  plainIconButtonBorder: "#CBD5E1",
+  plainIconButtonBG: "#F1F5F9",
+  plainIconButtonColor: "#475569",
+  linkColor: "#306CE8",
+  modalCloseColor: "#454D59",
+  modalBorderColor: "#E3E6EA",
+  modalOverlayBG: "rgba(55, 59, 66, 0.50)",
+  modalTitleColor: "#21242B",
+  buttonDisabledBG: "#E3E6EA",
+  buttonDisabledLabel: "#798797",
+  defaultButtonPressed: "#CAD1D7",
+  // NEW VARS NAMES
+  bgColorBgShell: "#F4F6F7",
+  colorTextLabel: "rgba(0,0,0,0.65)",
+  colorBorderSubtle: "#CAD1D7",
+  colorBgHover: "#E3E6EA",
+  errorColorPrimaryText: "#FF3100",
+  colorBorder: "#CFD0D2",
+  colorText: "#000000E0",
+  colorBgDisabled: "#E3E6EA",
+  colorTextDisabled: "#00000040",
+  // orphan colors? (not in themeColors)
+  colorTextDestructive: "#FF3100",
+  destructiveColorBorder: "#FF3100",
+  neutralColorBorder: "#D6DAE1",
+  buttonNeutralColorTextHover: "#000000E0",
+};
+
 export const lightTheme: ThemeDefinitionProps = {
-  bgColor: lightColors.white,
-  fontColor: lightColors.defaultFontColor,
-  borderColor: lightColors.borderColor,
-  bulletColor: lightColors.bulletColor,
-  logoColor: lightColors.mainRed,
-  logoLabelColor: lightColors.logoLabel,
-  logoLabelInverse: lightColors.logoLabelInverse,
-  loaderColor: lightColors.loaderColor,
-  linkColor: lightColors.linkColor,
-  boxBackground: lightColors.boxBackground,
-  mutedText: lightColors.mutedText,
-  secondaryText: lightColors.mainGrey,
+  bgColor: themeColors["Color/Neutral/colorBgBase"].lightMode,
+  fontColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+  borderColor: themeColors["Color/Neutral/Border/colorBorderMinimal"].lightMode,
+  bulletColor: themeColors["Color/Neutral/Text/colorTextSecondary"].lightMode,
+  logoColor: themeColors["Color/Brand/_minio/Raspberry"].lightMode,
+  logoLabelColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+  logoLabelInverse:
+    themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+  loaderColor: themeColors["Color/Base/Royal/10"].lightMode,
+  linkColor: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+  secondaryLinkColor:
+    themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+  boxBackground: themeColors["Color/Neutral/Bg/colorBgShell"].lightMode,
+  mutedText: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+  secondaryText: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+  colors: getThemeColors("lightMode"),
+  borderRadius: radioVariants,
+  paddingSizes: paddingSizeVariants,
+  boxShadows: themeShadows,
+  box: {
+    border: "transparent",
+    shadow: "0px 2px 2px 0px rgba(121, 135, 151, 0.15)",
+    backgroundColor: themeColors["Color/Neutral/Bg/colorBgContainer"].lightMode,
+  },
   signalColors: {
-    main: lightColors.mainBlue,
-    danger: lightColors.mainRed,
-    good: lightColors.mainGreen,
-    info: lightColors.bulletColor,
-    warning: lightColors.mainOrange,
-    disabled: lightColors.disabledGrey,
-    dark: lightColors.defaultFontColor,
-    clear: lightColors.white,
+    main: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+    danger: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+    good: themeColors["Color/Brand/Success/colorPrimaryText"].lightMode,
+    info: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+    warning: themeColors["Color/Brand/Warning/colorPrimaryText"].lightMode,
+    disabled: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+    dark: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+    clear: themeColors["Color/Neutral/colorBgBase"].lightMode,
+    selectBlue:
+      themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
   },
   buttons: {
-    regular: {
+    primary: {
       enabled: {
-        border: lightColors.mainGrey,
-        text: lightColors.mainGrey,
-        background: "transparent",
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/5"].lightMode} 0%, ${themeColors["Color/Base/Royal/6"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset`,
       },
       disabled: {
-        border: lightColors.disabledInnerGrey,
-        text: lightColors.disabledInnerGrey,
-        background: lightColors.disabledBGGrey,
-        iconColor: lightColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
       },
       hover: {
-        border: lightColors.mainGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.hoverGrey,
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/6"].lightMode} 0%, ${themeColors["Color/Base/Royal/7"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset`,
       },
       pressed: {
-        border: lightColors.mainGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.pressedGrey,
-        iconColor: lightColors.mainGrey,
-      },
-    },
-    callAction: {
-      enabled: {
-        border: lightColors.mainBlue,
-        text: lightColors.white,
-        background: lightColors.mainBlue,
-        iconColor: lightColors.white,
-      },
-      disabled: {
-        border: lightColors.actionDisabledGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.actionDisabledGrey,
-        iconColor: lightColors.mainGrey,
-      },
-      hover: {
-        border: lightColors.hoverBlue,
-        text: lightColors.white,
-        background: lightColors.hoverBlue,
-        iconColor: lightColors.white,
-      },
-      pressed: {
-        border: lightColors.pressedBlue,
-        text: lightColors.white,
-        background: lightColors.pressedBlue,
-        iconColor: lightColors.white,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/6"].lightMode} 0%, ${themeColors["Color/Base/Royal/7"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: "none",
       },
     },
     secondary: {
       enabled: {
-        border: lightColors.mainRed,
-        text: lightColors.mainRed,
-        background: "transparent",
-        iconColor: lightColors.mainRed,
+        border: themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgContainer"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        shadow: "none",
       },
       disabled: {
-        border: lightColors.disabledInnerGrey,
-        text: lightColors.disabledInnerGrey,
-        background: lightColors.disabledBGGrey,
-        iconColor: lightColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
       },
       hover: {
-        border: lightColors.lightRed,
-        text: lightColors.mainRed,
-        background: lightColors.hoverRed,
-        iconColor: lightColors.mainRed,
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        shadow: "none",
       },
       pressed: {
-        border: lightColors.mainRed,
-        text: lightColors.white,
-        background: lightColors.mainRed,
-        iconColor: lightColors.white,
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        shadow: "none",
       },
     },
-    text: {
+    destructive: {
       enabled: {
-        border: "transparent",
-        text: lightColors.mainGrey,
-        background: "transparent",
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/5"].lightMode} 0%, ${themeColors["Color/Base/Sunset/6"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset`,
       },
       disabled: {
-        border: "transparent",
-        text: lightColors.disabledInnerGrey,
-        background: "transparent",
-        iconColor: lightColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
       },
       hover: {
-        border: lightColors.hoverGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.hoverGrey,
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/6"].lightMode} 0%, ${themeColors["Color/Base/Sunset/7"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset`,
       },
       pressed: {
-        border: lightColors.pressedGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.pressedGrey,
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/6"].lightMode} 0%, ${themeColors["Color/Base/Sunset/7"].lightMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+        shadow: "none",
       },
     },
-    subAction: {
+    "primary-lighter": {
       enabled: {
-        border: lightColors.secondAction,
-        text: lightColors.white,
-        background: lightColors.secondAction,
-        iconColor: lightColors.white,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+        background: themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+        shadow: "none",
       },
       disabled: {
-        border: lightColors.actionDisabledGrey,
-        text: lightColors.mainGrey,
-        background: lightColors.actionDisabledGrey,
-        iconColor: lightColors.mainGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
       },
       hover: {
-        border: lightColors.secondActionHover,
-        text: lightColors.white,
-        background: lightColors.secondActionHover,
-        iconColor: lightColors.white,
+        border:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
       },
       pressed: {
-        border: lightColors.secondActionActive,
-        text: lightColors.white,
-        background: lightColors.secondActionActive,
-        iconColor: lightColors.white,
+        border:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+    },
+    "secondary-lighter": {
+      enabled: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        background: themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
+      },
+      hover: {
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+      pressed: {
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+    },
+    "destructive-lighter": {
+      enabled: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+        background: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+        iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+    },
+    "primary-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+        background: "transparent",
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
+      },
+      hover: {
+        border:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+      pressed: {
+        border:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+    },
+    "secondary-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        background: "transparent",
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
+      },
+      hover: {
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+      pressed: {
+        border:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"]
+          .lightMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+    },
+    "destructive-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+        background: "transparent",
+        iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        shadow: "none",
       },
     },
   },
   login: {
-    formBG: lightColors.sectionOneBG,
+    formBG: lightV2.white,
     bgFilter: "none",
     promoBG: lightColors.promoBG,
-    promoHeader: lightColors.white,
-    promoText: lightColors.promoBlue,
-    footerElements: lightColors.bulletColor,
-    footerDivider: lightColors.footerDivider,
+    formBorder: lightV2.disabledGrey,
+    formShadow: "0px 2px 8px 0px rgba(156, 163, 175, 0.15)",
+    promoHeader: lightV2.white,
+    promoText: lightV2.white,
+    footerElements: lightV2.fontColor,
+    footerDivider: lightV2.fontColor,
   },
   pageHeader: {
-    background: lightColors.headerBG,
-    border: lightColors.headerBorder,
     color: lightColors.headerColor,
   },
   tooltip: {
@@ -358,28 +635,124 @@ export const lightTheme: ThemeDefinitionProps = {
     color: lightColors.tooltipColor,
   },
   commonInput: {
-    labelColor: lightColors.labelColor,
+    labelColor: lightV2.fontColor,
   },
   checkbox: {
-    checkBoxBorder: lightColors.checkBoxBorder,
-    checkBoxColor: lightColors.mainGreen,
-    disabledBorder: lightColors.disabledInnerGrey,
-    disabledColor: lightColors.disabledBGGrey,
+    checkBoxBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    checkBoxBackground: themeColors["Color/Neutral/Bg/colorBgFields"].lightMode,
+    checkBoxHoverBorder:
+      themeColors["Color/Neutral/Border/colorBorderBold"].lightMode,
+    checkBoxHoverBackground:
+      themeColors["Color/Neutral/Bg/colorBgFields"].lightMode,
+    checkBoxFocusBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+    checkBoxFocusBackground:
+      themeColors["Color/Neutral/Bg/colorBgFields"].lightMode,
+    checkBoxFocusShadow: "0px 0px 0px 4px rgba(43, 100, 229, 0.30)",
+    checkBoxActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    checkBoxActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    checkBoxActiveCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    checkBoxActiveHoverCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    checkBoxActiveHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    checkBoxActiveHoverBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    checkBoxFocusActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    checkBoxFocusActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    checkBoxFocusActiveCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    checkBoxFocusActiveHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    disabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    disabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+    disabledColor:
+      themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+  },
+  radioGroup: {
+    radioBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    radioBackground: themeColors["Color/Neutral/Bg/colorBgShell"].lightMode,
+    radioHoverBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    radioActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    radioActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    radioActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    radioHoverActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    radioHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    radioHoverActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    radioHoverActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+    radioFocusBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    radioFocusBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    radioFocusCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    radioFocusActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    radioFocusActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].lightMode,
+    radioFocusActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    radioFocusShadow: themeShadows["focusStyle-Light"],
+    radioDisabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    radioDisabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+    radioDisabledCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    labelColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    subLabelColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+    descriptionColor:
+      themeColors["Color/Neutral/Text/colorTextDescription"].lightMode,
   },
   iconButton: {
-    buttonBG: lightColors.iconButtonBG,
-    activeBG: lightColors.iconButtonActive,
-    hoverBG: lightColors.iconButtonHover,
-    disabledBG: lightColors.iconButtonDisabled,
-    color: lightColors.iconButtonColor,
+    buttonBG: "linear-gradient(180deg, #4082F1 0%, #2B64E5 100%)",
+    activeBG: "linear-gradient(180deg, #4082F1 0%, #2B64E5 100%)",
+    hoverBG: "linear-gradient(180deg, #4082F1 0%, #2B64E5 100%)",
+    disabledBG: lightV2.disabledBlue,
+    color: lightV2.white,
+    disabledColor: lightV2.disabledBlueText,
   },
   dataTable: {
-    border: lightColors.borderColor,
-    disabledBorder: lightColors.disabledGrey,
-    disabledBG: lightColors.disabledBGGrey,
-    selected: lightColors.mainBlue,
-    deletedDisabled: lightColors.mainRed,
-    hoverColor: lightColors.hoverGrey,
+    border: themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    disabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    disabledBG: "transparent",
+    selected: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    itemDisabled: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+    itemColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    hoverColor: themeColors["Color/Brand/Control/colorBgActive"].lightMode,
+    titleColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+    actionButton: {
+      border: lightV2.plainIconButtonBorder,
+      background: lightV2.plainIconButtonBG,
+      iconColor: lightV2.plainIconButtonColor,
+      hoverBorder: lightV2.plainIconButtonBorder,
+      hoverBackground: lightV2.plainIconButtonBG,
+      hoverIconColor: lightV2.plainIconButtonColor,
+      activeBorder: lightV2.plainIconButtonBorder,
+      activeBackground: lightV2.plainIconButtonBG,
+      activeIconColor: lightV2.plainIconButtonColor,
+      disabledBackground: "transparent",
+      disabledBorder: lightV2.disabledSecondary,
+      disabledIconColor: lightV2.disabledSecondaryText,
+    },
   },
   backLink: {
     color: lightColors.backLinkColor,
@@ -387,26 +760,29 @@ export const lightTheme: ThemeDefinitionProps = {
     hover: lightColors.backLinkHover,
   },
   inputBox: {
-    border: lightColors.borderColor,
-    hoverBorder: lightColors.promoBG,
-    color: lightColors.mainBlue,
-    backgroundColor: lightColors.white,
-    error: lightColors.mainRed,
-    placeholderColor: lightColors.placeholder,
-    disabledBorder: lightColors.disabledInnerGrey,
-    disabledBackground: lightColors.disabledGrey,
-    disabledPlaceholder: lightColors.disabledGrey,
-    disabledText: lightColors.disabledInnerGrey,
+    border: themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    hoverBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+    color: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    backgroundColor: "transparent",
+    error: themeColors["Color/Brand/Error/colorPrimaryBorder"].lightMode,
+    placeholderColor:
+      themeColors["Color/Neutral/Text/colorTextPlaceholder"].lightMode,
+    disabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    disabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+    disabledPlaceholder:
+      themeColors["Color/Neutral/Text/colorTextPlaceholder"].lightMode,
+    disabledText:
+      themeColors["Color/Neutral/Text/colorTextPlaceholder"].lightMode,
   },
   breadcrumbs: {
-    border: lightColors.borderColor,
-    linksColor: lightColors.commonLinkColor,
-    textColor: lightColors.breadcrumbsText,
-    backgroundColor: lightColors.breadcrumbsBackground,
-    backButton: {
-      border: lightColors.breadcrumbsBackBorder,
-      backgroundColor: lightColors.white,
-    },
+    elementsColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    selectedColor:
+      themeColors["Color/Neutral/Text/colorTextDescription"].lightMode,
+    hoverBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+    hoverColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
   },
   actionsList: {
     containerBorderColor: lightColors.actionsListBorder,
@@ -418,48 +794,57 @@ export const lightTheme: ThemeDefinitionProps = {
     titleColor: lightColors.defaultFontColor,
   },
   screenTitle: {
-    border: lightColors.borderColor,
-    subtitleColor: lightColors.commonLinkColor,
-    iconColor: lightColors.mainBlue,
+    subtitleColor:
+      themeColors["Color/Neutral/Text/colorTextTertiary"].lightMode,
+    titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
   },
   modalBox: {
-    closeColor: lightColors.modalCloseColor,
+    closeColor: lightV2.modalCloseColor,
     closeHoverBG: lightColors.modalCloseHoverBG,
     closeHoverColor: lightColors.defaultFontColor,
-    containerColor: lightColors.white,
-    overlayColor: lightColors.modalOverlayBG,
-    titleColor: lightColors.defaultFontColor,
+    containerColor: lightV2.white,
+    overlayColor: lightV2.modalOverlayBG,
+    titleColor: lightV2.modalTitleColor,
+    border: lightV2.modalBorderColor,
     iconColor: {
-      default: lightColors.mainBlue,
-      accept: lightColors.mainGreen,
-      delete: lightColors.mainRed,
+      default: lightV2.modalTitleColor,
+      accept: lightV2.green,
+      delete: lightV2.danger,
     },
   },
   switchButton: {
-    bulletBGColor: lightColors.bulletBGColor,
-    bulletBorderColor: lightColors.white,
-    disabledBulletBGColor: lightColors.hoverGrey,
-    disabledBulletBorderColor: lightColors.bulletBGColor,
-    offLabelColor: lightColors.disabledInnerGrey,
-    onLabelColor: lightColors.mainBlue,
-    onBackgroundColor: lightColors.mainGreen,
-    switchBackground: lightColors.hoverGrey,
-    disabledBackground: lightColors.hoverGrey,
-    disabledOnBackground: lightColors.disabledOnSwitchBG,
+    bulletBGColor: lightV2.white,
+    bulletBorderColor: lightV2.white,
+    disabledBulletBGColor: lightV2.disabledGrey,
+    disabledBulletBorderColor: lightV2.disabledGrey,
+    offLabelColor: lightV2.mutedText,
+    onLabelColor: lightV2.fontColor,
+    onBackgroundColor: lightV2.switchBG,
+    switchBackground: lightV2.menuSelectionColor,
+    disabledBackground: lightV2.disabledSecondary,
+    disabledOnBackground: lightV2.disabledBlueText,
   },
   dropdownSelector: {
-    hoverText: lightColors.defaultFontColor,
-    backgroundColor: lightColors.white,
-    hoverBG: lightColors.hoverGrey,
-    selectedBGColor: lightColors.pressedGrey,
-    selectedTextColor: lightColors.defaultFontColor,
-    optionTextColor: lightColors.defaultFontColor,
-    disabledText: lightColors.disabledGrey,
+    hoverText: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    backgroundColor: themeColors["Color/Neutral/Bg/colorBgContainer"].lightMode,
+    hoverBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+    selectedBGColor: themeColors["Color/Brand/Control/colorBgActive"].lightMode,
+    selectedTextColor:
+      themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+    optionTextColor:
+      themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    disabledText: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+    border: themeColors["Color/Neutral/Border/colorBorderMinimal"].lightMode,
+    dangerText: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+    dangerHoverBG:
+      themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+    dangerHoverText:
+      themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
   },
   readBox: {
-    borderColor: lightColors.headerBorder,
-    backgroundColor: lightColors.boxBackground,
-    textColor: lightColors.readBoxTextColor,
+    borderColor: lightV2.borderColor,
+    backgroundColor: lightV2.disabledGrey,
+    textColor: lightV2.mutedText,
   },
   menu: {
     vertical: {
@@ -498,37 +883,48 @@ export const lightTheme: ThemeDefinitionProps = {
   tabs: {
     vertical: {
       buttons: {
-        hoverLabelColor: lightColors.mainBlue,
-        hoverBackground: "transparent",
-        backgroundColor: lightColors.iconButtonBG,
-        labelColor: lightColors.mainGrey,
-        disabledBackgroundColor: lightColors.disabledBGGrey,
-        disabledColor: lightColors.disabledInnerGrey,
-        selectedBackground: lightColors.headerBorder,
-        selectedLabelColor: lightColors.mainBlue,
+        hoverLabelColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        hoverBackground:
+          themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+        backgroundColor: "transparent",
+        labelColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+        disabledBackgroundColor: "transparent",
+        disabledColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+        selectedBackground: "transparent",
+        selectedLabelColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
       },
-      backgroundColor: lightColors.iconButtonBG,
-      borders: lightColors.tabBorder,
+      backgroundColor: "transparent",
+      borders: "transparent",
     },
     horizontal: {
       buttons: {
-        hoverLabelColor: lightColors.mainBlue,
-        hoverBackground: "transparent",
+        hoverLabelColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+        hoverBackground:
+          themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
         backgroundColor: "transparent",
-        labelColor: lightColors.mainGrey,
+        labelColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
         disabledBackgroundColor: "transparent",
-        disabledColor: lightColors.disabledInnerGrey,
+        disabledColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
         selectedBackground: "transparent",
-        selectedLabelColor: lightColors.mainBlue,
+        selectedLabelColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
       },
-      backgroundColor: lightColors.boxBackground,
-      selectedIndicatorColor: lightColors.mainBlue,
+      backgroundColor: "transparent",
+      selectedIndicatorColor:
+        themeColors["Color/Brand/Primary/colorPrimaryBorder"].lightMode,
+      bottomBorder:
+        themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
     },
   },
   codeEditor: {
     backgroundColor: lightColors.white,
     textColor: lightColors.defaultFontColor,
-    helpToolsBarBG: lightColors.boxBackground,
+    helpToolsBarBG: lightV2.mainBackgroundColor,
     comment: lightColors.codeEditorComment,
     entityTag: lightColors.codeEditorEntityTag,
     entity: lightColors.codeEditorEntity,
@@ -540,101 +936,89 @@ export const lightTheme: ThemeDefinitionProps = {
     codeEditorRegexp: lightColors.codeEditorRegexp,
   },
   tag: {
-    alert: {
-      background: lightColors.mainRed,
-      label: lightColors.white,
-      deleteColor: lightColors.white,
-    },
-    default: {
-      background: lightColors.mainBlue,
-      label: lightColors.white,
-      deleteColor: lightColors.white,
+    primary: {
+      background: themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+      label: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      deleteColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
     },
     secondary: {
-      background: lightColors.secondAction,
-      label: lightColors.white,
-      deleteColor: lightColors.white,
+      background: themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      label: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+      deleteColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
     },
-    warn: {
-      background: lightColors.mainOrange,
-      label: lightColors.defaultFontColor,
-      deleteColor: lightColors.defaultFontColor,
-    },
-    ok: {
-      background: lightColors.mainGreen,
-      label: lightColors.defaultFontColor,
-      deleteColor: lightColors.defaultFontColor,
-    },
-    grey: {
-      background: lightColors.actionDisabledGrey,
-      label: lightColors.defaultFontColor,
-      deleteColor: lightColors.defaultFontColor,
+    destructive: {
+      background: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      label: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+      deleteColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
     },
   },
   snackbar: {
     error: {
-      backgroundColor: lightColors.mainRed,
-      labelColor: lightColors.white,
+      backgroundColor: lightV2.lightRed,
+      labelColor: lightV2.fontColor,
     },
     default: {
-      backgroundColor: lightColors.mainBlue,
-      labelColor: lightColors.white,
+      backgroundColor: lightV2.disabledBlueRegular,
+      labelColor: lightV2.fontColor,
     },
     success: {
-      backgroundColor: lightColors.mainGreen,
-      labelColor: lightColors.white,
+      backgroundColor: lightV2.lightGreen,
+      labelColor: lightV2.fontColor,
     },
     warning: {
-      backgroundColor: lightColors.mainOrange,
-      labelColor: lightColors.defaultFontColor,
+      backgroundColor: lightV2.lightOrange,
+      labelColor: lightV2.fontColor,
     },
   },
   informativeMessage: {
     error: {
-      backgroundColor: lightColors.mainRed,
-      borderColor: lightColors.mainRed,
-      textColor: lightColors.white,
+      backgroundColor: lightV2.lightRed,
+      borderColor: lightV2.lightRed,
+      textColor: lightV2.fontColor,
     },
     default: {
-      backgroundColor: lightColors.mainBlue,
-      borderColor: lightColors.mainBlue,
-      textColor: lightColors.white,
+      backgroundColor: lightV2.disabledBlueRegular,
+      borderColor: lightV2.disabledBlueRegular,
+      textColor: lightV2.fontColor,
     },
     success: {
-      backgroundColor: lightColors.mainGreen,
-      borderColor: lightColors.mainGreen,
-      textColor: lightColors.white,
+      backgroundColor: lightV2.lightGreen,
+      borderColor: lightV2.lightGreen,
+      textColor: lightV2.fontColor,
     },
     warning: {
-      backgroundColor: lightColors.mainOrange,
-      borderColor: lightColors.mainOrange,
-      textColor: lightColors.defaultFontColor,
+      backgroundColor: lightV2.lightOrange,
+      borderColor: lightV2.lightOrange,
+      textColor: lightV2.fontColor,
     },
   },
-  badge: {
-    alert: {
-      backgroundColor: lightColors.mainRed,
-      textColor: lightColors.white,
+  notificationCount: {
+    none: {
+      backgroundColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      textColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
     },
-    default: {
-      backgroundColor: lightColors.mainBlue,
-      textColor: lightColors.white,
+    info: {
+      backgroundColor:
+        themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+      textColor: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
     },
-    secondary: {
-      backgroundColor: lightColors.secondAction,
-      textColor: lightColors.white,
+    success: {
+      backgroundColor:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].lightMode,
+      textColor: themeColors["Color/Brand/Success/colorPrimaryText"].lightMode,
     },
-    warn: {
-      backgroundColor: lightColors.mainOrange,
-      textColor: lightColors.defaultFontColor,
+    warning: {
+      backgroundColor:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].lightMode,
+      textColor: themeColors["Color/Brand/Warning/colorPrimaryText"].lightMode,
     },
-    ok: {
-      backgroundColor: lightColors.mainGreen,
-      textColor: lightColors.defaultFontColor,
-    },
-    grey: {
-      backgroundColor: lightColors.actionDisabledGrey,
-      textColor: lightColors.defaultFontColor,
+    danger: {
+      backgroundColor:
+        themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      textColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
     },
   },
   wizard: {
@@ -646,10 +1030,12 @@ export const lightTheme: ThemeDefinitionProps = {
       disabledLabelColor: lightColors.disabledInnerGrey,
     },
     modal: {
-      stepLabelColor: lightColors.defaultFontColor,
-      selectedStepBG: lightColors.borderColor,
-      selectedStepLabelColor: lightColors.defaultFontColor,
-      disabledLabelColor: lightColors.disabledGrey,
+      stepLabelColor: lightV2.modalCloseColor,
+      selectedStepBG: lightV2.switchBG,
+      selectedStepLabelColor: lightV2.switchBG,
+      disabledLabelColor: lightV2.disabledGreyText,
+      borderColor: lightV2.defaultButtonPressed,
+      buttonHoverBG: lightV2.modalBorderColor,
     },
   },
   slider: {
@@ -658,160 +1044,568 @@ export const lightTheme: ThemeDefinitionProps = {
     disabledRail: lightColors.sliderDisabledBG,
     disabledBullet: lightColors.disabledInnerGrey,
   },
+  valuePair: {
+    labelColor: lightV2.modalTitleColor,
+    textColor: lightV2.modalTitleColor,
+    linkColor: lightV2.modalCloseColor,
+  },
+  buttonGroup: {
+    border: themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+    labelColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+    activeBackground:
+      themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+    activeLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+    hoverBackground:
+      themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].lightMode,
+    hoverLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].lightMode,
+    disabledLabelColor:
+      themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+    disabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+    background: themeColors["Color/Neutral/Bg/colorBgContainer"].lightMode,
+    secondaryBackground:
+      themeColors["Color/Neutral/Bg/colorBgContainer"].lightMode,
+    secondaryLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+    selectedBackground:
+      themeColors["Color/Brand/Control/colorBgActive"].lightMode,
+    selectedLabelColor:
+      themeColors["Color/Brand/Info/colorPrimaryActive"].lightMode,
+  },
+  dropdownOptions: {
+    optionLabel: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+    optionBG: "transparent",
+    hoverOptionBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+    activeOptionBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+    dangerLabel: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+    disabledLabel:
+      themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+  },
+  boxedIcon: {
+    iconColor: themeColors["Color/Neutral/Icon/colorIcon"].lightMode,
+    bgColor: themeColors["Color/Neutral/Bg/colorBgSections"].lightMode,
+  },
+  pill: {
+    default: {
+      labelColor: themeColors["Color/Brand/Neutral/colorPrimary"].lightMode,
+      bgColor: themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      borderColor: themeColors["Color/Brand/Neutral/colorPrimary"].lightMode,
+    },
+    secondary: {
+      labelColor: themeColors["Color/Brand/Error/colorPrimary"].lightMode,
+      bgColor: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      borderColor: themeColors["Color/Brand/Error/colorPrimary"].lightMode,
+    },
+    current: {
+      labelColor: themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+      bgColor: themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+      borderColor: themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    },
+  },
+  badge: {
+    none: {
+      minimalColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+      subtleBG: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      boldLabel: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+    },
+    info: {
+      minimalColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      subtleBG: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Brand/Primary/colorPrimaryBg"].lightMode,
+      boldLabel: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+    },
+    success: {
+      minimalColor:
+        themeColors["Color/Brand/Success/colorPrimaryText"].lightMode,
+      subtleBG: themeColors["Color/Brand/Success/colorPrimaryText"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Brand/Success/colorPrimaryBg"].lightMode,
+      boldLabel: themeColors["Color/Brand/Success/colorPrimaryText"].lightMode,
+    },
+    warning: {
+      minimalColor:
+        themeColors["Color/Brand/Warning/colorPrimaryText"].lightMode,
+      subtleBG: themeColors["Color/Brand/Warning/colorPrimaryText"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Brand/Warning/colorPrimaryBg"].lightMode,
+      boldLabel: themeColors["Color/Brand/Warning/colorPrimaryText"].lightMode,
+    },
+    danger: {
+      minimalColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+      subtleBG: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      boldLabel: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+    },
+    purple: {
+      minimalColor: themeColors["Color/Base/Purple/6"].lightMode,
+      subtleBG: themeColors["Color/Base/Purple/6"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Base/Purple/1"].lightMode,
+      boldLabel: themeColors["Color/Base/Purple/6"].lightMode,
+    },
+    rose: {
+      minimalColor: themeColors["Color/Base/Rose/6"].lightMode,
+      subtleBG: themeColors["Color/Base/Rose/6"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Base/Rose/1"].lightMode,
+      boldLabel: themeColors["Color/Base/Rose/6"].lightMode,
+    },
+    scooter: {
+      minimalColor: themeColors["Color/Base/Scooter/6"].lightMode,
+      subtleBG: themeColors["Color/Base/Scooter/6"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+      boldBG: themeColors["Color/Base/Scooter/1"].lightMode,
+      boldLabel: themeColors["Color/Base/Scooter/6"].lightMode,
+    },
+    disabled: {
+      minimalColor:
+        themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+      subtleBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+      boldBG: themeColors["Color/Brand/Control/colorBgHover"].lightMode,
+      boldLabel: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+    },
+  },
+  notificationAlert: {
+    danger: {
+      highContrastBG: themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Error/colorPrimaryBg"].lightMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].lightMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Error/colorPrimaryBorder"].lightMode,
+      actionColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    },
+    success: {
+      highContrastBG:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].lightMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].lightMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].lightMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Success/colorPrimaryBorder"].lightMode,
+      actionColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      iconColor:
+        themeColors["Color/Brand/Success/colorPrimaryBorder"].lightMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    },
+    warning: {
+      highContrastBG:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].lightMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].lightMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].lightMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Warning/colorPrimaryBorder"].lightMode,
+      actionColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      iconColor:
+        themeColors["Color/Brand/Warning/colorPrimaryBorder"].lightMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    },
+    information: {
+      highContrastBG: themeColors["Color/Brand/Info/colorPrimaryBg"].lightMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Info/colorPrimaryBg"].lightMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].lightMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      actionColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      iconColor: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    },
+    neutral: {
+      highContrastBG:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].lightMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].lightMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Neutral/colorPrimaryBorder"].lightMode,
+      actionColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+      iconColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryBorder"].lightMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].lightMode,
+    },
+  },
+  linkButton: {
+    primary: themeColors["Color/Brand/Primary/colorPrimaryText"].lightMode,
+    neutral: themeColors["Color/Brand/Neutral/colorPrimaryText"].lightMode,
+    destructive: themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+    disabled: themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+  },
 };
 
 export const darkTheme: ThemeDefinitionProps = {
-  bgColor: darkColors.dark,
-  fontColor: darkColors.defaultFontColor,
-  borderColor: darkColors.borderColor,
-  bulletColor: darkColors.bulletColor,
-  logoColor: darkColors.mainRed,
-  logoLabelColor: darkColors.logoLabel,
-  logoLabelInverse: darkColors.logoLabelInverse,
-  loaderColor: darkColors.loaderColor,
-  linkColor: darkColors.linkColor,
-  boxBackground: darkColors.boxBackground,
-  mutedText: darkColors.mutedText,
-  secondaryText: darkColors.mainGrey,
+  bgColor: themeColors["Color/Neutral/colorBgBase"].darkMode,
+  fontColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+  borderColor: themeColors["Color/Neutral/Border/colorBorderMinimal"].darkMode,
+  bulletColor: themeColors["Color/Neutral/Text/colorTextSecondary"].darkMode,
+  logoColor: themeColors["Color/Brand/_minio/Raspberry"].darkMode,
+  logoLabelColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+  logoLabelInverse:
+    themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+  loaderColor: themeColors["Color/Base/Royal/10"].darkMode,
+  linkColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+  secondaryLinkColor:
+    themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+  boxBackground: themeColors["Color/Neutral/Bg/colorBgShell"].darkMode,
+  mutedText: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+  secondaryText: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+  colors: getThemeColors("darkMode"),
+  borderRadius: radioVariants,
+  paddingSizes: paddingSizeVariants,
+  boxShadows: themeShadows,
+  box: {
+    border: "transparent",
+    shadow: "0px 2px 2px 0px rgba(121, 135, 151, 0.15)",
+    backgroundColor: themeColors["Color/Neutral/Bg/colorBgContainer"].darkMode,
+  },
   signalColors: {
-    main: darkColors.mainGrey,
-    danger: darkColors.mainRed,
-    good: darkColors.mainGreen,
-    info: darkColors.secondActionHover,
-    warning: darkColors.mainOrange,
-    disabled: darkColors.disabledGrey,
-    dark: darkColors.dark,
-    clear: darkColors.mainWhite,
+    main: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+    danger: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+    good: themeColors["Color/Brand/Success/colorPrimaryText"].darkMode,
+    info: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+    warning: themeColors["Color/Brand/Warning/colorPrimaryText"].darkMode,
+    disabled: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+    dark: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+    clear: themeColors["Color/Neutral/colorBgBase"].darkMode,
+    selectBlue: themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
   },
   buttons: {
-    regular: {
+    primary: {
       enabled: {
-        border: darkColors.mainGrey,
-        text: darkColors.mainGrey,
-        background: "transparent",
-        iconColor: darkColors.mainGrey,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/5"].darkMode} 0%, ${themeColors["Color/Base/Royal/6"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px -2px 3px 0px #0B2CA2 inset`,
       },
       disabled: {
-        border: darkColors.disabledInnerGrey,
-        text: darkColors.disabledInnerGrey,
-        background: darkColors.disabledBGGrey,
-        iconColor: darkColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
       },
       hover: {
-        border: darkColors.mainGrey,
-        text: darkColors.mainGrey,
-        background: darkColors.hoverGrey,
-        iconColor: darkColors.mainGrey,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/6"].darkMode} 0%, ${themeColors["Color/Base/Royal/7"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px -2px 3px 0px #0B2CA2 inset`,
       },
       pressed: {
-        border: darkColors.borderPressedGrey,
-        text: darkColors.borderPressedGrey,
-        background: darkColors.pressedGrey,
-        iconColor: darkColors.borderPressedGrey,
-      },
-    },
-    callAction: {
-      enabled: {
-        border: darkColors.mainWhite,
-        text: darkColors.dark,
-        background: darkColors.mainWhite,
-        iconColor: darkColors.dark,
-      },
-      disabled: {
-        border: darkColors.disabledWhite,
-        text: darkColors.dark,
-        background: darkColors.disabledWhite,
-        iconColor: darkColors.dark,
-      },
-      hover: {
-        border: darkColors.hoverWhite,
-        text: darkColors.dark,
-        background: darkColors.hoverWhite,
-        iconColor: darkColors.dark,
-      },
-      pressed: {
-        border: darkColors.pressedWhite,
-        text: darkColors.dark,
-        background: darkColors.pressedWhite,
-        iconColor: darkColors.dark,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Royal/6"].darkMode} 0%, ${themeColors["Color/Base/Royal/7"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: "none",
       },
     },
     secondary: {
       enabled: {
-        border: darkColors.mainRed,
-        text: darkColors.mainRed,
-        background: "transparent",
-        iconColor: darkColors.mainRed,
+        border: themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgContainer"].darkMode,
+        iconColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        shadow: "none",
       },
       disabled: {
-        border: darkColors.disabledInnerGrey,
-        text: darkColors.disabledInnerGrey,
-        background: darkColors.disabledBGGrey,
-        iconColor: darkColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
       },
       hover: {
-        border: darkColors.mainRed,
-        text: darkColors.mainRed,
-        background: darkColors.hoverRed,
-        iconColor: darkColors.mainRed,
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        shadow: "none",
       },
       pressed: {
-        border: darkColors.mainRed,
-        text: darkColors.dark,
-        background: darkColors.mainRed,
-        iconColor: darkColors.dark,
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        shadow: "none",
       },
     },
-    text: {
+    destructive: {
       enabled: {
-        border: "transparent",
-        text: darkColors.mainGrey,
-        background: "transparent",
-        iconColor: darkColors.mainGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/5"].darkMode} 0%, ${themeColors["Color/Base/Sunset/6"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px -2px 3px 0px #981701 inset`,
       },
       disabled: {
-        border: "transparent",
-        text: darkColors.disabledInnerGrey,
-        background: "transparent",
-        iconColor: darkColors.disabledInnerGrey,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
       },
       hover: {
-        border: darkColors.hoverGrey,
-        text: darkColors.mainGrey,
-        background: darkColors.hoverGrey,
-        iconColor: darkColors.mainGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/6"].darkMode} 0%, ${themeColors["Color/Base/Sunset/7"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: `0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px -2px 3px 0px #981701 inset`,
       },
       pressed: {
-        border: darkColors.pressedGrey,
-        text: darkColors.borderPressedGrey,
-        background: darkColors.pressedGrey,
-        iconColor: darkColors.borderPressedGrey,
+        border: themeColors["Color/Brand/Error/colorPrimaryBorder"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        background: `linear-gradient(180deg, ${themeColors["Color/Base/Sunset/6"].darkMode} 0%, ${themeColors["Color/Base/Sunset/7"].darkMode} 100%)`,
+        iconColor:
+          themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+        shadow: "none",
       },
     },
-    subAction: {
+    "primary-lighter": {
       enabled: {
-        border: darkColors.secondAction,
-        text: darkColors.mainWhite,
-        background: darkColors.secondAction,
-        iconColor: darkColors.mainWhite,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+        background: themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+        iconColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+        shadow: "none",
       },
       disabled: {
-        border: darkColors.disabledWhite,
-        text: darkColors.dark,
-        background: darkColors.disabledWhite,
-        iconColor: darkColors.dark,
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
       },
       hover: {
-        border: darkColors.secondActionHover,
-        text: darkColors.mainWhite,
-        background: darkColors.secondActionHover,
-        iconColor: darkColors.mainWhite,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
       },
       pressed: {
-        border: darkColors.secondActionActive,
-        text: darkColors.mainWhite,
-        background: darkColors.secondActionActive,
-        iconColor: darkColors.mainWhite,
+        border: themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+    },
+    "secondary-lighter": {
+      enabled: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        background: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+        iconColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+    },
+    "destructive-lighter": {
+      enabled: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+        background: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+        iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+    },
+    "primary-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+        background: "transparent",
+        iconColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Primary/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Primary/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+    },
+    "secondary-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        background: "transparent",
+        iconColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+    },
+    "destructive-ghost": {
+      enabled: {
+        border: "transparent",
+        text: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+        background: "transparent",
+        iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+        shadow: "none",
+      },
+      disabled: {
+        border: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        text: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        background: themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+        iconColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        shadow: "none",
+      },
+      hover: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
+      },
+      pressed: {
+        border: themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        text: themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        background:
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+        iconColor:
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
+        shadow: "none",
       },
     },
   },
@@ -825,9 +1619,7 @@ export const darkTheme: ThemeDefinitionProps = {
     footerDivider: darkColors.footerDivider,
   },
   pageHeader: {
-    background: darkColors.headerBG,
-    border: darkColors.headerBorder,
-    color: darkColors.headerColor,
+    color: lightV2.headerLabelText,
   },
   tooltip: {
     background: darkColors.tooltipBG,
@@ -837,10 +1629,85 @@ export const darkTheme: ThemeDefinitionProps = {
     labelColor: darkColors.labelColor,
   },
   checkbox: {
-    checkBoxBorder: darkColors.checkBoxBorder,
-    checkBoxColor: darkColors.mainGreen,
-    disabledBorder: darkColors.disabledInnerGrey,
-    disabledColor: darkColors.disabledBGGrey,
+    checkBoxBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    checkBoxBackground: themeColors["Color/Neutral/Bg/colorBgFields"].darkMode,
+    checkBoxHoverBorder:
+      themeColors["Color/Neutral/Border/colorBorderBold"].darkMode,
+    checkBoxHoverBackground:
+      themeColors["Color/Neutral/Bg/colorBgFields"].darkMode,
+    checkBoxFocusBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryBorder"].darkMode,
+    checkBoxFocusBackground:
+      themeColors["Color/Neutral/Bg/colorBgFields"].darkMode,
+    checkBoxFocusShadow: "0px 0px 0px 4px rgba(43, 100, 229, 0.30)",
+    checkBoxActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+    checkBoxActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+    checkBoxActiveCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    checkBoxActiveHoverCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    checkBoxActiveHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    checkBoxActiveHoverBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    checkBoxFocusActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    checkBoxFocusActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    checkBoxFocusActiveCheckboxColor:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    checkBoxFocusActiveHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    disabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    disabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+    disabledColor: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+  },
+  radioGroup: {
+    radioBorder: themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    radioBackground: themeColors["Color/Neutral/Bg/colorBgShell"].darkMode,
+    radioHoverBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    radioActiveBorder: themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+    radioActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+    radioActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    radioHoverActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    radioHoverBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    radioHoverActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    radioHoverActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryHover"].darkMode,
+    radioFocusBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    radioFocusBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    radioFocusCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    radioFocusActiveBorder:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    radioFocusActiveBackground:
+      themeColors["Color/Brand/Primary/colorPrimaryActive"].darkMode,
+    radioFocusActiveCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    radioFocusShadow: themeShadows["focusStyle-Light"],
+    radioDisabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    radioDisabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+    radioDisabledCheck:
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+    labelColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    subLabelColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+    descriptionColor:
+      themeColors["Color/Neutral/Text/colorTextDescription"].darkMode,
   },
   iconButton: {
     buttonBG: darkColors.iconButtonBG,
@@ -850,12 +1717,29 @@ export const darkTheme: ThemeDefinitionProps = {
     color: darkColors.iconButtonColor,
   },
   dataTable: {
-    border: darkColors.borderColor,
-    disabledBorder: darkColors.disabledGrey,
-    disabledBG: darkColors.disabledBGGrey,
-    selected: darkColors.mainWhite,
-    deletedDisabled: darkColors.mainRed,
-    hoverColor: darkColors.hoverGrey,
+    border: themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    disabledBorder:
+      themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    disabledBG: "transparent",
+    selected: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    itemDisabled: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+    itemColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    hoverColor: themeColors["Color/Brand/Control/colorBgActive"].darkMode,
+    titleColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+    actionButton: {
+      border: lightV2.plainIconButtonBorder,
+      background: lightV2.plainIconButtonBG,
+      iconColor: lightV2.plainIconButtonColor,
+      hoverBorder: lightV2.plainIconButtonBorder,
+      hoverBackground: lightV2.plainIconButtonBG,
+      hoverIconColor: lightV2.plainIconButtonColor,
+      activeBorder: lightV2.plainIconButtonBorder,
+      activeBackground: lightV2.plainIconButtonBG,
+      activeIconColor: lightV2.plainIconButtonColor,
+      disabledBackground: "transparent",
+      disabledBorder: lightV2.disabledSecondary,
+      disabledIconColor: lightV2.disabledSecondaryText,
+    },
   },
   backLink: {
     color: darkColors.backLinkColor,
@@ -875,14 +1759,11 @@ export const darkTheme: ThemeDefinitionProps = {
     disabledText: darkColors.disabledBGGrey,
   },
   breadcrumbs: {
-    border: darkColors.borderColor,
-    linksColor: darkColors.mainGrey,
-    textColor: darkColors.mainGrey,
-    backgroundColor: darkColors.sectionOneBG,
-    backButton: {
-      border: darkColors.borderColor,
-      backgroundColor: darkColors.sectionOneBG,
-    },
+    elementsColor:
+      themeColors["Color/Neutral/Text/colorTextDescription"].darkMode,
+    selectedColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    hoverBG: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+    hoverColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
   },
   actionsList: {
     containerBorderColor: darkColors.bulletColor,
@@ -894,9 +1775,8 @@ export const darkTheme: ThemeDefinitionProps = {
     titleColor: darkColors.defaultFontColor,
   },
   screenTitle: {
-    border: darkColors.borderColor,
-    subtitleColor: darkColors.hoverGrey,
-    iconColor: darkColors.mainGrey,
+    subtitleColor: themeColors["Color/Neutral/Text/colorTextTertiary"].darkMode,
+    titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
   },
   modalBox: {
     closeColor: darkColors.modalCloseColor,
@@ -924,13 +1804,21 @@ export const darkTheme: ThemeDefinitionProps = {
     disabledOnBackground: darkColors.disabledOnSwitchBG,
   },
   dropdownSelector: {
-    hoverText: darkColors.dark,
-    backgroundColor: darkColors.sectionOneBG,
-    hoverBG: darkColors.mainGrey,
-    selectedBGColor: darkColors.bulletColor,
-    selectedTextColor: darkColors.mainWhite,
-    optionTextColor: darkColors.defaultFontColor,
-    disabledText: darkColors.disabledGrey,
+    hoverText: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    backgroundColor: "transparent",
+    hoverBG: themeColors["Color/Brand/Control/colorBgHover"].darkMode,
+    selectedBGColor: themeColors["Color/Brand/Control/colorBgActive"].darkMode,
+    selectedTextColor:
+      themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+    optionTextColor:
+      themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    disabledText: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+    border: themeColors["Color/Neutral/Border/colorBorderMinimal"].darkMode,
+    dangerText: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+    dangerHoverBG:
+      themeColors["Color/Brand/Error/colorPrimaryBgHover"].darkMode,
+    dangerHoverText:
+      themeColors["Color/Brand/Error/colorPrimaryTextHover"].darkMode,
   },
   readBox: {
     borderColor: darkColors.headerBorder,
@@ -974,31 +1862,42 @@ export const darkTheme: ThemeDefinitionProps = {
   tabs: {
     vertical: {
       buttons: {
-        hoverLabelColor: darkColors.mainWhite,
-        hoverBackground: "transparent",
-        backgroundColor: darkColors.boxBackground,
-        labelColor: darkColors.defaultFontColor,
-        disabledBackgroundColor: darkColors.disabledBGGrey,
-        disabledColor: darkColors.disabledInnerGrey,
-        selectedBackground: darkColors.iconButtonBG,
-        selectedLabelColor: darkColors.dark,
+        hoverLabelColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        hoverBackground:
+          themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+        backgroundColor: "transparent",
+        labelColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+        disabledBackgroundColor: "transparent",
+        disabledColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+        selectedBackground: "transparent",
+        selectedLabelColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
       },
-      backgroundColor: darkColors.boxBackground,
-      borders: darkColors.borderColor,
+      backgroundColor: "transparent",
+      borders: "transparent",
     },
     horizontal: {
       buttons: {
-        hoverLabelColor: darkColors.mainWhite,
-        hoverBackground: "transparent",
+        hoverLabelColor:
+          themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+        hoverBackground:
+          themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
         backgroundColor: "transparent",
-        labelColor: darkColors.defaultFontColor,
+        labelColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
         disabledBackgroundColor: "transparent",
-        disabledColor: darkColors.disabledInnerGrey,
+        disabledColor:
+          themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
         selectedBackground: "transparent",
-        selectedLabelColor: darkColors.mainWhite,
+        selectedLabelColor:
+          themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
       },
-      backgroundColor: darkColors.boxBackground,
-      selectedIndicatorColor: darkColors.mainWhite,
+      backgroundColor: "transparent",
+      selectedIndicatorColor:
+        themeColors["Color/Brand/Primary/colorPrimaryBorder"].darkMode,
+      bottomBorder:
+        themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
     },
   },
   codeEditor: {
@@ -1016,35 +1915,20 @@ export const darkTheme: ThemeDefinitionProps = {
     codeEditorRegexp: darkColors.codeEditorRegexp,
   },
   tag: {
-    alert: {
-      background: darkColors.mainRed,
-      label: darkColors.mainWhite,
-      deleteColor: darkColors.mainWhite,
-    },
-    default: {
-      background: darkColors.mainGrey,
-      label: darkColors.dark,
-      deleteColor: darkColors.dark,
+    primary: {
+      background: themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+      label: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      deleteColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
     },
     secondary: {
-      background: darkColors.secondAction,
-      label: darkColors.mainWhite,
-      deleteColor: darkColors.mainWhite,
+      background: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      label: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+      deleteColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
     },
-    warn: {
-      background: darkColors.mainOrange,
-      label: darkColors.dark,
-      deleteColor: darkColors.dark,
-    },
-    ok: {
-      background: darkColors.mainGreen,
-      label: darkColors.dark,
-      deleteColor: darkColors.dark,
-    },
-    grey: {
-      background: darkColors.disabledBGGrey,
-      label: darkColors.mainWhite,
-      deleteColor: darkColors.mainWhite,
+    destructive: {
+      background: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      label: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+      deleteColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
     },
   },
   snackbar: {
@@ -1087,30 +1971,30 @@ export const darkTheme: ThemeDefinitionProps = {
       textColor: darkColors.dark,
     },
   },
-  badge: {
-    alert: {
-      backgroundColor: darkColors.mainRed,
-      textColor: darkColors.mainWhite,
+  notificationCount: {
+    none: {
+      backgroundColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      textColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
     },
-    default: {
-      backgroundColor: darkColors.mainGrey,
-      textColor: darkColors.dark,
+    info: {
+      backgroundColor:
+        themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+      textColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
     },
-    secondary: {
-      backgroundColor: darkColors.secondAction,
-      textColor: darkColors.mainWhite,
+    success: {
+      backgroundColor:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].darkMode,
+      textColor: themeColors["Color/Brand/Success/colorPrimaryText"].darkMode,
     },
-    warn: {
-      backgroundColor: darkColors.mainOrange,
-      textColor: darkColors.dark,
+    warning: {
+      backgroundColor:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].darkMode,
+      textColor: themeColors["Color/Brand/Warning/colorPrimaryText"].darkMode,
     },
-    ok: {
-      backgroundColor: darkColors.mainGreen,
-      textColor: darkColors.dark,
-    },
-    grey: {
-      backgroundColor: darkColors.disabledBGGrey,
-      textColor: darkColors.mainWhite,
+    danger: {
+      backgroundColor: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      textColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
     },
   },
   wizard: {
@@ -1133,5 +2017,213 @@ export const darkTheme: ThemeDefinitionProps = {
     railBG: darkColors.footerDivider,
     disabledRail: darkColors.disabledSwitchBG,
     disabledBullet: darkColors.disabledSliderBullet,
+  },
+  pill: {
+    default: {
+      labelColor: themeColors["Color/Brand/Neutral/colorPrimary"].darkMode,
+      bgColor: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      borderColor: themeColors["Color/Brand/Neutral/colorPrimary"].darkMode,
+    },
+    secondary: {
+      labelColor: themeColors["Color/Brand/Error/colorPrimary"].darkMode,
+      bgColor: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      borderColor: themeColors["Color/Brand/Error/colorPrimary"].darkMode,
+    },
+    current: {
+      labelColor: themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+      bgColor: themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+      borderColor: themeColors["Color/Brand/Primary/colorPrimary"].darkMode,
+    },
+  },
+  buttonGroup: {
+    border: themeColors["Color/Neutral/Border/colorBorderSubtle"].darkMode,
+    labelColor: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+    activeBackground:
+      themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+    activeLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+    hoverBackground:
+      themeColors["Color/Brand/Neutral/colorPrimaryBgHover"].darkMode,
+    hoverLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryTextHover"].darkMode,
+    disabledLabelColor:
+      themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+    disabledBackground:
+      themeColors["Color/Neutral/Bg/colorBgDisabled"].darkMode,
+    background: themeColors["Color/Neutral/Bg/colorBgContainer"].darkMode,
+    secondaryBackground:
+      themeColors["Color/Neutral/Bg/colorBgContainer"].darkMode,
+    secondaryLabelColor:
+      themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+    selectedBackground:
+      themeColors["Color/Brand/Control/colorBgActive"].darkMode,
+    selectedLabelColor:
+      themeColors["Color/Brand/Info/colorPrimaryActive"].darkMode,
+  },
+  dropdownOptions: {
+    optionLabel: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+    optionBG: "transparent",
+    hoverOptionBG: themeColors["Color/Brand/Control/colorBgHover"].darkMode,
+    activeOptionBG: themeColors["Color/Brand/Control/colorBgHover"].darkMode,
+    dangerLabel: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+    disabledLabel: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+  },
+  boxedIcon: {
+    iconColor: themeColors["Color/Neutral/Icon/colorIcon"].darkMode,
+    bgColor: themeColors["Color/Neutral/Bg/colorBgSections"].darkMode,
+  },
+  badge: {
+    none: {
+      minimalColor:
+        themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+      subtleBG: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      boldLabel: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+    },
+    info: {
+      minimalColor:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      subtleBG: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Brand/Primary/colorPrimaryBg"].darkMode,
+      boldLabel: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+    },
+    success: {
+      minimalColor:
+        themeColors["Color/Brand/Success/colorPrimaryText"].darkMode,
+      subtleBG: themeColors["Color/Brand/Success/colorPrimaryText"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Brand/Success/colorPrimaryBg"].darkMode,
+      boldLabel: themeColors["Color/Brand/Success/colorPrimaryText"].darkMode,
+    },
+    warning: {
+      minimalColor:
+        themeColors["Color/Brand/Warning/colorPrimaryText"].darkMode,
+      subtleBG: themeColors["Color/Brand/Warning/colorPrimaryText"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Brand/Warning/colorPrimaryBg"].darkMode,
+      boldLabel: themeColors["Color/Brand/Warning/colorPrimaryText"].darkMode,
+    },
+    danger: {
+      minimalColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+      subtleBG: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      boldLabel: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+    },
+    purple: {
+      minimalColor: themeColors["Color/Base/Purple/6"].darkMode,
+      subtleBG: themeColors["Color/Base/Purple/6"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Base/Purple/1"].darkMode,
+      boldLabel: themeColors["Color/Base/Purple/6"].darkMode,
+    },
+    rose: {
+      minimalColor: themeColors["Color/Base/Rose/6"].darkMode,
+      subtleBG: themeColors["Color/Base/Rose/6"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Base/Rose/1"].darkMode,
+      boldLabel: themeColors["Color/Base/Rose/6"].darkMode,
+    },
+    scooter: {
+      minimalColor: themeColors["Color/Base/Scooter/6"].darkMode,
+      subtleBG: themeColors["Color/Base/Scooter/6"].darkMode,
+      subtleLabel:
+        themeColors["Color/Neutral/Text/colorTextLightSolid"].darkMode,
+      boldBG: themeColors["Color/Base/Scooter/1"].darkMode,
+      boldLabel: themeColors["Color/Base/Scooter/6"].darkMode,
+    },
+    disabled: {
+      minimalColor:
+        themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+      subtleBG: themeColors["Color/Brand/Control/colorBgHover"].darkMode,
+      subtleLabel: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+      boldBG: themeColors["Color/Brand/Control/colorBgHover"].darkMode,
+      boldLabel: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
+    },
+  },
+  notificationAlert: {
+    danger: {
+      highContrastBG: themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Error/colorPrimaryBg"].darkMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].darkMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Error/colorPrimaryBorder"].darkMode,
+      actionColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      iconColor: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    },
+    success: {
+      highContrastBG:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].darkMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Success/colorPrimaryBg"].darkMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].darkMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Success/colorPrimaryBorder"].darkMode,
+      actionColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      iconColor: themeColors["Color/Brand/Success/colorPrimaryBorder"].darkMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    },
+    warning: {
+      highContrastBG:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].darkMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Warning/colorPrimaryBg"].darkMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].darkMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Warning/colorPrimaryBorder"].darkMode,
+      actionColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      iconColor: themeColors["Color/Brand/Warning/colorPrimaryBorder"].darkMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    },
+    information: {
+      highContrastBG: themeColors["Color/Brand/Info/colorPrimaryBg"].darkMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Info/colorPrimaryBg"].darkMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].darkMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      actionColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      iconColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    },
+    neutral: {
+      highContrastBG:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      highContrastBorder:
+        themeColors["Color/Brand/Neutral/colorPrimaryBg"].darkMode,
+      minimalContrastBG:
+        themeColors["Color/Neutral/Bg/colorBgElevated"].darkMode,
+      minimalContrastBorder:
+        themeColors["Color/Brand/Neutral/colorPrimaryBorder"].darkMode,
+      actionColor: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+      iconColor: themeColors["Color/Brand/Neutral/colorPrimaryBorder"].darkMode,
+      contentColor: themeColors["Color/Neutral/Text/colorTextLabel"].darkMode,
+      titleColor: themeColors["Color/Neutral/Text/colorTextHeading"].darkMode,
+    },
+  },
+  linkButton: {
+    primary: themeColors["Color/Brand/Primary/colorPrimaryText"].darkMode,
+    neutral: themeColors["Color/Brand/Neutral/colorPrimaryText"].darkMode,
+    destructive: themeColors["Color/Brand/Error/colorPrimaryText"].darkMode,
+    disabled: themeColors["Color/Neutral/Text/colorTextDisabled"].darkMode,
   },
 };

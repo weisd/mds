@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import React from "react";
-import { SelectorType } from "../../global/global.types";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme, SelectOption } from "../../global/global.types";
 
 export interface DropdownSelectorProps {
   id: string;
-  options: SelectorType[];
+  options: SelectOption[];
   selectedOption?: string;
   onSelect: (
     value: string,
@@ -32,11 +32,13 @@ export interface DropdownSelectorProps {
   anchorEl?: (EventTarget & HTMLElement) | null;
   anchorOrigin?: "start" | "end";
   useAnchorWidth?: boolean;
+  forSelectInput?: boolean;
 }
 
 export interface DropDownBlockProps {
   useAnchorWidth: boolean;
-  sx: CSSObject;
+  forSelectInput: boolean;
+  sx: OverrideTheme;
 }
 
 export interface DropdownItemProps {

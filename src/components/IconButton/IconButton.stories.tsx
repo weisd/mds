@@ -17,13 +17,11 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import IconButton from "./IconButton";
-import { IconButtonProps } from "./IconButton.types";
-
-import TestIcon from "../../utils/TestIcon";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import DownloadIcon from "../Icons/DownloadIcon";
+import DownloadIcon from "../Icons/NewDesignIcons/DownloadIcon";
+import IconButton from "./IconButton";
+import { IconButtonProps } from "./IconButton.types";
 
 export default {
   title: "MDS/Forms/IconButton",
@@ -46,21 +44,16 @@ SmallButton.args = {
   size: "small",
 };
 
-export const MediumButton = Template.bind({});
-MediumButton.args = {
-  disabled: false,
-};
-
 export const LargeButton = Template.bind({});
 LargeButton.args = {
   disabled: false,
   size: "large",
 };
 
-export const CustomSize = Template.bind({});
-CustomSize.args = {
+export const ButtonVariant = Template.bind({});
+ButtonVariant.args = {
   disabled: false,
-  size: "100px",
+  variant: "destructive-lighter",
 };
 
 export const Disabled = Template.bind({});

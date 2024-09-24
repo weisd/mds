@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { useEffect, useState } from "react";
+import { addons } from "@storybook/preview-api";
 import { DARK_MODE_EVENT_NAME } from "storybook-dark-mode";
-import { addons } from "@storybook/addons";
 
 import ThemeHandler from "../components/ThemeHandler/ThemeHandler";
 
@@ -27,13 +27,11 @@ interface IStoryThemeProvider {
 const channel = addons.getChannel();
 
 const StoryThemeProvider = ({ children }: IStoryThemeProvider) => {
-  const [isDark, setDark] = useState(false);
+  const [isDark, setIsDark] = useState<boolean>(false);
 
   useEffect(() => {
-    // listen to DARK_MODE event
-    channel.on(DARK_MODE_EVENT_NAME, setDark);
-    return () => channel.off(DARK_MODE_EVENT_NAME, setDark);
-  }, [channel, setDark]);
+    channel.on(DARK_MODE_EVENT_NAME, setIsDark);
+  }, []);
 
   return <ThemeHandler darkMode={isDark}>{children}</ThemeHandler>;
 };

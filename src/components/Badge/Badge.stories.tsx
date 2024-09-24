@@ -1,5 +1,5 @@
 // This file is part of MinIO Design System
-// Copyright (c) 2023 MinIO, Inc.
+// Copyright (c) 2024 MinIO, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -17,12 +17,12 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import Box from "../Box/Box";
+import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import PlusIcon from "../Icons/NewDesignIcons/PlusIcon";
 import Badge from "./Badge";
 import { BadgeProps } from "./Badge.types";
-
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import DownloadIcon from "../Icons/DownloadIcon";
 
 export default {
   title: "MDS/Information/Badge",
@@ -30,49 +30,198 @@ export default {
   argTypes: {},
 } as Meta<typeof Badge>;
 
-const Template: Story<BadgeProps> = (args) => (
-  <StoryThemeProvider>
-    <GlobalStyles />
-    <Badge {...args} onClick={() => alert("You clicked me!")}>
-      <DownloadIcon />
-    </Badge>
-  </StoryThemeProvider>
-);
+const Template: Story<BadgeProps> = ({ label, id, sx, color }) => {
+  return (
+    <StoryThemeProvider>
+      <GlobalStyles />
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        <Badge label={label} color={color} id={id} sx={sx} />
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          badgeStyle={"minimal"}
+          sx={sx}
+        >
+          {" "}
+          Style Minimal
+        </Badge>
+
+        <Badge label={label} color={color} id={id} badgeStyle={"bold"} sx={sx}>
+          {" "}
+          Style Bold
+        </Badge>
+
+        <Badge label={label} color={color} id={id} sx={sx} icon={<PlusIcon />}>
+          {" "}
+          With an Icon
+        </Badge>
+
+        <Badge label={label} color={color} id={id} sx={sx} icon={<PlusIcon />}>
+          {" "}
+          Minimal an Icon
+        </Badge>
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          sx={sx}
+          icon={<PlusIcon />}
+          badgeStyle={"bold"}
+        >
+          {" "}
+          Bold an Icon
+        </Badge>
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"subtle"}
+          icon={true}
+        >
+          {" "}
+          Default Icon
+        </Badge>
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"subtle"}
+          size={"small"}
+        >
+          {" "}
+          Small Subtle
+        </Badge>
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"bold"}
+          size={"small"}
+        >
+          {" "}
+          Small Bold
+        </Badge>
+
+        <Badge
+          label={label}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"minimal"}
+          size={"small"}
+        >
+          {" "}
+          Small Minimal
+        </Badge>
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"bold"}
+          isNumber
+        />
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"bold"}
+          size={"small"}
+          isNumber
+        />
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"subtle"}
+          isNumber
+        />
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"subtle"}
+          size={"small"}
+          isNumber
+        />
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"minimal"}
+          isNumber
+        />
+
+        <Badge
+          label={"9"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"minimal"}
+          size={"small"}
+          isNumber
+        />
+
+        <Badge
+          label={"Dot Icon"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"subtle"}
+          size={"normal"}
+          icon={"dot"}
+        />
+
+        <Badge
+          label={"Dot Icon"}
+          color={color}
+          id={id}
+          sx={sx}
+          badgeStyle={"minimal"}
+          size={"small"}
+          icon={"dot"}
+        />
+      </Box>
+    </StoryThemeProvider>
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {
-  badgeContent: 5,
+  label: "A Badge",
+  id: "Badge-test",
+  onDelete: () => {
+    alert("Clicked Delete Button!");
+  },
 };
 
-export const DotOnly = Template.bind({});
-DotOnly.args = {
-  badgeContent: 5,
-  dotOnly: true,
-};
-
-export const Warn = Template.bind({});
-Warn.args = { badgeContent: 5, color: "warn" };
-
-export const Secondary = Template.bind({});
-Secondary.args = {
-  badgeContent: 5,
-  color: "secondary",
-};
-
-export const Alert = Template.bind({});
-Alert.args = {
-  badgeContent: 5,
-  color: "alert",
-};
-
-export const Ok = Template.bind({});
-Ok.args = {
-  badgeContent: 5,
-  color: "ok",
-};
-
-export const Grey = Template.bind({});
-Grey.args = {
-  badgeContent: 5,
-  color: "grey",
+export const CustomStyles = Template.bind({});
+CustomStyles.args = {
+  label: "A Badge",
+  id: "Badge-test",
+  onDelete: () => {
+    alert("Clicked Delete Button!");
+  },
+  sx: {
+    backgroundColor: "#080",
+    color: "#ff0",
+  },
 };

@@ -14,24 +14,101 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC } from "react";
+import React from "react";
+import get from "lodash/get";
+import styled from "styled-components";
+
+import { lightV2 } from "../../global/themes";
+import CircleMinusIcon from "../Icons/NewDesignIcons/CircleMinusIcon";
+import CloudIcon from "../Icons/NewDesignIcons/CloudIcon";
+import DownloadIcon from "../Icons/NewDesignIcons/DownloadIcon";
+import EraserIcon from "../Icons/NewDesignIcons/EraserIcon";
+import EyeIcon from "../Icons/NewDesignIcons/EyeIcon";
+import PencilIcon from "../Icons/NewDesignIcons/PencilIcon";
+import ShareIcon from "../Icons/NewDesignIcons/ShareIcon";
+import ShieldEllipsisIcon from "../Icons/NewDesignIcons/ShieldEllipsisIcon";
+import SquareTerminalIcon from "../Icons/NewDesignIcons/SquareTerminalIcon";
+import TrashIcon from "../Icons/NewDesignIcons/TrashIcon";
 import Tooltip from "../Tooltip/Tooltip";
-import CloudIcon from "../Icons/CloudIcon";
-import ConsoleIcon from "../Icons/ConsoleIcon";
-import DisableIcon from "../Icons/DisableIcon";
-import FormatDriveIcon from "../Icons/FormatDriveIcon";
-import IAMPoliciesIcon from "../Icons/IAMPoliciesIcon";
-import PreviewIcon from "../Icons/PreviewIcon";
-import ShareIcon from "../Icons/ShareIcon";
-import EditIcon from "../Icons/EditIcon";
-import TrashIcon from "../Icons/TrashIcon";
-import DownloadIcon from "../Icons/DownloadIcon";
-import IconButton from "../IconButton/IconButton";
 import {
   actionsTypes,
   IActionButton,
   PredefinedActionTypes,
 } from "./DataTable.types";
+
+const TableActionCustomIcon = styled.button(({ theme }) => {
+  const buttonSize: number | string = 30;
+
+  return {
+    width: buttonSize,
+    height: buttonSize,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "100%",
+    border: `1px solid ${get(theme, `dataTable.actionButton.border`, lightV2.plainIconButtonBorder)}`,
+    position: "relative",
+    cursor: "pointer",
+    transitionDuration: "0.2s",
+    background: get(
+      theme,
+      `dataTable.actionButton.background`,
+      lightV2.plainIconButtonBG,
+    ),
+    "& svg": {
+      color: get(
+        theme,
+        `dataTable.actionButton.iconColor`,
+        lightV2.plainIconButtonColor,
+      ),
+      margin: "calc(25% - 2px)",
+    },
+    "&:hover:not(:disabled)": {
+      background: get(
+        theme,
+        `dataTable.actionButton.hoverBackground`,
+        lightV2.plainIconButtonBG,
+      ),
+      borderColor: get(
+        theme,
+        `dataTable.actionButton.hoverBorder`,
+        lightV2.plainIconButtonBorder,
+      ),
+    },
+    "&:active:not(:disabled)": {
+      background: get(
+        theme,
+        `dataTable.actionButton.activeBackground`,
+        lightV2.plainIconButtonBG,
+      ),
+      borderColor: get(
+        theme,
+        `dataTable.actionButton.activeBorder`,
+        lightV2.plainIconButtonBorder,
+      ),
+    },
+    "&:disabled": {
+      cursor: "not-allowed",
+      background: get(
+        theme,
+        `dataTable.actionButton.disabledBackground`,
+        "transparent",
+      ),
+      borderColor: get(
+        theme,
+        `dataTable.actionButton.disabledBorder`,
+        lightV2.disabledSecondary,
+      ),
+      "& svg": {
+        color: get(
+          theme,
+          `dataTable.actionButton.disabledIconColor`,
+          lightV2.disabledSecondaryText,
+        ),
+      },
+    },
+  };
+});
 
 export const isPredefinedAction = (val: any): val is PredefinedActionTypes =>
   actionsTypes.includes(val);
@@ -39,59 +116,51 @@ export const isPredefinedAction = (val: any): val is PredefinedActionTypes =>
 const defineIcon = (type: PredefinedActionTypes) => {
   switch (type) {
     case "view":
-      return <PreviewIcon />;
+      return <EyeIcon />;
     case "edit":
-      return <EditIcon />;
+      return <PencilIcon />;
     case "delete":
       return <TrashIcon />;
     case "description":
-      return <IAMPoliciesIcon />;
+      return <ShieldEllipsisIcon />;
     case "share":
       return <ShareIcon />;
     case "cloud":
       return <CloudIcon />;
     case "console":
-      return <ConsoleIcon />;
+      return <SquareTerminalIcon />;
     case "download":
       return <DownloadIcon />;
     case "disable":
-      return <DisableIcon />;
+      return <CircleMinusIcon />;
     case "format":
-      return <FormatDriveIcon />;
+      return <EraserIcon />;
     case "preview":
-      return <PreviewIcon />;
+      return <EyeIcon />;
   }
 
   return null;
 };
 
-const TableActionButton: FC<IActionButton> = ({
+const TableActionButton = <T,>({
   type,
   onClick,
   valueToSend,
-  idField,
-  sendOnlyId = false,
   disabled = false,
   tooltip,
-}) => {
-  const valueClick = sendOnlyId ? valueToSend[idField] : valueToSend;
-
+}: IActionButton<T>) => {
   const icon = isPredefinedAction(type) ? defineIcon(type) : type;
   let buttonElement = (
-    <IconButton
+    <TableActionCustomIcon
       type={"button"}
       aria-label={typeof type === "string" ? type : ""}
-      size={"30px"}
-      sx={{
-        margin: "0 8px",
-      }}
       disabled={disabled}
       onClick={
         onClick
           ? (e) => {
               e.stopPropagation();
               if (!disabled) {
-                onClick(valueClick);
+                onClick(valueToSend);
               } else {
                 e.preventDefault();
               }
@@ -100,7 +169,7 @@ const TableActionButton: FC<IActionButton> = ({
       }
     >
       {icon}
-    </IconButton>
+    </TableActionCustomIcon>
   );
 
   if (tooltip && tooltip !== "") {

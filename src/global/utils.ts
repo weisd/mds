@@ -14,9 +14,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { IBytesCalc } from "./global.types";
+import { DefaultTheme } from "styled-components";
+
+import { ColorVariant, IBytesCalc, OverrideTheme } from "./global.types";
+import { themeColors } from "./themeColors";
 
 export const breakPoints = { xs: 0, sm: 576, md: 768, lg: 992, xl: 1200 };
+export const paddingSizeVariants = {
+  sizeXXXS: 2,
+  sizeXXS: 4,
+  sizeXS: 8,
+  sizeSM: 12,
+  size: 16,
+  sizeMD: 20,
+  sizeLG: 24,
+  sizeXL: 32,
+  sizeXXL: 48,
+};
+export const radioVariants = {
+  borderRadiusXS: 2,
+  borderRadiusSM: 4,
+  borderRadius: 6,
+  borderRadiusLG: 12,
+  borderRadiusXLG: 16,
+};
+
 export const units = [
   "B",
   "KiB",
@@ -85,4 +107,37 @@ export const calculateBytes = (
   const finalUnit = units[i];
 
   return { total: unitParsed, unit: finalUnit };
+};
+
+export const getThemeColors = (
+  themeSubVar: string,
+): { [key: string]: string } => {
+  const returnItem: { [key: string]: string } = {};
+  const suVar = themeSubVar as keyof ColorVariant;
+
+  const colorKeys = Object.keys(themeColors);
+
+  colorKeys.forEach((key) => {
+    const currItem = themeColors[key];
+
+    if (currItem[suVar]) {
+      returnItem[key] = currItem[suVar];
+    }
+  });
+
+  return returnItem;
+};
+
+export const overridePropsParse = (
+  overrideValue: OverrideTheme,
+  theme: DefaultTheme,
+) => {
+  if (overrideValue) {
+    // Override is a function, we need to evaluate
+    if (overrideValue instanceof Function) {
+      return overrideValue(theme);
+    }
+
+    return overrideValue;
+  }
 };

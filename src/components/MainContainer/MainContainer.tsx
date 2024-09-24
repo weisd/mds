@@ -17,17 +17,18 @@
 import React, { cloneElement, FC } from "react";
 import get from "lodash/get";
 import styled from "styled-components";
+
+import { breakPoints, overridePropsParse } from "../../global/utils";
 import {
   CustomMainProps,
   MainContainerProps,
   ParentBoxProps,
 } from "./MainContainer.types";
-import { breakPoints } from "../../global/utils";
 
 const CustomMain = styled.main<CustomMainProps>(({ theme, horizontal }) => {
   return {
     flexGrow: 1,
-    height: !!horizontal ? "initial" : "100vh",
+    height: horizontal ? "initial" : "100vh",
     overflow: "auto",
     position: "relative",
     backgroundColor: get(theme, "bgColor", "#fff"),
@@ -36,7 +37,7 @@ const CustomMain = styled.main<CustomMainProps>(({ theme, horizontal }) => {
 });
 
 const ParentBox = styled.div<ParentBoxProps>(
-  ({ horizontal, mobileModeAuto, sx }) => {
+  ({ horizontal, mobileModeAuto, sx, theme }) => {
     let breakPoint = {};
 
     if (mobileModeAuto) {
@@ -49,9 +50,9 @@ const ParentBox = styled.div<ParentBoxProps>(
 
     return {
       display: "flex",
-      flexDirection: !!horizontal ? "column" : "row",
+      flexDirection: horizontal ? "column" : "row",
       ...breakPoint,
-      ...sx,
+      ...overridePropsParse(sx, theme),
     };
   },
 );

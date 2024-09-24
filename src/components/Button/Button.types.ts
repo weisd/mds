@@ -15,21 +15,37 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { MouseEventHandler, ReactNode } from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
+
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "destructive"
+  | "primary-lighter"
+  | "secondary-lighter"
+  | "destructive-lighter"
+  | "primary-ghost"
+  | "secondary-ghost"
+  | "destructive-ghost";
 
 export interface ButtonProps {
   id: string;
   name?: string;
   label?: string;
-  variant?: "regular" | "callAction" | "secondary" | "text" | "subAction";
+  variant?: ButtonVariant;
   icon?: ReactNode;
   iconLocation?: "start" | "end";
+  secondaryIcon?: ReactNode;
   fullWidth?: boolean;
   disabled?: boolean;
   collapseOnSmall?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   children?: ReactNode | string;
-  sx?: CSSObject;
+  compact?: boolean;
+  inButtonGroup?: boolean;
+  sx?: OverrideTheme;
+  isLoading?: boolean;
 }
 
 export interface ConstructProps {

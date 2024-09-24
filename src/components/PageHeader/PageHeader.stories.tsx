@@ -17,12 +17,11 @@
 import React, { Fragment } from "react";
 import { Meta, Story } from "@storybook/react";
 
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
+import { Button, GlobalStyles } from "../index";
 import PageHeader from "./PageHeader";
 import { PageHeaderProps } from "./PageHeader.types";
-
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import { Button, GlobalStyles } from "../index";
-import TestIcon from "../../utils/TestIcon";
 
 export default {
   title: "MDS/Layout/PageHeader",
@@ -30,10 +29,10 @@ export default {
   argTypes: {},
 } as Meta<typeof PageHeader>;
 
-const Template: Story<PageHeaderProps> = (args) => (
+const Template: Story<PageHeaderProps> = (args: PageHeaderProps) => (
   <StoryThemeProvider>
     <GlobalStyles />
-    <PageHeader {...args} />
+    <PageHeader id={"demo-page-header"} {...args} />
   </StoryThemeProvider>
 );
 
@@ -96,7 +95,7 @@ FullComponentsSet.args = {
         type={"text"}
         id={"test"}
         style={{
-          width: "500px",
+          width: "100%",
           borderRadius: 3,
           height: 30,
           border: "#E5E5E5 1px solid",
@@ -106,6 +105,8 @@ FullComponentsSet.args = {
   ),
   actions: (
     <Fragment>
+      <Button id={"test1"} icon={<TestIcon />} label={"with text"} />
+      <Button id={"test1"} icon={<TestIcon />} label={"with text"} />
       <Button id={"test1"} icon={<TestIcon />} />
       <Button id={"test2"} icon={<TestIcon />} />
       <Button id={"test3"} icon={<TestIcon />} />

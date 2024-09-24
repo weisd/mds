@@ -15,22 +15,25 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, HTMLAttributes } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { lightColors } from "../../global/themes";
+import { overridePropsParse, paddingSizeVariants } from "../../global/utils";
+import Box from "../Box/Box";
+import ChevronDownIcon from "../Icons/NewDesignIcons/ChevronDownIcon";
+import ChevronUpIcon from "../Icons/NewDesignIcons/ChevronUpIcon";
 import {
   AccordionContentProps,
   AccordionMainProps,
   AccordionProps,
 } from "./Accordion.types";
-import { lightColors } from "../../global/themes";
-import { ExpandCaret } from "../Icons";
-import CollapseCaret from "../Icons/CollapseCaret";
-import Box from "../Box/Box";
 
 const AccordionContainer = styled.div<AccordionMainProps>(({ theme, sx }) => ({
-  border: `1px solid ${get(theme, "borderColor", lightColors.borderColor)}`,
+  borderBottom: `1px solid ${get(theme, "borderColor", lightColors.borderColor)}`,
+
   borderRadius: 2,
-  ...sx,
+  ...overridePropsParse(sx, theme),
 }));
 
 const AccordionTitleBar = styled.div<HTMLAttributes<HTMLDivElement>>(
@@ -38,35 +41,43 @@ const AccordionTitleBar = styled.div<HTMLAttributes<HTMLDivElement>>(
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
-    fontWeight: "bold",
+    padding: `${paddingSizeVariants.sizeXXS}px 0`,
     cursor: "pointer",
     userSelect: "none",
+    fontSize: 14,
+    fontStyle: "normal",
+    fontWeight: 600,
+    lineHeight: "20px",
+    letterSpacing: "0.16px",
+    color: theme.colors["Color/Neutral/Text/colorTextHeading"],
     "&.disabled": {
       cursor: "not-allowed",
-      color: get(theme, "mutedText", lightColors.mutedText),
-      backgroundColor: get(
-        theme,
-        "signalColors.disabled",
-        lightColors.disabledGrey,
-      ),
-    },
-    "&:not(.disabled):hover": {
-      backgroundColor: get(theme, "boxBackground", lightColors.boxBackground),
+      color: theme.colors["Color/Neutral/Text/colorTextDisabled"],
     },
   }),
 );
 
 const AccordionContent = styled.div<AccordionContentProps>(
-  ({ theme, expanded }) => ({
-    borderTop: expanded
-      ? `1px solid ${get(theme, "borderColor", lightColors.borderColor)}`
-      : "0",
-    overflow: "hidden",
+  ({ theme, expanded, backgroundColor }) => ({
+    borderTop: 0,
+    display: "grid",
+    gridTemplateRows: expanded ? "1fr" : "0fr",
+    transition: "250ms grid-template-rows ease",
     "& .expandSubContainer": {
-      padding: 10,
-      marginTop: expanded ? 0 : "-100%",
-      transition: "all 0.2s",
+      overflow: "hidden",
+      padding: expanded ? paddingSizeVariants.sizeXS : 0,
+      transition: expanded ? "initial" : "250ms padding ease 150ms",
+      display: "flex",
+      flexDirection: "column",
+      gap: 16,
+      backgroundColor: backgroundColor
+        ? theme.colors["Color/Neutral/Bg/colorBgSections"]
+        : "initial",
+      color: theme.colors["Color/Neutral/Text/colorTextLabel"],
+      marginBottom: expanded ? paddingSizeVariants.sizeXS : 0,
+      "& > div:last-of-type": {
+        marginBottom: 36,
+      },
     },
   }),
 );
@@ -78,6 +89,7 @@ const Accordion: FC<AccordionProps> = ({
   onTitleClick,
   disabled,
   id,
+  contentBackgroundColor = false,
   sx,
 }) => {
   return (
@@ -87,9 +99,13 @@ const Accordion: FC<AccordionProps> = ({
         className={`accordionTitle ${disabled ? "disabled" : ""}`}
       >
         {title}
-        {expanded ? <CollapseCaret /> : <ExpandCaret />}
+        {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
       </AccordionTitleBar>
-      <AccordionContent className={`accordionContent`} expanded={expanded}>
+      <AccordionContent
+        className={`accordionContent`}
+        expanded={expanded}
+        backgroundColor={contentBackgroundColor}
+      >
         <Box className={"expandSubContainer"}>{children}</Box>
       </AccordionContent>
     </AccordionContainer>

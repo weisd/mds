@@ -15,16 +15,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
-import { CheckboxProps } from "./Checkbox.types";
+import styled from "styled-components";
+
+import FieldContainer from "../../global/FieldContainer";
+import { themeColors } from "../../global/themeColors";
+import { overridePropsParse } from "../../global/utils";
+import CheckIcon from "../Icons/NewDesignIcons/CheckIcon";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
 import InputLabel from "../InputLabel/InputLabel";
 import { InputLabelProps } from "../InputLabel/InputLabel.types";
-import FieldContainer from "../../global/FieldContainer";
 import Tooltip from "../Tooltip/Tooltip";
-import HelpIcon from "../Icons/HelpIcon";
+import { CheckboxProps } from "./Checkbox.types";
 
 const CheckboxItem = styled.label<InputLabelProps>(({ sx, theme }) => ({
+  position: "relative",
   "& input": {
     display: "none",
   },
@@ -33,35 +38,104 @@ const CheckboxItem = styled.label<InputLabelProps>(({ sx, theme }) => ({
     display: "block",
     width: 16,
     height: 16,
-    borderRadius: 2,
-    border: `1px solid ${get(theme, "checkbox.checkBoxBorder", "#c3c3c3")}`,
-    boxShadow: "inset 0px 1px 3px rgba(0,0,0,0.1)",
+    borderRadius: 4,
+    border: `1px solid ${get(theme, "checkbox.checkBoxBorder", themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode)}`,
+    backgroundColor: get(
+      theme,
+      "checkbox.checkBoxBackground",
+      themeColors["Color/Neutral/Bg/colorBgFields"].lightMode,
+    ),
+    boxSizing: "border-box" as const,
+    "&:hover:not(:disabled)": {
+      borderColor: get(
+        theme,
+        "checkbox.checkBoxHoverBorder",
+        themeColors["Color/Neutral/Border/colorBorderBold"].lightMode,
+      ),
+    },
+    "& .icon-overlay": {
+      display: "none",
+    },
   },
   "input:checked ~ .checkbox": {
+    borderColor: get(
+      theme,
+      "checkbox.checkBoxActiveBorder",
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    ),
+    backgroundColor: get(
+      theme,
+      "checkbox.checkBoxActiveColor",
+      themeColors["Color/Brand/Primary/colorPrimary"].lightMode,
+    ),
+    overflow: "hidden",
     "&:before": {
       content: "' '",
       position: "absolute",
       display: "block",
-      width: 12,
-      height: 12,
-      backgroundColor: get(theme, "checkbox.checkBoxColor", "#4CCB92"),
-      borderRadius: 1,
+      width: 16,
+      height: 16,
+      borderRadius: 4,
       top: "50%",
       left: "50%",
       transform: "translateX(-50%) translateY(-50%)",
     },
+    "& .icon-overlay": {
+      display: "block",
+    },
+    "&:hover": {
+      borderColor: get(
+        theme,
+        "checkbox.checkBoxActiveHoverBorder",
+        themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+      ),
+      backgroundColor: get(
+        theme,
+        "checkbox.checkBoxActiveHoverBackground",
+        themeColors["Color/Brand/Primary/colorPrimaryHover"].lightMode,
+      ),
+    },
   },
   "input:disabled": {
     "&  ~ .checkbox": {
-      border: `1px solid ${get(theme, "checkbox.disabledBorder", "#B4B4B4")}`,
-    },
-    "&:checked ~ .checkbox": {
-      "&:before": {
-        backgroundColor: get(theme, "checkbox.disabledColor", "#D5D7D7"),
+      border: `1px solid ${get(theme, "checkbox.disabledBorder", themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode)}`,
+      backgroundColor: get(
+        theme,
+        "checkbox.disabledBackground",
+        themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+      ),
+      "&:hover": {
+        borderColor: get(
+          theme,
+          "checkbox.disabledBorder",
+          themeColors["Color/Neutral/Border/colorBorderSubtle"].lightMode,
+        ),
+        backgroundColor: get(
+          theme,
+          "checkbox.disabledBackground",
+          themeColors["Color/Neutral/Bg/colorBgDisabled"].lightMode,
+        ),
       },
     },
   },
-  ...sx,
+  "& .icon-overlay": {
+    color: get(
+      theme,
+      "checkbox.checkBoxActiveCheckboxColor",
+      themeColors["Color/Neutral/Text/colorTextLightSolid"].lightMode,
+    ),
+    position: "absolute",
+    width: 14,
+    height: 14,
+    "&.disabled": {
+      color: get(
+        theme,
+        "checkbox.disabledColor",
+        themeColors["Color/Neutral/Text/colorTextDisabled"].lightMode,
+      ),
+    },
+  },
+  ...overridePropsParse(sx, theme),
 }));
 
 const Checkbox: FC<
@@ -75,6 +149,8 @@ const Checkbox: FC<
   className,
   helpTip,
   helpTipPlacement,
+  checked,
+  disabled,
   ...props
 }) => {
   return (
@@ -89,8 +165,16 @@ const Checkbox: FC<
       }}
     >
       <CheckboxItem sx={sx} onClick={(e) => e.stopPropagation()}>
-        <input type={"checkbox"} id={id} {...props} />
-        <span className={"checkbox"} />
+        <input
+          type={"checkbox"}
+          id={id}
+          checked={checked}
+          disabled={disabled}
+          {...props}
+        />
+        <span className={"checkbox"}>
+          <CheckIcon className={`${disabled ? "disabled" : ""} icon-overlay`} />
+        </span>
       </CheckboxItem>
       {label !== "" && (
         <InputLabel
@@ -107,7 +191,7 @@ const Checkbox: FC<
           {tooltip && tooltip !== "" && (
             <div className={"tooltipContainer"}>
               <Tooltip tooltip={tooltip} placement="top">
-                <HelpIcon />
+                <CircleHelpIcon />
               </Tooltip>
             </div>
           )}

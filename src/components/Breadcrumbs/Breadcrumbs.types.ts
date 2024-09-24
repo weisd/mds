@@ -14,16 +14,44 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from "react";
-import { CSSObject } from "styled-components";
+import React, { MouseEventHandler, ReactNode } from "react";
+
+import { OverrideTheme } from "../../global/global.types";
 
 export interface BreadcrumbsProps {
-  sx?: CSSObject;
-  children: React.ReactNode;
-  additionalOptions?: React.ReactNode;
-  goBackFunction: () => void;
+  sx?: OverrideTheme;
+  options: BreadcrumbsOption[];
+  goBackFunction?: () => void;
+  displayLastItems?: false | number;
+  onClickOption?: (to?: string) => void;
+  children?: React.ReactNode;
+  markCurrentItem?: boolean;
+}
+
+export interface BreadcrumbsOption {
+  label?: string;
+  to?: string;
+  onClick?: (to?: string) => void;
+  icon?: ReactNode;
+  subOptions?: BreadcrumbsOption[];
+  disabled?: boolean;
 }
 
 export interface BreadcrumbsContainerProps {
-  sx?: CSSObject;
+  sx?: OverrideTheme;
+}
+
+export interface BreadcrumbsOptionProps {
+  id: string;
+  name?: string;
+  label?: string;
+  icon?: ReactNode;
+  iconLocation?: "start" | "end";
+  disabled?: boolean;
+  current?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClickOption?: (to?: string) => void;
+  children?: ReactNode | string;
+  sx?: OverrideTheme;
+  subOptions?: BreadcrumbsOption[];
 }

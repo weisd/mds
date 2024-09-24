@@ -14,62 +14,108 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC } from "react";
+import React, { FC, HTMLAttributes } from "react";
+import get from "lodash/get";
+import styled from "styled-components";
+
+import { themeColors } from "../../global/themeColors";
+import { lightV2 } from "../../global/themes";
+import {
+  breakPoints,
+  overridePropsParse,
+  paddingSizeVariants,
+} from "../../global/utils";
+import Box from "../Box/Box";
+import BoxedIcon from "../BoxedIcon/BoxedIcon";
 import {
   ScreenTitleContainerProps,
   ScreenTitleProps,
 } from "./ScreenTitle.types";
-import { breakPoints } from "../../global/utils";
-import styled from "styled-components";
-import Box from "../Box/Box";
-import get from "lodash/get";
 
 const ScreenTitleContainer = styled.div<ScreenTitleContainerProps>(
-  ({ theme, sx, bottomBorder }) => ({
-    boxSizing: "border-box",
+  ({ theme, sx, subTitle, titleOptions }) => ({
+    boxSizing: "border-box" as const,
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
     "& .stContainer": {
       display: "flex",
-      alignItems: "center",
+      alignItems:
+        !subTitle && !titleOptions ? "center" : ("flex-start" as const),
       justifyContent: "space-between",
       padding: 8,
       width: "100%",
-      borderBottom: !bottomBorder
-        ? "none"
-        : `1px solid ${get(theme, `screenTitle.border`, "#E5E5E5")}`,
     },
     "& .headerBarIcon": {
-      color: get(theme, `screenTitle.iconColor`, "#000"),
+      color: get(theme, `screenTitle.iconColor`, lightV2.fontColor),
       "& .min-icon": {
         width: 44,
         height: 44,
       },
     },
     "& .headerBarSubheader": {
-      color: get(theme, `screenTitle.subtitleColor`, "#5B5C5C"),
+      color: get(theme, `screenTitle.subtitleColor`, lightV2.mutedText),
+      fontSize: 14,
     },
     "& .titleColumn": {
-      height: "auto",
+      height: !subTitle && !titleOptions ? "60px" : ("auto" as const),
       justifyContent: "center",
       display: "flex",
       flexFlow: "column",
       alignItems: "flex-start",
-      "& h1": {
-        fontSize: 20,
+      gap: 4 as const,
+      "& .titleElement": {
+        fontSize: 24,
+        fontWeight: 600,
+        fontStyle: "normal" as const,
+        lineHeight: "28px",
+        color: get(
+          theme,
+          `screenTitle.titleColor`,
+          themeColors["Color/Neutral/Text/colorText"].lightMode,
+        ),
+      },
+      "& .options": {
+        display: "flex",
+        gap: 28,
+        "& .title": {
+          fontSize: 12,
+          fontStyle: "normal",
+          fontWeight: 400,
+          lineHeight: "16px",
+          color: get(
+            theme,
+            `screenTitle.subtitleColor`,
+            themeColors["Color/Neutral/Text/colorTextTertiary"].lightMode,
+          ),
+        },
+        "& .value": {
+          fontSize: 12,
+          fontStyle: "normal",
+          fontWeight: 600,
+          lineHeight: "16px",
+          color: get(
+            theme,
+            `screenTitle.subtitleColor`,
+            themeColors["Color/Neutral/Text/colorTextLabel"].lightMode,
+          ),
+        },
       },
     },
     "& .leftItems": {
       display: "flex",
-      alignItems: "center",
-      gap: 12,
+      alignItems: "flex-start" as const,
+      gap: 16,
     },
     "& .rightItems": {
       display: "flex",
       alignItems: "center",
       gap: 10,
+    },
+    "& .optionElement": {
+      display: "flex",
+      gap: paddingSizeVariants.sizeXS,
     },
     [`@media (max-width: ${get(breakPoints, "md", 0)}px)`]: {
       "& .stContainer": {
@@ -85,36 +131,57 @@ const ScreenTitleContainer = styled.div<ScreenTitleContainerProps>(
       },
       "& .rightItems": {
         width: "100%",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+      },
+      "& .titleColumn": {
+        "& .options": {
+          flexDirection: "column",
+          gap: 4,
+        },
       },
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
-const ScreenTitle: FC<ScreenTitleProps> = ({
+const ScreenTitle: FC<ScreenTitleProps & HTMLAttributes<HTMLDivElement>> = ({
   icon,
   subTitle = "",
   title,
   actions,
-  bottomBorder = true,
   sx,
+  titleOptions,
+  ...restProps
 }) => {
   return (
     <ScreenTitleContainer
-      className={"screenTitle-container"}
+      className={"screen-title"}
       sx={sx}
-      bottomBorder={bottomBorder}
+      subTitle={subTitle}
+      titleOptions={titleOptions}
+      {...restProps}
     >
       <Box className={"stContainer"}>
         <Box className={"leftItems"}>
-          {icon ? <Box className={"headerBarIcon"}>{icon}</Box> : null}
+          {icon ? <BoxedIcon>{icon}</BoxedIcon> : null}
           <Box className={"titleColumn"}>
-            <h1 style={{ margin: 0 }}>{title}</h1>
-            <span className={"headerBarSubheader"}>{subTitle}</span>
+            <Box className={"titleElement"}>{title}</Box>
+            {subTitle && (
+              <span className={"headerBarSubheader"}>{subTitle}</span>
+            )}
+            {titleOptions && (
+              <Box className={"options"}>
+                {titleOptions?.map((optionItem) => (
+                  <Box className={"optionElement"}>
+                    <Box className={"title"}>{optionItem.title}</Box>
+                    <Box className={"value"}>{optionItem.value}</Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
         </Box>
-        <Box className={"rightItems"}>{actions}</Box>
+        {actions && <Box className={"rightItems"}>{actions}</Box>}
       </Box>
     </ScreenTitleContainer>
   );

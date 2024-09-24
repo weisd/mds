@@ -15,18 +15,26 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
 
 export interface ScreenTitleProps {
   icon: React.ReactNode;
   subTitle?: React.ReactNode;
   title: string;
-  actions: React.ReactNode;
-  sx?: CSSObject;
-  bottomBorder?: boolean;
+  actions?: React.ReactNode;
+  titleOptions?: ScreenTitleOptions[];
+  sx?: OverrideTheme;
 }
 
 export interface ScreenTitleContainerProps {
-  sx?: CSSObject;
+  subTitle?: React.ReactNode;
+  titleOptions?: ScreenTitleOptions[];
+  sx?: OverrideTheme;
   bottomBorder?: boolean;
+}
+
+export interface ScreenTitleOptions {
+  title: string;
+  value: string;
 }

@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { FC, useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { FC, useEffect, useState } from "react";
 import get from "lodash/get";
-import { MenuItemProps } from "../Menu.types";
-import Box from "../../Box/Box";
-import CircleIcon from "../../Icons/CircleIcon";
-import CollapseCaret from "../../Icons/CollapseCaret";
-import ExpandCaret from "../../Icons/ExpandCaret";
-import Tooltip from "../../Tooltip/Tooltip";
+import styled from "styled-components";
+
 import { lightColors } from "../../../global/themes";
+import Box from "../../Box/Box";
+import ChevronDownIcon from "../../Icons/NewDesignIcons/ChevronDownIcon";
+import ChevronUpIcon from "../../Icons/NewDesignIcons/ChevronUpIcon";
+import CircleIcon from "../../Icons/NewDesignIcons/CircleIcon";
+import Tooltip from "../../Tooltip/Tooltip";
+import { MenuItemProps } from "../Menu.types";
 
 const commonStyle = (theme: any) => ({
   display: "flex",
@@ -129,14 +130,14 @@ const OptionElement = styled.span(({ theme }) => ({
     "& svg.badgeIcon": {
       width: 8,
       height: 8,
-      fill: get(theme, "menu.vertical.notificationColor", lightColors.mainRed),
+      color: get(theme, "menu.vertical.notificationColor", lightColors.mainRed),
       position: "absolute",
       top: 4,
       right: 3,
     },
   },
   "& .labelContainer": {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "'Geist', sans-serif",
     fontSize: 14,
   },
 }));
@@ -219,7 +220,7 @@ const MenuItem: FC<MenuItemProps> = ({
           >
             <MenuOptionElement icon={icon} name={name} badge={!!badge} />
             <Box className={"statusArrow"}>
-              {open ? <CollapseCaret /> : <ExpandCaret />}
+              {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </Box>
           </MenuItemButton>
         </Tooltip>
@@ -251,7 +252,7 @@ const MenuItem: FC<MenuItemProps> = ({
   // Path is a link, we display an anchor instead of a button, default target _blank
   if (
     path?.match(
-      /^(https?:\/\/)?([\da-zа-я\.\-_]+)\.([a-zа-я\._]{2,6})([a-zа-я\d\.\-\?\/&=#%_]*)*/,
+      /^(https?:\/\/)?([\da-zа-я.\-_]+)\.([a-zа-я._]{2,6})([a-zа-я\d.\-?/&=#%_]*)*/,
     )
   ) {
     return (

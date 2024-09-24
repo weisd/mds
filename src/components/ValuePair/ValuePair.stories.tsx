@@ -17,9 +17,9 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import ValuePair from "./ValuePair";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import ValuePair from "./ValuePair";
 import { ValuePairProps } from "./ValuePair.types";
 
 export default {
@@ -31,7 +31,16 @@ export default {
 const Template: Story<ValuePairProps> = ({ sx, direction }) => (
   <StoryThemeProvider>
     <GlobalStyles />
-    <ValuePair label={"Label"} value={"Value"} sx={sx} direction={direction} />
+    <ValuePair
+      label={"State"}
+      value={
+        <span>
+          "Value"<a href={"#"}>Link</a>
+        </span>
+      }
+      sx={sx}
+      direction={direction}
+    />
   </StoryThemeProvider>
 );
 

@@ -15,51 +15,59 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, HTMLAttributes } from "react";
+import styled from "styled-components";
+
+import { overridePropsParse, paddingSizeVariants } from "../../global/utils";
 import Grid from "../Grid/Grid";
 import { SectionTitleProps } from "./SectionTitle.types";
-import styled from "styled-components";
-import get from "lodash/get";
 
 const SectionParent = styled.div<
   HTMLAttributes<HTMLDivElement> & SectionTitleProps
->(({ theme, separator, sx }) => ({
+>(({ theme, sx }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-start",
-  borderBottom: separator
-    ? `1px solid ${get(theme, "borderColor", "#eaeaea")}`
-    : "",
   gap: "10px",
-  ...sx,
+  ...overridePropsParse(sx, theme),
 }));
 
-const SectionTitle: FC<SectionTitleProps> = ({
+const SectionTitle: FC<SectionTitleProps & HTMLAttributes<HTMLDivElement>> = ({
   separator,
   icon,
   children,
   actions,
   sx,
+  ...restProps
 }) => {
   return (
     <SectionParent
-      className={"sectionTitle-container"}
+      className={"section-title"}
       separator={separator}
       sx={sx}
+      {...restProps}
     >
       <Grid
         item
         xs
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           flexGrow: 1,
           justifyContent: "flex-start",
           alignItems: "center",
-          marginLeft: "10px",
           "& svg": { marginRight: "10px" },
-        }}
+          "& .title": {
+            fontSize: 20,
+            fontStyle: "normal",
+            fontWeight: 600,
+            lineHeight: "28px",
+            margin: "12px 0",
+            color: theme.colors["Color/Neutral/Text/colorTextHeading"],
+            padding: `${paddingSizeVariants.sizeXXS}px 0`,
+          },
+        })}
       >
         {icon}
-        <h3>{children}</h3>
+        <span className={"title"}>{children}</span>
       </Grid>
       {actions && (
         <Grid

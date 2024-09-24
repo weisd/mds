@@ -17,9 +17,9 @@
 import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
 
-import RadioGroup from "./RadioGroup";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import RadioGroup from "./RadioGroup";
 import { RadioGroupProps } from "./RadioGroup.types";
 
 export default {
@@ -64,6 +64,19 @@ const Template: Story<RadioGroupProps> = ({
             extraValue: { value: "extravalue" },
           },
           { label: "Disabled Option", value: "option5", disabled: true },
+          {
+            label: "With SubLabel",
+            value: "option6",
+            extraValue: { value: "extravalue" },
+            subLabel: "(SubLabel)",
+          },
+          {
+            label: "With description",
+            value: "option7",
+            extraValue: { value: "extravalue" },
+            subLabel: "(SubLabel)",
+            description: "This is a description for the radio button",
+          },
         ]}
         name={"selectBox"}
         disableOptions={disableOptions}

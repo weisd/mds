@@ -14,15 +14,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { cloneElement, createElement, FC } from "react";
-import styled from "styled-components";
-import { TableComponentsExtraProps } from "./Table.types";
+import React, { FC } from "react";
 import get from "lodash/get";
+import styled from "styled-components";
+
 import { lightColors } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import { TableComponentsExtraProps } from "./Table.types";
 
 const TableHeadCellMain = styled.th<TableComponentsExtraProps>(
   ({ theme, sx }) => ({
-    fontFamily: "'Inter',sans-serif",
+    fontFamily: "'Geist',sans-serif",
     fontSize: 12,
     lineHeight: 1.43,
     display: "table-cell",
@@ -36,7 +38,7 @@ const TableHeadCellMain = styled.th<TableComponentsExtraProps>(
     padding: 16,
     fontWeight: "bold",
     color: get(theme, "secondaryText", lightColors.mainGrey),
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 

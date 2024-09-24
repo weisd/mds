@@ -17,11 +17,10 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import Link from "./Link";
-import { LinkProps } from "./Link.types";
-
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import Link from "./Link";
+import { LinkProps } from "./Link.types";
 
 export default {
   title: "MDS/Forms/Link",
@@ -38,6 +37,7 @@ const Template: Story<LinkProps> = (args) => (
         Link
       </Link>
       , to point to another page.
+      <Link className={"dark"}>This is a Dark Link</Link>
     </span>
   </StoryThemeProvider>
 );

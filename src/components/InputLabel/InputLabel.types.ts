@@ -15,14 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { HTMLAttributes, ReactNode } from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
 import { CommonHelpTipPlacement } from "../HelpTip/HelpTip.types";
 
 export interface InputLabelProps extends HTMLAttributes<HTMLLabelElement> {
   children?: ReactNode;
-  sx?: CSSObject;
+  sx?: OverrideTheme;
   noMinWidth?: boolean;
   htmlFor?: string;
   helpTip?: ReactNode;
   helpTipPlacement?: CommonHelpTipPlacement;
+  orientation?: "horizontal" | "vertical";
+  inputSizeMode?: "small" | "large";
 }

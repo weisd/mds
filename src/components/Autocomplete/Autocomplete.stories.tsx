@@ -14,20 +14,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
 
+import { SelectOption } from "../../global/global.types";
+import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
+import FormLayout from "../FormLayout/FormLayout";
+import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import DownloadIcon from "../Icons/NewDesignIcons/DownloadIcon";
+import UploadIcon from "../Icons/NewDesignIcons/UploadIcon";
+import UsersIcon from "../Icons/NewDesignIcons/UsersIcon";
 import Autocomplete from "./Autocomplete";
 import { AutocompleteProps } from "./Autocomplete.types";
-
-import StoryThemeProvider from "../../utils/StoryThemeProvider";
-import GlobalStyles from "../GlobalStyles/GlobalStyles";
-import FormLayout from "../FormLayout/FormLayout";
-import DownloadIcon from "../Icons/DownloadIcon";
-import UploadIcon from "../Icons/UploadIcon";
-import UsersIcon from "../Icons/UsersIcon";
-import { SelectorType } from "../../global/global.types";
-import TestIcon from "../../utils/TestIcon";
 
 export default {
   title: "MDS/Forms/Autocomplete",
@@ -42,13 +41,12 @@ const Template: Story<AutocompleteProps> = ({
   disabled,
   options,
   placeholder,
-  displayDropArrow,
 }) => {
   const [AutocompleteedValue, setAutocompleteedValue] = useState<string>(
     placeholder ? "" : "value1",
   );
 
-  let useOpts: SelectorType[] = [
+  let useOpts: SelectOption[] = [
     { label: "Option 1", value: "value1" },
     { label: "Option 2", value: "value2" },
     {
@@ -87,7 +85,26 @@ const Template: Story<AutocompleteProps> = ({
           tooltip={tooltip}
           disabled={disabled}
           placeholder={placeholder}
-          displayDropArrow={displayDropArrow}
+        />
+
+        <Autocomplete
+          id={"story-Autocomplete-small"}
+          options={useOpts}
+          value={AutocompleteedValue}
+          onChange={(newValue, extraValue) => {
+            setAutocompleteedValue(newValue);
+
+            console.log(extraValue);
+            if (extraValue) {
+              alert(`Extra Value ${JSON.stringify(extraValue)}`);
+            }
+          }}
+          label={label}
+          required={required}
+          tooltip={tooltip}
+          disabled={disabled}
+          placeholder={placeholder}
+          sizeMode={"small"}
         />
       </FormLayout>
     </StoryThemeProvider>
@@ -182,29 +199,6 @@ WithPlaceholder.args = {
     },
     { label: "No Extra Value", value: "value4", icon: <UsersIcon /> },
   ],
-};
-
-export const NoDropArrow = Template.bind({});
-NoDropArrow.args = {
-  options: [
-    {
-      label: "Option 1",
-      value: "value1",
-      extraValue: { anotherVar: "test1" },
-    },
-    {
-      label: "Option 2",
-      value: "value2",
-      extraValue: { anotherVar: "test2" },
-    },
-    {
-      label: "Option 3",
-      value: "value3",
-      extraValue: { anotherVar: "test3" },
-    },
-    { label: "No Extra Value", value: "value4", icon: <UsersIcon /> },
-  ],
-  displayDropArrow: false,
 };
 
 export const IndicatorInLabel = Template.bind({});

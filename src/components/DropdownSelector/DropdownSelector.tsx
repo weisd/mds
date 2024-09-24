@@ -15,34 +15,42 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, useEffect, useState } from "react";
-import styled, { CSSObject } from "styled-components";
-import debounce from "lodash/debounce";
 import { createPortal } from "react-dom";
+import debounce from "lodash/debounce";
+import get from "lodash/get";
+import styled, { CSSObject } from "styled-components";
+
+import { useArrowKeys, useEnterKey, useEscapeKey } from "../../global/hooks";
+import SelectorContainer from "../../global/SelectorContainer";
+import { themeColors, themeShadows } from "../../global/themeColors";
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse, radioVariants } from "../../global/utils";
+import Box from "../Box/Box";
 import {
   DropDownBlockProps,
   DropdownItemProps,
   DropdownSelectorProps,
 } from "./DropdownSelector.types";
-import get from "lodash/get";
-import { useArrowKeys, useEnterKey, useEscapeKey } from "../../global/hooks";
-import SelectorContainer from "../../global/SelectorContainer";
-import Box from "../Box/Box";
 
 const DropdownBlock = styled.div<DropDownBlockProps>(
-  ({ theme, sx, useAnchorWidth }) => ({
+  ({ theme, sx, useAnchorWidth, forSelectInput }) => ({
     position: "absolute",
     display: "grid",
     gridTemplateColumns: "100%",
-    backgroundColor: get(theme, "dropdownSelector.backgroundColor", "#fff"),
-    border: `1px solid ${get(theme, "borderColor", "#E2E2E2")}`,
-    padding: "10px 0",
-    maxHeight: 450,
-    minWidth: useAnchorWidth ? 150 : 0,
+    backgroundColor: get(
+      theme,
+      "dropdownSelector.backgroundColor",
+      lightV2.white,
+    ),
+    padding: 8,
+    minWidth: useAnchorWidth ? 160 : 0,
     overflowX: "hidden",
     overflowY: "auto",
-    borderRadius: 4,
-    boxShadow:
-      "rgba(0, 0, 0, 0.2) 0px 11px 15px -7px, rgba(0, 0, 0, 0.14) 0px 24px 38px 3px, rgba(0, 0, 0, 0.12) 0px 9px 46px 8px",
+    borderRadius: radioVariants.borderRadiusSM,
+    border: forSelectInput
+      ? 0
+      : `1px solid ${get(theme, "dropdownSelector.border", lightV2.disabledGrey)}`,
+    boxShadow: themeShadows["boxShadow-03"],
     "& ul": {
       padding: 0,
       margin: 0,
@@ -50,16 +58,16 @@ const DropdownBlock = styled.div<DropDownBlockProps>(
       flexDirection: "column",
       width: "100%",
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
 const DropdownItem = styled.div<
   DropdownItemProps & React.HTMLAttributes<HTMLDivElement>
->(({ theme, icon, label, indicator }) => {
+>(({ theme, icon, indicator }) => {
   let gridColumns = "";
 
-  if (!!icon) {
+  if (icon) {
     gridColumns += "16px ";
   }
 
@@ -74,13 +82,17 @@ const DropdownItem = styled.div<
     listStyle: "none",
     width: "100%",
     color: get(theme, "dropdownSelector.optionTextColor", "#000"),
-    padding: "6px 15px",
+    padding: "6px 10px",
     fontSize: 14,
+    fontWeight: 400,
+    lineHeight: "18px",
+    letterSpacing: "0.16px",
     userSelect: "none",
     alignItems: "center",
     justifyContent: "flex-start",
     gap: 10,
     whiteSpace: "nowrap",
+    borderRadius: radioVariants.borderRadiusSM,
     display: "grid",
     gridTemplateColumns: gridColumns,
     "& svg": {
@@ -110,6 +122,25 @@ const DropdownItem = styled.div<
         color: get(theme, "dropdownSelector.disabledText", "#E6EBEB"),
       },
     },
+    "&.danger:not(.disabled)": {
+      color: get(
+        theme,
+        "dropdownSelector.dangerText",
+        themeColors["Color/Brand/Error/colorPrimaryText"].lightMode,
+      ),
+      "&:hover": {
+        backgroundColor: get(
+          theme,
+          "dropdownSelector.dangerHoverBG",
+          themeColors["Color/Brand/Error/colorPrimaryBgHover"].lightMode,
+        ),
+        color: get(
+          theme,
+          "dropdownSelector.dangerHoverText",
+          themeColors["Color/Brand/Error/colorPrimaryTextHover"].lightMode,
+        ),
+      },
+    },
     "&.hovered:not(.disabled)": {
       backgroundColor: get(theme, "dropdownSelector.hoverBG", "#E6EAEB"),
       color: get(theme, "dropdownSelector.hoverText", "#000"),
@@ -132,7 +163,7 @@ const calcElementPosition = (
 
   const bounds = anchorEl.getBoundingClientRect();
 
-  let returnItem: CSSObject = { top: bounds.top + bounds.height };
+  const returnItem: CSSObject = { top: bounds.top + bounds.height };
 
   if (anchorOrigin === "start") {
     returnItem.left = bounds.left;
@@ -144,6 +175,18 @@ const calcElementPosition = (
 
   if (useAnchorWidth) {
     returnItem.width = bounds.width;
+  }
+
+  //max height of dropdown
+
+  const defaultMaxHeight = 450;
+  returnItem.maxHeight = defaultMaxHeight;
+
+  const calcHeight =
+    window.innerHeight - bounds.top - bounds.height - defaultMaxHeight;
+
+  if (calcHeight < 0) {
+    returnItem.maxHeight = window.innerHeight - bounds.top - bounds.height - 40;
   }
 
   return returnItem;
@@ -158,6 +201,7 @@ const DropdownSelector: FC<DropdownSelectorProps> = ({
   open,
   anchorEl = null,
   useAnchorWidth = false,
+  forSelectInput = false,
   anchorOrigin = "start",
 }) => {
   const [coords, setCoords] = useState<CSSObject | null>(null);
@@ -207,7 +251,7 @@ const DropdownSelector: FC<DropdownSelectorProps> = ({
       return;
     }
     setCoords(null);
-  }, [open]);
+  }, [anchorEl, anchorOrigin, open, useAnchorWidth]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -239,7 +283,12 @@ const DropdownSelector: FC<DropdownSelectorProps> = ({
 
   return createPortal(
     <SelectorContainer onClick={hideTriggerAction}>
-      <DropdownBlock id={id} sx={coords} useAnchorWidth={useAnchorWidth}>
+      <DropdownBlock
+        id={id}
+        sx={coords}
+        useAnchorWidth={useAnchorWidth}
+        forSelectInput={forSelectInput}
+      >
         {options.map((option, index) => {
           return (
             <DropdownItem
@@ -247,7 +296,7 @@ const DropdownSelector: FC<DropdownSelectorProps> = ({
                 selectedOption === option.value ? "selected" : ""
               } ${option.disabled ? "disabled" : ""} ${
                 index === indexHover ? "hovered" : ""
-              }`}
+              } ${option.danger ? "danger" : ""}`}
               onClick={selectOption}
               onMouseOver={() => {
                 setIndexHover(index);

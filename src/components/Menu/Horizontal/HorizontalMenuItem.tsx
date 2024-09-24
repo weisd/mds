@@ -15,16 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, useState } from "react";
-import styled, { CSSObject } from "styled-components";
-import get from "lodash/get";
-import { MenuItemProps } from "../Menu.types";
-import Box from "../../Box/Box";
-import CircleIcon from "../../Icons/CircleIcon";
-import CollapseCaret from "../../Icons/CollapseCaret";
-import ExpandCaret from "../../Icons/ExpandCaret";
 import { createPortal } from "react-dom";
-import SubItemsBox from "./SubItemsBox";
+import get from "lodash/get";
+import styled, { CSSObject } from "styled-components";
+
 import { lightColors } from "../../../global/themes";
+import Box from "../../Box/Box";
+import ChevronDownIcon from "../../Icons/NewDesignIcons/ChevronDownIcon";
+import ChevronUpIcon from "../../Icons/NewDesignIcons/ChevronUpIcon";
+import CircleIcon from "../../Icons/NewDesignIcons/CircleIcon";
+import { MenuItemProps } from "../Menu.types";
+import SubItemsBox from "./SubItemsBox";
 
 const commonStyle = (theme: any) => ({
   display: "flex",
@@ -122,7 +123,7 @@ const OptionElement = styled.span(({ theme }) => ({
     "& svg.badgeIcon": {
       width: 8,
       height: 8,
-      fill: get(
+      color: get(
         theme,
         "menu.horizontal.notificationColor",
         lightColors.mainRed,
@@ -133,7 +134,7 @@ const OptionElement = styled.span(({ theme }) => ({
     },
   },
   "& .labelContainer": {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "'Geist', sans-serif",
     fontSize: 14,
   },
 }));
@@ -212,7 +213,7 @@ const HorizontalMenuItem: FC<MenuItemProps> = ({
         >
           <MenuOptionElement icon={icon} name={name} badge={!!badge} />
           <Box className={"statusArrow"}>
-            {open ? <CollapseCaret /> : <ExpandCaret />}
+            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </Box>
         </MenuItemButton>
         {open &&
@@ -245,7 +246,7 @@ const HorizontalMenuItem: FC<MenuItemProps> = ({
   // Path is a link, we display an anchor instead of a button, default target _blank
   if (
     path?.match(
-      /^(https?:\/\/)?([\da-zа-я\.\-_]+)\.([a-zа-я\._]{2,6})([a-zа-я\d\.\-\?\/&=#%_]*)*/,
+      /^(https?:\/\/)?([\da-zа-я.\-_]+)\.([a-zа-я._]{2,6})([a-zа-я\d.\-?/&=#%_]*)*/,
     )
   ) {
     return (

@@ -17,9 +17,9 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import Checkbox from "./Checkbox";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import GlobalStyles from "../GlobalStyles/GlobalStyles";
+import Checkbox from "./Checkbox";
 import { CheckboxProps } from "./Checkbox.types";
 
 export default {
@@ -54,5 +54,17 @@ Disabled.args = {
   },
   tooltip: "test",
   checked: true,
+  disabled: true,
+};
+
+export const UncheckedDisabled = Template.bind({});
+UncheckedDisabled.args = {
+  label: "Click to confirm",
+  id: "checkbox",
+  onClick: () => {
+    console.log("click");
+  },
+  tooltip: "test",
+  checked: false,
   disabled: true,
 };

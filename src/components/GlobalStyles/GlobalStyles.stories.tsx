@@ -17,11 +17,10 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import GlobalStyles from "./GlobalStyles";
-
-import TestIcon from "../../utils/TestIcon";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
+import TestIcon from "../../utils/TestIcon";
 import Button from "../Button/Button";
+import GlobalStyles from "./GlobalStyles";
 
 export default {
   title: "MDS/Global/GlobalStyles",
@@ -99,10 +98,14 @@ const Template: Story = (args) => (
         <Button
           id={"test-button2"}
           label={"Call to Action Button"}
-          variant={"callAction"}
+          variant={"primary"}
         />
         <br />
-        <Button id={"test-button3"} label={"Secondary"} variant={"secondary"} />
+        <Button
+          id={"test-button3"}
+          label={"Destructive"}
+          variant={"descructive"}
+        />
       </section>
       <div></div>
     </div>

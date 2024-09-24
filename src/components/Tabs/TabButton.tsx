@@ -15,10 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { lightColors, lightV2 } from "../../global/themes";
 import { TabButtonConstructProps, TabButtonProps } from "./Tabs.types";
-import { lightColors } from "../../global/themes";
 
 const TabButtonBase = styled.button<TabButtonConstructProps>(
   ({ theme, horizontal }) => ({
@@ -27,33 +28,36 @@ const TabButtonBase = styled.button<TabButtonConstructProps>(
     alignItems: "center",
     justifyContent: "flex-start",
     gap: 10,
-    height: horizontal ? 50 : 60,
+    height: horizontal ? 34 : 26,
     width: horizontal ? "auto" : 255,
-    padding: "0 16px",
+    padding: "0 6px",
     border: "none",
     fontSize: 14,
-    fontWeight: horizontal ? "bold" : "inherit",
-    backgroundColor: horizontal
-      ? get(theme, "tabs.horizontal.buttons.backgroundColor", "transparent")
-      : get(
-          theme,
-          "tabs.vertical.buttons.backgroundColor",
-          lightColors.iconButtonBG,
-        ),
+    fontWeight: 400,
+    backgroundColor: "transparent",
     color: horizontal
       ? get(theme, "tabs.horizontal.buttons.labelColor", lightColors.mainGrey)
       : get(theme, "tabs.vertical.buttons.labelColor", lightColors.mainGrey),
     borderBottom: horizontal
-      ? "transparent 2px solid"
+      ? "0"
       : `${get(
           theme,
           "tabs.vertical.borders",
           lightColors.tabBorder,
         )} 1px solid`,
     "&:hover": {
+      cursor: "pointer",
       backgroundColor: horizontal
-        ? get(theme, "tabs.horizontal.buttons.backgroundColor", "transparent")
-        : get(theme, "tabs.vertical.buttons.hoverBackground", "transparent"),
+        ? get(
+            theme,
+            "tabs.horizontal.buttons.hoverBackground",
+            lightV2.modalBorderColor,
+          )
+        : get(
+            theme,
+            "tabs.vertical.buttons.hoverBackground",
+            lightV2.modalBorderColor,
+          ),
       color: horizontal
         ? get(
             theme,
@@ -68,13 +72,7 @@ const TabButtonBase = styled.button<TabButtonConstructProps>(
     },
     "&:disabled": {
       cursor: "not-allowed",
-      backgroundColor: horizontal
-        ? get(theme, "tabs.horizontal.buttons.backgroundColor", "transparent")
-        : get(
-            theme,
-            "tabs.vertical.buttons.disabledBackgroundColor",
-            lightColors.disabledBGGrey,
-          ),
+      backgroundColor: "transparent",
       color: horizontal
         ? get(
             theme,
@@ -92,14 +90,9 @@ const TabButtonBase = styled.button<TabButtonConstructProps>(
       height: 18,
     },
     "&.selected": {
-      fontWeight: "bold",
-      backgroundColor: horizontal
-        ? get(theme, "tabs.horizontal.buttons.backgroundColor", "transparent")
-        : get(
-            theme,
-            "tabs.vertical.buttons.selectedBackground",
-            lightColors.headerBorder,
-          ),
+      position: "relative" as const,
+      fontWeight: 600,
+      backgroundColor: "transparent",
       color: horizontal
         ? get(
             theme,
@@ -111,17 +104,20 @@ const TabButtonBase = styled.button<TabButtonConstructProps>(
             "tabs.vertical.buttons.selectedLabelColor",
             lightColors.mainBlue,
           ),
-      borderBottom: horizontal
-        ? `${get(
-            theme,
-            "tabs.horizontal.selectedIndicatorColor",
-            lightColors.mainBlue,
-          )} 2px solid`
-        : `${get(
-            theme,
-            "tabs.vertical.borders",
-            lightColors.tabBorder,
-          )} 1px solid`,
+      "&:after": {
+        display: horizontal ? "block" : "none",
+        content: "' '",
+        position: "absolute" as const,
+        left: 0,
+        bottom: -1,
+        width: "100%",
+        height: 2,
+        backgroundColor: get(
+          theme,
+          "wizard.modal.selectedStepLabelColor",
+          lightV2.switchBG,
+        ),
+      },
     },
   }),
 );

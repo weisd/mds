@@ -17,10 +17,10 @@
 import React, { Fragment } from "react";
 import { Meta, Story } from "@storybook/react";
 
-import LoginWrapper from "./LoginWrapper";
-import { LoginWrapperProps } from "./LoginWrapper.types";
 import StoryThemeProvider from "../../utils/StoryThemeProvider";
 import { Button, GlobalStyles } from "../index";
+import LoginWrapper from "./LoginWrapper";
+import { LoginWrapperProps } from "./LoginWrapper.types";
 
 export default {
   title: "MDS/FullPage/LoginWrapper",
@@ -59,8 +59,8 @@ Default.args = {
     </Fragment>
   ),
   logoProps: {
-    applicationName: "console",
-    subVariant: "AGPL",
+    applicationName: "minio",
+    subVariant: "enterpriseosvertical",
   },
   form: (
     <Fragment>
@@ -78,8 +78,7 @@ Default.args = {
         id={"submit"}
         type={"button"}
         label={"Login"}
-        variant={"callAction"}
-        fullWidth
+        variant={"primary"}
       />
     </Fragment>
   ),

@@ -22,17 +22,17 @@ import React, {
   useRef,
   useState,
 } from "react";
-import styled, { css, keyframes } from "styled-components";
 import { createPortal } from "react-dom";
 import get from "lodash/get";
+import styled, { css, keyframes } from "styled-components";
+
+import Grid from "../Grid/Grid";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
 import {
-  CommonHelpTipPlacement,
   HelpTipBuild,
   HelpTipConstructProps,
   HelpTipProps,
 } from "./HelpTip.types";
-import Grid from "../Grid/Grid";
-import { HelpIconFilled } from "../Icons";
 
 const opacityAnimation = keyframes`
   from {
@@ -244,14 +244,16 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
   const [helptipOpen, setHelptipOpen] = useState<boolean>(false);
 
   const handlePointerLeave = () => {
-    helptipOpen
-      ? setTimeout(() => {
-          setHelptipVisible(false);
-          setHelptipOpen(false);
-        }, 50000)
-      : setTimeout(() => {
-          setHelptipVisible(false);
-        }, 1000);
+    if (helptipOpen) {
+      setTimeout(() => {
+        setHelptipVisible(false);
+        setHelptipOpen(false);
+      }, 50000);
+    } else {
+      setTimeout(() => {
+        setHelptipVisible(false);
+      }, 1000);
+    }
   };
 
   const handleClick = () => {
@@ -277,14 +279,15 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
       const windowHeight = document.documentElement.offsetHeight;
 
       switch (placement) {
-        case "bottom":
+        case "bottom": {
           const calcPosition = bounds.top + bounds.height + boundYLimit;
 
           if (calcPosition > windowHeight) {
             calculatedPlacement = "top";
           }
           break;
-        case "left":
+        }
+        case "left": {
           const calcInitPosition = bounds.left - boundXLimit;
 
           if (calcInitPosition < 0) {
@@ -292,19 +295,22 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
           }
 
           break;
-        case "right":
+        }
+        case "right": {
           const calcEndPosition = bounds.left + bounds.width + boundXLimit;
 
           if (calcEndPosition > windowWidth) {
             calculatedPlacement = "left";
           }
           break;
-        case "top":
+        }
+        case "top": {
           if (bounds.top < boundYLimit) {
             calculatedPlacement = "bottom";
           }
 
           break;
+        }
       }
 
       switch (calculatedPlacement) {
@@ -361,27 +367,25 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
       const windowHeight = document.documentElement.offsetHeight;
 
       switch (placement) {
-        case "bottom":
+        case "bottom": {
           const calcPosition = bounds.top + bounds.height + boundYLimit;
 
           if (calcPosition > windowHeight) {
             calculatedPlacement = "top";
           }
           break;
-        case "left":
-          const calcInitPosition = bounds.left - boundXLimit;
-
-          if (calcInitPosition < 0) {
-          }
-
+        }
+        case "left": {
           break;
-        case "right":
+        }
+        case "right": {
           const calcEndPosition = bounds.left + bounds.width + boundXLimit;
 
           if (calcEndPosition > windowWidth) {
             calculatedPlacement = "left";
           }
           break;
+        }
         case "top":
           if (bounds.top < boundYLimit) {
             calculatedPlacement = "bottom";
@@ -424,7 +428,7 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
         style={position}
         onClick={handleClick}
       >
-        <HelpIconFilled style={{ width: 12, height: 12 }} />
+        <CircleHelpIcon style={{ width: 12, height: 12 }} />
       </HelpTargetItem>
     );
   };
@@ -464,7 +468,7 @@ export const HelpTip: FC<HelpTipProps> = ({ children, content, placement }) => {
           createPortal(
             <HelptipTarget
               placement={placement}
-              content={<HelpIconFilled />}
+              content={<CircleHelpIcon />}
               anchorEl={anchorEl}
             />,
             document.body,

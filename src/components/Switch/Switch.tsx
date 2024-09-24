@@ -15,18 +15,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import FieldContainer from "../../global/FieldContainer";
+import { lightV2 } from "../../global/themes";
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
+import CircleHelpIcon from "../Icons/NewDesignIcons/CircleHelpIcon";
+import InputLabel from "../InputLabel/InputLabel";
+import Tooltip from "../Tooltip/Tooltip";
 import {
   IndicatorProps,
   SwitchContainerProps,
   SwitchProps,
 } from "./Switch.types";
-import InputLabel from "../InputLabel/InputLabel";
-import Tooltip from "../Tooltip/Tooltip";
-import HelpIcon from "../Icons/HelpIcon";
-import Box from "../Box/Box";
-import FieldContainer from "../../global/FieldContainer";
 
 const SwitchIndicator = styled.span<IndicatorProps>(({ theme, active }) => ({
   fontSize: 12,
@@ -38,15 +41,15 @@ const SwitchIndicator = styled.span<IndicatorProps>(({ theme, active }) => ({
 }));
 
 const SwitchItem = styled.label(({ theme }) => ({
-  width: 54,
+  width: 42,
   height: 24,
   position: "relative",
   "& .switchRail": {
     position: "relative",
     display: "block",
-    width: 54,
+    width: 42,
     height: 24,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 2,
     boxShadow: "inset 0px 1px 3px rgba(0,0,0,0.1)",
   },
@@ -59,10 +62,10 @@ const SwitchItem = styled.label(({ theme }) => ({
         content: "' '",
         position: "absolute",
         display: "block",
-        width: 22,
-        height: 22,
-        top: 1,
-        left: 1,
+        width: 20,
+        height: 20,
+        top: 2,
+        left: 2,
         borderRadius: "100%",
         border: `${get(
           theme,
@@ -74,9 +77,14 @@ const SwitchItem = styled.label(({ theme }) => ({
       },
     },
     "&:checked ~.switchRail": {
-      backgroundColor: get(theme, "switchButton.onBackgroundColor", "#4CCB92"),
+      backgroundColor: get(
+        theme,
+        "switchButton.onBackgroundColor",
+        lightV2.switchBG,
+      ),
+      boxShadow: "0px 2px 8px 0px rgba(156, 163, 175, 0.15)",
       "&:before": {
-        left: "calc(100% - 23px)",
+        left: "calc(100% - 22px)" as const,
       },
     },
     "&:disabled:checked ~.switchRail": {
@@ -121,10 +129,9 @@ const SwitchMainContainer = styled.div<SwitchContainerProps>(
     },
     "& .actionDescription": {
       marginTop: 4,
-      padding: "0 10px",
-      color: "#999999",
+      color: get(theme, "mutedText", lightV2.mutedText),
     },
-    ...sx,
+    ...overridePropsParse(sx, theme),
   }),
 );
 
@@ -184,7 +191,7 @@ const Switch: FC<SwitchProps & React.InputHTMLAttributes<HTMLInputElement>> = ({
             {tooltip && tooltip !== "" && (
               <div className={"tooltipContainer"}>
                 <Tooltip tooltip={tooltip} placement="top">
-                  <HelpIcon />
+                  <CircleHelpIcon />
                 </Tooltip>
               </div>
             )}

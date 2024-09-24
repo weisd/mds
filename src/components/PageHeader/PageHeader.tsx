@@ -15,11 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React, { FC, HTMLAttributes } from "react";
-import styled from "styled-components";
 import get from "lodash/get";
+import styled from "styled-components";
+
+import { overridePropsParse } from "../../global/utils";
+import Box from "../Box/Box";
 import { PageHeaderConstruct, PageHeaderProps } from "./PageHeader.types";
-import Grid from "../Grid/Grid";
-import { breakPoints } from "../../global/utils";
 
 const ParentContainer = styled.div<
   PageHeaderConstruct & HTMLAttributes<HTMLDivElement>
@@ -27,31 +28,36 @@ const ParentContainer = styled.div<
   display: "flex",
   flexDirection: "row",
   width: "100%",
-  minHeight: 83,
-  backgroundColor: get(theme, `pageHeader.background`, "#fff"),
   left: 0,
-  borderBottom: `1px solid ${get(theme, `pageHeader.border`, "#E5E5E5")}`,
-  flexWrap: "wrap",
   justifyContent: "space-between",
-  alignItems: "center",
-  [`@media (max-width: ${get(breakPoints, "md", 0)}px)`]: {
-    "& > div": {
-      margin: "4px 0",
-      padding: "0 20px,",
-    },
+  paddingLeft: 32,
+  paddingRight: 32,
+  borderBottom: 0,
+  paddingTop: 24,
+  paddingBottom: 0,
+  marginBottom: 0,
+  alignItems: "start",
+  "& .page-header-label": {
+    color: "#21242B",
+    fontSize: 24,
+    fontStyle: " normal",
+    fontWeight: "bold",
+    lineHeight: " 28px",
   },
-  ...sx,
+  "& .page-header-label,& .page-header-actions": {
+    flexGrow: 1,
+  },
+  ...overridePropsParse(sx, theme),
 }));
 
 const LabelContainer = styled.div<HTMLAttributes<HTMLDivElement>>(
   ({ theme }) => ({
     color: get(theme, `pageHeader.color`, "#000"),
-    fontSize: 18,
-    fontWeight: 700,
-    paddingLeft: 20,
+    fontSize: 20,
+    paddingLeft: 0,
     display: "flex",
     flexGrow: 1,
-    marginRight: 10,
+    marginRight: 0,
     "& a": {
       color: get(theme, `pageHeader.color`, "#000"),
       textDecoration: "none",
@@ -70,45 +76,32 @@ const MiddleContainer = styled.div<HTMLAttributes<HTMLDivElement>>(() => ({
 const ActionsContainer = styled.div<HTMLAttributes<HTMLDivElement>>(() => ({
   display: "flex",
   justifyContent: "flex-end",
-  paddingRight: 20,
+  paddingRight: 0,
   flexGrow: 1,
   marginLeft: 10,
-  "& button": {
-    marginLeft: 8,
-  },
+  gap: 8,
 }));
 
-const PageHeader: FC<PageHeaderProps> = ({
+const PageHeader: FC<PageHeaderProps & HTMLAttributes<HTMLDivElement>> = ({
   label,
   middleComponent,
   actions,
   sx,
+  ...restProps
 }) => {
   return (
-    <ParentContainer sx={sx} className={"page-header"}>
-      <Grid
-        className={"page-header-label"}
-        item
-        xs={12}
-        sm={12}
-        md={middleComponent ? 4 : 6}
-      >
+    <ParentContainer {...restProps} sx={sx} className={"page-header"}>
+      <Box className={"page-header-label"}>
         <LabelContainer>{label}</LabelContainer>
-      </Grid>
+      </Box>
       {middleComponent && (
-        <Grid className={"page-header-middle"} item xs={12} sm={12} md={4}>
+        <Box className={"page-header-middle"}>
           <MiddleContainer>{middleComponent}</MiddleContainer>
-        </Grid>
+        </Box>
       )}
-      <Grid
-        className={"page-header-actions"}
-        item
-        xs={12}
-        sm={12}
-        md={middleComponent ? 4 : 6}
-      >
+      <Box className={"page-header-actions"}>
         <ActionsContainer>{actions}</ActionsContainer>
-      </Grid>
+      </Box>
     </ParentContainer>
   );
 };

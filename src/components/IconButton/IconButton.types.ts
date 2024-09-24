@@ -15,12 +15,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import React from "react";
-import { CSSObject } from "styled-components";
+
+import { OverrideTheme } from "../../global/global.types";
+import { ButtonVariant } from "../Button/Button.types";
 
 export interface IconBase {
-  label?: string;
-  size?: "small" | "medium" | "large" | string;
-  sx?: CSSObject;
+  id: string;
+  size?: "small" | "large";
+  sx?: OverrideTheme;
+  variant?: ButtonVariant;
+  isLoading?: boolean;
   children: React.ReactNode;
 }
 

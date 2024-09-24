@@ -17,8 +17,10 @@
 import React, { FC, Fragment } from "react";
 import get from "lodash/get";
 import styled from "styled-components";
+
+import { breakPoints, overridePropsParse } from "../../global/utils";
+import Loader from "../Loader/Loader";
 import { ButtonProps, ConstructProps } from "./Button.types";
-import { breakPoints } from "../../global/utils";
 
 const CustomButton = styled.button<
   ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement> & ConstructProps
@@ -26,25 +28,25 @@ const CustomButton = styled.button<
   ({
     theme,
     fullWidth,
-    variant,
+    variant = "secondary",
     iconLocation,
     icon,
     label,
     collapseOnSmall,
     parentChildren,
+    compact,
+    inButtonGroup,
     sx,
   }) => {
-    const neatVariant = variant || "regular";
-
-    const buttonLabel =
-      (!label && !parentChildren) || !icon
+    const buttonLabelSx =
+      ((!label || label === "") && !parentChildren) || !icon
         ? {
             marginRight: 0,
             marginLeft: 0,
           }
         : {
-            marginLeft: iconLocation === "end" ? "0" : "10px",
-            marginRight: iconLocation === "start" ? "0" : "10px",
+            marginRight: label !== "" && iconLocation === "end" ? "4px" : "0",
+            marginLeft: label !== "" && iconLocation === "start" ? "4px" : "0",
           };
 
     let smallScreenStyles = {};
@@ -64,101 +66,103 @@ const CustomButton = styled.button<
       };
     }
 
+    const notLabel = compact ? "6px" : "10px 8px";
+
+    const withLabel = compact ? "4px 12px" : "8px 16px";
+
+    let paddingValue =
+      (!label || label === "") && parentChildren === null
+        ? notLabel
+        : withLabel;
+
+    if (variant.endsWith("-ghost") && !icon) {
+      paddingValue = compact ? "4px 0" : "8px 0";
+    }
+
+    if (inButtonGroup) {
+      paddingValue =
+        (!label || label === "") && !parentChildren ? "6px" : "4px 12px";
+    }
+
     return {
-      borderRadius: 3,
+      borderRadius: 4,
       cursor: "pointer",
-      width: fullWidth ? "100%" : "initial",
-      height: 39,
-      fontFamily: "'Inter', sans-serif",
-      fontWeight: "400",
+      height: compact ? 28 : 36,
+      fontFamily: "'Geist', sans-serif",
+      fontWeight: "normal",
       fontSize: 14,
+      lineHeight: "20px",
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      textTransform: neatVariant === "text" ? "uppercase" : "none",
       margin: 0,
-      padding:
-        (!label || label.trim() === "") && !parentChildren
-          ? "0 14px"
-          : "0 25px",
+      padding: paddingValue,
       transition: "all 0.2s linear",
-      backgroundColor: get(
-        theme,
-        `buttons.${neatVariant}.enabled.background`,
-        "#fff",
-      ),
-      borderColor: get(theme, `buttons.${neatVariant}.enabled.border`, "#000"),
+      background: get(theme, `buttons.${variant}.enabled.background`, "#fff"),
+      borderColor: get(theme, `buttons.${variant}.enabled.border`, "#000"),
       borderWidth: 1,
       borderStyle: "solid",
-      color: get(theme, `buttons.${neatVariant}.enabled.text`, "#000"),
+      color: get(theme, `buttons.${variant}.enabled.text`, "#000"),
+      boxShadow: get(theme, `buttons.${variant}.enabled.shadow`, "none"),
       "& .button-label": {
         whiteSpace: fullWidth ? "normal" : "nowrap",
-        ...buttonLabel,
+        ...buttonLabelSx,
       },
       "& .buttonIcon": {
-        display: "block",
-        height: 14,
-
+        display: "flex",
+        height: 16,
+        width: 16,
+        minWidth: 16,
+        minHeight: 16,
+        justifyContent: "center",
+        alignItems: "center",
         "& > svg": {
-          fill: get(theme, `buttons.${neatVariant}.enabled.text`, "#000"),
-          color: get(theme, `buttons.${neatVariant}.enabled.text`, "#000"),
-          width: 14,
-          height: 14,
+          fill: get(theme, `buttons.${variant}.enabled.text`, "#000"),
+          color: get(theme, `buttons.${variant}.enabled.text`, "#000"),
+          width: 16,
+          height: 16,
         },
       },
       "&:disabled": {
         cursor: "not-allowed",
-        backgroundColor: get(
+        background: get(
           theme,
-          `buttons.${neatVariant}.disabled.background`,
+          `buttons.${variant}.disabled.background`,
           "#fff",
         ),
-        borderColor: get(
-          theme,
-          `buttons.${neatVariant}.disabled.border`,
-          "#000",
-        ),
+        borderColor: get(theme, `buttons.${variant}.disabled.border`, "#000"),
         borderWeight: 1,
         borderStyle: "solid",
-        color: get(theme, `buttons.${neatVariant}.disabled.text`, "#000"),
+        color: get(theme, `buttons.${variant}.disabled.text`, "#000"),
+        boxShadow: get(theme, `buttons.${variant}.disabled.shadow`, "none"),
         "& .buttonIcon > svg": {
-          fill: get(theme, `buttons.${neatVariant}.disabled.text`, "#000"),
-          color: get(theme, `buttons.${neatVariant}.disabled.text`, "#000"),
+          fill: get(theme, `buttons.${variant}.disabled.text`, "#000"),
+          color: get(theme, `buttons.${variant}.disabled.text`, "#000"),
         },
       },
-      "&:hover:not(:disabled)": {
-        backgroundColor: get(
-          theme,
-          `buttons.${neatVariant}.hover.background`,
-          "#fff",
-        ),
-        borderColor: get(theme, `buttons.${neatVariant}.hover.border`, "#000"),
-        color: get(theme, `buttons.${neatVariant}.hover.text`, "#000"),
+      "&:hover:not(:disabled),&.hover:not(:disabled)": {
+        background: get(theme, `buttons.${variant}.hover.background`, "#fff"),
+        borderColor: get(theme, `buttons.${variant}.hover.border`, "#000"),
+        color: get(theme, `buttons.${variant}.hover.text`, "#000"),
+        boxShadow: get(theme, `buttons.${variant}.hover.shadow`, "none"),
         "& .buttonIcon > svg": {
-          fill: get(theme, `buttons.${neatVariant}.hover.text`, "#000"),
-          color: get(theme, `buttons.${neatVariant}.hover.text`, "#000"),
+          fill: get(theme, `buttons.${variant}.hover.text`, "#000"),
+          color: get(theme, `buttons.${variant}.hover.text`, "#000"),
         },
       },
-      "&:active:not(:disabled)": {
-        backgroundColor: get(
-          theme,
-          `buttons.${neatVariant}.pressed.background`,
-          "#fff",
-        ),
-        borderColor: get(
-          theme,
-          `buttons.${neatVariant}.pressed.border`,
-          "#000",
-        ),
-        color: get(theme, `buttons.${neatVariant}.pressed.text`, "#000"),
+      "&:active:not(:disabled),&.active:not(:disabled)": {
+        background: get(theme, `buttons.${variant}.pressed.background`, "#fff"),
+        borderColor: get(theme, `buttons.${variant}.pressed.border`, "#000"),
+        color: get(theme, `buttons.${variant}.pressed.text`, "#000"),
+        boxShadow: get(theme, `buttons.${variant}.pressed.shadow`, "none"),
         "& .buttonIcon > svg": {
-          fill: get(theme, `buttons.${neatVariant}.pressed.text`, "#000"),
-          color: get(theme, `buttons.${neatVariant}.pressed.text`, "#000"),
+          fill: get(theme, `buttons.${variant}.pressed.text`, "#000"),
+          color: get(theme, `buttons.${variant}.pressed.text`, "#000"),
         },
       },
       ...smallScreenStyles,
-      ...sx,
+      ...overridePropsParse(sx, theme),
     };
   },
 );
@@ -166,45 +170,67 @@ const Button: FC<
   ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({
   label,
-  variant = "regular",
+  variant = "secondary",
   icon,
-  iconLocation = "end",
+  iconLocation = "start",
+  secondaryIcon,
   onClick,
   disabled,
   fullWidth,
   collapseOnSmall = true,
   children,
+  compact = false,
   className,
+  inButtonGroup = false,
+  isLoading = false,
+  sx,
   ...props
 }) => {
   let iconToPlace: React.ReactNode = null;
+  let secondaryIconToPlace: React.ReactNode = null;
 
   if (icon) {
     iconToPlace = <span className={"buttonIcon"}>{icon}</span>;
+  }
+
+  if (secondaryIcon) {
+    secondaryIconToPlace = (
+      <span className={"buttonIcon"}>{secondaryIcon}</span>
+    );
+  }
+
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <CustomButton
       onClick={onClick}
       disabled={disabled || false}
-      variant={variant || "regular"}
+      variant={variant || "secondary"}
       iconLocation={iconLocation || "end"}
-      label={label || ""}
+      label={label}
       fullWidth={fullWidth || false}
-      collapseOnSmall={!!collapseOnSmall}
+      collapseOnSmall={collapseOnSmall}
       icon={iconToPlace}
       parentChildren={children || null}
-      className={`${className || ""} button-${variant}`}
+      className={`${className || ""} button button-${variant}`}
+      compact={compact}
+      inButtonGroup={inButtonGroup}
+      sx={sx}
       {...props}
     >
       <Fragment>
         {icon && iconLocation === "start" && iconToPlace}
-        <span className={"button-label"}>
-          {children}
-          {children && label ? " " : ""}
-          {label}
-        </span>
+        {(children || label?.trim() !== "") && (
+          <span className={"button-label"}>
+            {children}
+            {children && label ? " " : ""}
+            {label}
+          </span>
+        )}
         {icon && iconLocation === "end" && iconToPlace}
+        {secondaryIcon && secondaryIconToPlace}
       </Fragment>
     </CustomButton>
   );
