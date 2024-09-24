@@ -86,7 +86,7 @@ DisableMobileMode.args = {
         alert(`Called Path "${path}"`);
       }}
       signOutAction={() => {
-        alert("Sign Out!");
+        alert("退出!");
       }}
       collapseAction={() => {
         console.log("COLLAPSE!");

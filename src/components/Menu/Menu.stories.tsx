@@ -48,7 +48,7 @@ const Template: Story<MenuProps> = ({ options, horizontal, endComponent }) => {
           alert(`Called Path "${path}"`);
         }}
         signOutAction={() => {
-          alert("Sign Out!");
+          alert("退出!");
         }}
         collapseAction={() => {
           setMenuCollapsed(!menuCollapsed);

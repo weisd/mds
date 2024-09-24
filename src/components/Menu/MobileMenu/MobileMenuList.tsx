@@ -164,7 +164,7 @@ const MobileMenuList: FC<MenuProps> = ({
               <MenuSectionHeader label={""} />
               <MenuItem
                 group={"common"}
-                name={"Sign Out"}
+                name={"退出"}
                 icon={<LogoutIcon />}
                 onClick={signOutAction}
               />
